@@ -34,7 +34,7 @@ Backend integration is deliberately deferred until the public learning path is c
 
 ## Security baseline
 
-- No backend API or elevated credential is present in the current client implementation.
+- No backend API integration or elevated credential is present in the current client implementation.
 - `.env` files are excluded from source control; `.env.example` contains placeholders only.
 - `VITE_*` variables are explicitly treated as public browser configuration.
 - A CI guard scans source files and the final production bundle for common secret patterns.

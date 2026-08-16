@@ -1,0 +1,63 @@
+export const j2Assessments = [
+  {
+    lesson: 1,
+    prompt: '¿Qué compara principalmente el principio de plena competencia?',
+    options: [
+      'Únicamente precios unitarios.',
+      'Las condiciones de operaciones controladas con las que habrían acordado independientes en circunstancias comparables.',
+      'Sólo las tasas fiscales entre jurisdicciones.',
+      'Los estados financieros consolidados del grupo.',
+    ],
+    correctIndex: 1,
+    feedback: 'El principio de plena competencia analiza las condiciones de la operación; el precio puede ser una de ellas, pero no la única.',
+  },
+  {
+    lesson: 2,
+    prompt: 'Dos operaciones involucran exactamente el mismo producto. ¿Eso basta para concluir que son comparables?',
+    options: ['Sí, si el producto es idéntico.', 'Sí, salvo que tengan distinta moneda.', 'No; funciones, riesgos, términos, mercado y estrategia también pueden ser relevantes.', 'No, porque nunca existen operaciones comparables.'],
+    correctIndex: 2,
+    feedback: 'Producto igual no equivale automáticamente a operación comparable. Deben revisarse las características económicamente relevantes.',
+  },
+  {
+    lesson: 3,
+    prompt: 'El contrato asigna riesgo de inventario a una filial, pero la matriz decide niveles, obsolescencia y absorbe pérdidas. ¿Qué corresponde hacer?',
+    options: ['Aceptar sin más la asignación contractual.', 'Analizar la inconsistencia entre contrato y conducta.', 'Ignorar el contrato por completo.', 'Concluir automáticamente que existe evasión.'],
+    correctIndex: 1,
+    feedback: 'El contrato es evidencia importante, pero debe contrastarse con la conducta real y con quién toma las decisiones relevantes.',
+  },
+  {
+    lesson: 4,
+    prompt: '¿Qué significa delimitar correctamente una operación?',
+    options: ['Elegir primero el método y después ordenar los hechos.', 'Comprender con precisión qué ocurrió económicamente entre las partes.', 'Reescribir el contrato para que coincida con una metodología.', 'Seleccionar comparables antes de conocer las funciones.'],
+    correctIndex: 1,
+    feedback: 'La delimitación busca comprender la operación real: aportaciones, funciones, activos, riesgos, términos, conducta y circunstancias económicas.',
+  },
+  {
+    lesson: 5,
+    prompt: '¿Qué dos elementos son especialmente relevantes para analizar quién asume económicamente un riesgo?',
+    options: ['El nombre contractual de la entidad y su número de empleados.', 'Control del riesgo y capacidad financiera para asumirlo.', 'La antigüedad del grupo y su facturación consolidada.', 'El país de residencia y la moneda funcional exclusivamente.'],
+    correctIndex: 1,
+    feedback: 'A este nivel, la lógica central es identificar quién controla las decisiones relevantes del riesgo y quién puede soportar sus consecuencias económicas.',
+  },
+  {
+    lesson: 6,
+    prompt: '¿Cuál refleja mejor la secuencia conceptual del análisis de riesgo?',
+    options: ['Valorar → escoger método → revisar contrato.', 'Identificar riesgo → revisar contrato → observar conducta → validar control/capacidad → delimitar → valorar.', 'Buscar comparables → asumir riesgo → redactar contrato.', 'Calcular margen → identificar funciones → revisar conducta.'],
+    correctIndex: 1,
+    feedback: 'La secuencia evita valorar una operación antes de comprender adecuadamente cómo se asigna y controla el riesgo.',
+  },
+  {
+    lesson: 7,
+    prompt: '¿Qué caracteriza a una opción realistamente disponible?',
+    options: ['Que el consultor pueda imaginarla.', 'Que sea una alternativa real y económicamente disponible para la parte.', 'Que produzca siempre el mayor margen.', 'Que aparezca en el contrato.'],
+    correctIndex: 1,
+    feedback: 'No basta una alternativa hipotética. Debe existir una opción realista que una parte independiente pudiera considerar efectivamente.',
+  },
+  {
+    lesson: 8,
+    prompt: '¿Qué debe ocurrir antes de seleccionar metodología y comparables?',
+    options: ['Comprender hechos, condiciones relevantes, FAR, contratos, conducta, riesgos y delimitar la operación.', 'Definir un margen objetivo.', 'Escoger TNMM por defecto.', 'Buscar empresas del mismo sector.'],
+    correctIndex: 0,
+    feedback: 'La selección metodológica viene después de comprender y delimitar correctamente la operación.',
+  },
+];

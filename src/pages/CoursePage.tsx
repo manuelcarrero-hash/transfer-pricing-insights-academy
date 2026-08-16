@@ -3,6 +3,7 @@ import { j1Course, j1Lessons } from '../content/curriculum/v1/j1';
 import { useProgress } from '../hooks/useProgress';
 
 const oecdUrl = 'https://www.oecd.org/es/publications/2022/01/oecd-transfer-pricing-guidelines-for-multinational-enterprises-and-tax-administrations-2022_57104b3a.html';
+const bookUrl = 'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR6Q/view?usp=sharing';
 
 export function CoursePage() {
   const progress = useProgress();
@@ -48,11 +49,11 @@ export function CoursePage() {
               <p>Edición oficial en español. La página de la OCDE permite consultar y descargar el PDF.</p>
               <a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a>
             </article>
-            <article className="material-card muted-card">
+            <article className="material-card">
               <span className="material-type">Lectura complementaria</span>
               <h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3>
-              <p>Libro de Manuel Carrero Rojo. La descarga pública se habilitará cuando la copia destinada a la Academy tenga un enlace estable sin permisos privados.</p>
-              <span className="availability-note">Descarga en preparación</span>
+              <p>Libro de Manuel Carrero Rojo para profundizar los fundamentos doctrinales con lenguaje sencillo y ejemplos.</p>
+              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
             </article>
           </div>
         </div>
@@ -69,6 +70,13 @@ export function CoursePage() {
               );
             })}
           </ol>
+        </div>
+
+        <div className="study-materials">
+          <div className="eyebrow">Siguiente curso</div>
+          <h2>J2 · Principio de Plena Competencia</h2>
+          <p className="materials-intro">Continúa con el estándar que organiza la delimitación, el análisis de riesgos y la valoración posterior.</p>
+          <Link className="button primary" to="/courses/j2">Ir a J2 →</Link>
         </div>
       </div>
     </section>

@@ -16,13 +16,19 @@ export type FormativeCheckData = {
 
 type Props = {
   check: FormativeCheckData;
+  onCorrect?: () => void;
 };
 
-export function FormativeCheck({ check }: Props) {
+export function FormativeCheck({ check, onCorrect }: Props) {
   const [selected, setSelected] = useState<string>('');
   const [checked, setChecked] = useState(false);
   const correct = selected === check.correctOptionId;
   const selectedOption = check.options.find((option) => option.id === selected);
+
+  const handleCheck = () => {
+    setChecked(true);
+    if (correct) onCorrect?.();
+  };
 
   return (
     <section className="quiz-card" aria-labelledby={`${check.id}-title`}>
@@ -44,7 +50,7 @@ export function FormativeCheck({ check }: Props) {
           </label>
         ))}
       </fieldset>
-      <button className="button primary" type="button" disabled={!selected} onClick={() => setChecked(true)}>
+      <button className="button primary" type="button" disabled={!selected} onClick={handleCheck}>
         Comprobar
       </button>
       {checked && selectedOption && (

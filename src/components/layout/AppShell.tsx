@@ -5,9 +5,10 @@ const activeNavItems = [
   ['Inicio', '/'],
   ['Mi Ruta', '/path'],
   ['Cursos', '/courses/j1'],
+  ['Recursos', '/resources'],
 ] as const;
 
-const futureNavItems = ['Practicar', 'Recursos', 'Certificaciones'] as const;
+const futureNavItems = ['Practicar', 'Certificaciones'] as const;
 
 function NavigationLinks() {
   return (

@@ -1,0 +1,12 @@
+export const ss4Assessments=[
+{lesson:1,prompt:'¿Cuál debe ser la primera pregunta al analizar un préstamo intragrupo?',options:['Qué tasa usar','Qué operación existe realmente y cuáles son sus condiciones','Qué base de datos usar','Qué rating produce menor spread'],correctIndex:1,feedback:'Primero se delimita la financiación; la tasa viene después.'},
+{lesson:2,prompt:'Una transferencia documentada como préstamo debe tratarse siempre como deuda por el monto completo.',options:['Verdadero','Falso'],correctIndex:1,feedback:'La sustancia económica y la capacidad razonable de endeudamiento deben analizarse antes.'},
+{lesson:3,prompt:'Creditworthiness significa únicamente rating externo.',options:['Verdadero','Falso'],correctIndex:1,feedback:'Es una evaluación económica más amplia de capacidad y riesgo de pago.'},
+{lesson:4,prompt:'¿La mera provisión de fondos demuestra control de todos los riesgos financieros?',options:['Sí','No'],correctIndex:1,feedback:'Debe analizarse quién toma decisiones y tiene capacidad para asumir el riesgo.'},
+{lesson:5,prompt:'¿Cuál puede afectar la percepción de riesgo de crédito?',options:['Flujo de efectivo','Leverage','Liquidez','Todas las anteriores'],correctIndex:3,feedback:'Todos son factores relevantes de creditworthiness.'},
+{lesson:6,prompt:'Mismo borrower implica necesariamente misma tasa para todos los préstamos.',options:['Verdadero','Falso'],correctIndex:1,feedback:'Plazo, moneda, garantía, seniority, fecha y otros términos pueden cambiar el precio.'},
+{lesson:7,prompt:'Una tasa de referencia por sí sola representa siempre plena competencia.',options:['Verdadero','Falso'],correctIndex:1,feedback:'La referencia base puede ser sólo un componente; deben reflejarse riesgo y términos.'},
+{lesson:8,prompt:'“Reference rate + spread” es en SS4:',options:['Regla legal','Concepto pedagógico','Fórmula universal','Porcentaje obligatorio'],correctIndex:1,feedback:'Es una simplificación conceptual, no una metodología universal.'},
+{lesson:9,prompt:'¿La subordinación puede aumentar el riesgo del prestamista?',options:['Sí','No'],correctIndex:0,feedback:'La menor prioridad de cobro puede incrementar el riesgo.'},
+{lesson:10,prompt:'Borrower con flujo insuficiente para servir el monto: ¿basta buscar un spread de mercado?',options:['Sí','No; debe revisarse primero monto y naturaleza de la financiación'],correctIndex:1,feedback:'La delimitación económica precede a la valoración de la tasa.'}
+];

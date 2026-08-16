@@ -8,6 +8,8 @@ const activeNavItems = [
   ['Recursos', '/resources'],
 ] as const;
 
+const supportUrl = 'https://buy.stripe.com/7sY4gr9sWg9u45ZaAe18c08';
+
 type NavigationLinksProps = { onNavigate?: () => void };
 
 function NavigationLinks({ onNavigate }: NavigationLinksProps) {
@@ -62,6 +64,12 @@ export function AppShell({ children }: PropsWithChildren) {
           <div>
             <strong>Transfer Pricing Insights Academy</strong>
             <p>Conocimiento. Criterio. Impacto.</p>
+            <p>
+              <a href={supportUrl} target="_blank" rel="noopener noreferrer">Apoya voluntariamente la Academy</a>
+            </p>
+            <p style={{ maxWidth: '46rem', fontSize: '.78rem', opacity: 0.82, lineHeight: 1.45 }}>
+              El apoyo es completamente voluntario. No constituye la compra de un producto o servicio, no otorga beneficios adicionales y no es una donación deducible para efectos fiscales.
+            </p>
           </div>
           <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
         </div>

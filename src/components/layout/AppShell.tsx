@@ -1,11 +1,29 @@
 import type { PropsWithChildren } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-const navItems = [
+const activeNavItems = [
   ['Inicio', '/'],
-  ['Mi Ruta', '/start'],
   ['Cursos', '/courses/j1'],
 ] as const;
+
+const futureNavItems = ['Mi Ruta', 'Practicar', 'Recursos', 'Certificaciones'] as const;
+
+function NavigationLinks() {
+  return (
+    <>
+      {activeNavItems.map(([label, to]) => (
+        <NavLink key={to} to={to} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+          {label}
+        </NavLink>
+      ))}
+      {futureNavItems.map((label) => (
+        <span key={label} className="nav-link nav-disabled" aria-disabled="true" title="Disponible en una fase posterior">
+          {label}
+        </span>
+      ))}
+    </>
+  );
+}
 
 export function AppShell({ children }: PropsWithChildren) {
   return (
@@ -19,16 +37,17 @@ export function AppShell({ children }: PropsWithChildren) {
               <span>Academy</span>
             </span>
           </Link>
+
           <nav className="main-nav" aria-label="Navegación principal">
-            {navItems.map(([label, to]) => (
-              <NavLink key={to} to={to} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-                {label}
-              </NavLink>
-            ))}
-            <span className="nav-link nav-disabled" aria-disabled="true">Practicar</span>
-            <span className="nav-link nav-disabled" aria-disabled="true">Recursos</span>
-            <span className="nav-link nav-disabled" aria-disabled="true">Certificaciones</span>
+            <NavigationLinks />
           </nav>
+
+          <details className="mobile-nav">
+            <summary aria-label="Abrir navegación">Menú</summary>
+            <nav className="mobile-nav-panel" aria-label="Navegación móvil">
+              <NavigationLinks />
+            </nav>
+          </details>
         </div>
       </header>
       <main>{children}</main>

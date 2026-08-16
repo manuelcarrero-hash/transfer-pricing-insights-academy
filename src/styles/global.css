@@ -57,6 +57,7 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
 .section { padding: 76px 0; }
 .section h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); letter-spacing: -.035em; }
 .section h2 { font-size: clamp(1.5rem, 3vw, 2.3rem); }
+.section-block { margin-top: 64px; }
 .welcome-video-section { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
 .welcome-video-section > .container > p { color: var(--color-text-muted); }
 .welcome-video-section .feature-card { margin-top: 28px; }
@@ -110,6 +111,11 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
 .remember-card { padding: 24px; margin: 40px 0; }
 .remember-card p { font-weight: 700; margin-bottom: 0; }
 .lesson-nav { border-top: 1px solid var(--color-border); padding-top: 28px; display: flex; justify-content: space-between; gap: 14px; }
+.resource-video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.course-video-recommendation { margin-top: 28px; }
+.resource-library-link { margin-top: 18px; }
+.resources-page .materials-grid { margin-top: 24px; }
+.resources-page .material-card h2 { font-size: 1.25rem; }
 .site-footer { background: var(--color-brand-navy-strong); color: #c7d2df; padding: 38px 0; }
 .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .footer-inner p { margin: 2px 0 0; }
@@ -118,7 +124,7 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
   .main-nav { display: none; }
   .mobile-nav { display: block; }
   .hero-grid, .course-hero { grid-template-columns: 1fr; gap: 34px; }
-  .feature-grid { grid-template-columns: 1fr; }
+  .feature-grid, .resource-video-grid { grid-template-columns: 1fr; }
   .hero { padding: 68px 0; }
   .choice-card { align-items: flex-start; flex-direction: column; }
 }

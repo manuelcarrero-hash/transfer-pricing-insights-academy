@@ -36,7 +36,7 @@ export const videoCurriculum: VideoCurriculumEntry[] = [
   {
     id: 'oecd-chapter-3', category: 'oecd', title: 'Directrices OCDE 2022 · Capítulo III — Análisis de Comparabilidad',
     description: 'Video doctrinal sobre el proceso y los factores del análisis de comparabilidad.',
-    href: 'https://drive.google.com/file/d/1MsuVCNa51IAuUm68TcrUQl_r7p0NBR6-/view', primaryDestination: 'J5', relatedDestinations: ['C4', 'C6'], tags: ['comparabilidad', 'OCDE'], status: 'active',
+    href: 'https://drive.google.com/file/d/1MsuVCNa51IAuUm68TcrUQl_r7p0NBR6-/view', primaryDestination: 'J5', relatedDestinations: ['C4', 'C5', 'C6'], tags: ['comparabilidad', 'ajustes de comparabilidad', 'OCDE'], status: 'active',
   },
   {
     id: 'oecd-chapter-4', category: 'oecd', title: 'Directrices OCDE 2022 · Capítulo IV — Procedimientos administrativos',

@@ -1,0 +1,14 @@
+import { ExternalVideoCard } from '../components/learning/ExternalVideoCard';
+import { getAllActiveVideos } from '../content/media/videoCurriculum';
+
+const oecdSpanish = 'https://drive.google.com/file/d/1JuCWOxPq6EGJ8Ig9EwkWLGhrflk038dY/view';
+const oecdEnglish = 'https://drive.google.com/file/d/1h7eGKum0AUO9b4s0ik0IV3QaIF4SO12K/view';
+const bookUrl = 'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR6Q/view';
+
+export function ResourcesPage() {
+  const videos = getAllActiveVideos().filter((video) => video.category === 'oecd');
+  return <section className="section resources-page"><div className="container"><div className="eyebrow">Biblioteca</div><h1>Recursos para consultar cuando los necesites.</h1><p className="lead small">La Academy recomienda materiales dentro de cada curso, pero esta biblioteca permanece disponible en todo momento para repasar doctrina, volver a un capítulo OCDE o profundizar por cuenta propia.</p>
+  <section className="study-materials"><div className="eyebrow">Lecturas base</div><div className="materials-grid"><article className="material-card"><span className="material-type">Fuente primaria</span><h2>Directrices OCDE 2022 · Español</h2><p>Versión de referencia para el estudio doctrinal y la consulta durante los cursos.</p><a className="button secondary" href={oecdSpanish} target="_blank" rel="noreferrer">Abrir / descargar</a></article><article className="material-card"><span className="material-type">Fuente primaria</span><h2>OECD Transfer Pricing Guidelines 2022 · English</h2><p>Versión en inglés para terminología técnica y contraste de conceptos.</p><a className="button secondary" href={oecdEnglish} target="_blank" rel="noreferrer">Open / download</a></article><article className="material-card"><span className="material-type">Lectura complementaria</span><h2>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h2><p>Libro de Manuel Carrero Rojo como apoyo conceptual y práctico a lo largo de la ruta.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a></article></div></section>
+  <section className="section-block"><div className="eyebrow">Videoteca OCDE</div><h2>Los diez capítulos, disponibles en cualquier momento.</h2><div className="resource-video-grid">{videos.map((video) => video.href ? <ExternalVideoCard key={video.id} eyebrow="Video doctrinal" title={video.title} description={video.description} href={video.href} sourceLabel="Google Drive" /> : null)}</div></section>
+  </div></section>;
+}

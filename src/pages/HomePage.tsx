@@ -87,7 +87,7 @@ export function HomePage() {
         <div className="container narrow">
           <div className="eyebrow">Cómo funciona</div>
           <h2>Aprender primero. Demostrar después.</h2>
-          <p>El contenido académico es abierto y el avance básico puede guardarse localmente sin cuenta. La identidad se reserva para sincronizar progreso entre dispositivos, presentar evaluaciones certificables y emitir credenciales verificables.</p>
+          <p>El contenido académico es abierto y el avance se guarda localmente en este navegador, sin necesidad de cuenta. Las evaluaciones y certificados también funcionan en este dispositivo; actualmente la Academy no sincroniza progreso entre dispositivos ni ofrece verificación centralizada de credenciales.</p>
           <div className="feature-grid">
             <article className="feature-card"><span>01</span><h3>Comprende</h3><p>Conceptos explicados desde cero y conectados con hechos económicos reales.</p></article>
             <article className="feature-card"><span>02</span><h3>Aplica</h3><p>Ejemplos y ejercicios para desarrollar disciplina de análisis, no sólo memoria.</p></article>

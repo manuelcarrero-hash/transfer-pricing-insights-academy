@@ -23,10 +23,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .mobile-nav-panel { position: absolute; right: 0; top: calc(100% + 10px); width: min(290px, calc(100vw - 28px)); padding: 10px; display: grid; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); }
 .mobile-nav-panel .nav-link { display: block; }
 .welcome-banner { background: #f7f1e6; border-bottom: 1px solid #dbc9a7; }
-.welcome-banner-inner { min-height: 66px; display: flex; align-items: center; gap: 18px; }
-.welcome-banner-inner > div { display: grid; margin-right: auto; }
-.welcome-banner-inner span { color: var(--color-text-muted); font-size: .9rem; }
-.welcome-dismiss { border: 0; background: transparent; color: var(--color-text-muted); cursor: pointer; font-size: 1.6rem; line-height: 1; padding: 8px; }
+.welcome-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding-block: 18px; }
+.welcome-banner-copy { min-width: 0; display: grid; gap: 3px; }
+.welcome-banner-copy strong { color: var(--color-brand-navy); font-size: 1.05rem; }
+.welcome-banner-copy > span:last-child { color: var(--color-text-muted); font-size: .9rem; }
+.welcome-banner-actions { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.welcome-dismiss, .video-modal-close { border: 1px solid var(--color-border); background: white; color: var(--color-brand-navy); cursor: pointer; width: 44px; height: 44px; border-radius: var(--radius-sm); font-size: 1.45rem; line-height: 1; display: grid; place-items: center; }
+.video-modal-backdrop { position: fixed; inset: 0; z-index: 100; background: rgba(5, 18, 34, .78); display: grid; place-items: center; padding: 24px; }
+.video-modal { width: min(920px, 100%); max-height: calc(100dvh - 48px); overflow: auto; background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: 0 24px 80px rgba(0,0,0,.28); padding: 24px; }
+.video-modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 18px; }
+.video-modal-header h2 { margin: 6px 0 0; }
+.video-modal-close { flex: 0 0 auto; }
 .hero { background: linear-gradient(135deg, var(--color-brand-navy-strong), var(--color-brand-navy)); color: white; padding: 92px 0; }
 .hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 72px; align-items: center; }
 h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
@@ -56,9 +63,9 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
 .section h2 { font-size: clamp(1.5rem, 3vw, 2.3rem); }
 .welcome-video-section { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
 .welcome-video-section > .container > p { color: var(--color-text-muted); }
-.video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-brand-navy-strong); box-shadow: var(--shadow-soft); margin-top: 28px; }
-.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.video-fallback { margin-top: 12px; font-size: .9rem; }
+.welcome-video-player { margin-top: 26px; }
+.welcome-video-player video { width: 100%; aspect-ratio: 16 / 9; display: block; object-fit: contain; border-radius: var(--radius-lg); background: var(--color-brand-navy-strong); box-shadow: var(--shadow-soft); }
+.video-fallback { margin: 12px 0 0; color: var(--color-text-muted); font-size: .9rem; }
 .video-fallback a { font-weight: 700; color: var(--color-brand-navy); }
 .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
 .feature-card, .choice-card, .outcome-card, .course-index, .learning-outcomes, .quiz-card, .remember-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
@@ -130,11 +137,16 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
   .lesson-topbar .container { min-height: 62px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 2px; padding-block: 10px; font-size: .82rem; }
   .lesson-nav, .footer-inner { flex-direction: column; align-items: stretch; }
   .lesson-nav .button { width: 100%; }
-  .welcome-banner-inner { padding-block: 12px; flex-wrap: wrap; gap: 8px 12px; }
-  .welcome-banner-inner > div { width: calc(100% - 42px); }
-  .welcome-banner-inner .button { order: 3; width: 100%; }
-  .welcome-dismiss { margin-left: auto; }
-  .video-frame { border-radius: var(--radius-md); }
+  .welcome-banner-inner { align-items: stretch; flex-direction: column; gap: 14px; padding-block: 16px; }
+  .welcome-banner-copy { gap: 6px; }
+  .welcome-banner-copy strong { font-size: 1.15rem; line-height: 1.25; }
+  .welcome-banner-actions { width: 100%; }
+  .welcome-banner-actions .button { flex: 1; }
+  .video-modal-backdrop { padding: 10px; align-items: end; }
+  .video-modal { max-height: calc(100dvh - 20px); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 18px 14px 20px; }
+  .video-modal-header { gap: 14px; }
+  .video-modal-header h2 { font-size: 1.35rem; }
+  .welcome-video-player video { border-radius: var(--radius-md); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }

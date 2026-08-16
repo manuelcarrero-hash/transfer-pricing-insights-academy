@@ -32,6 +32,20 @@ The first vertical slice validates:
 
 Backend integration is deliberately deferred until the public learning path is coherent and tested.
 
+## Security baseline
+
+- No backend API integration or elevated credential is present in the current client implementation.
+- `.env` files are excluded from source control; `.env.example` contains placeholders only.
+- `VITE_*` variables are explicitly treated as public browser configuration.
+- A CI guard scans source files and the final production bundle for common secret patterns.
+- CI also runs a dependency audit, TypeScript validation and a production build.
+- CodeQL scans JavaScript/TypeScript using the `security-extended` query suite.
+- Cloudflare Pages security headers are version-controlled in `public/_headers`, including CSP, anti-framing, MIME sniffing protection, referrer policy and permissions restrictions.
+- Dependabot monitors npm and GitHub Actions dependencies.
+- Future Supabase browser code may use only a publishable key. Secret/service-role credentials and certificable answer keys are backend-only.
+
+See [SECURITY.md](./SECURITY.md) for the complete policy.
+
 ## Academic integrity
 
 Transfer Pricing Insights Academy teaches the OECD framework as its doctrinal backbone. The OECD Guidelines do not automatically replace local law; jurisdiction-specific application must be verified separately.

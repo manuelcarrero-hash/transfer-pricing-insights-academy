@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom';
-import type { getCourseProgress } from '../../services/courseProgress';
 
 type LessonSummary = { sequence: number; title: string };
 type CourseSummary = { title: string };
-type CourseProgress = ReturnType<typeof getCourseProgress>;
+type ProgressSummary = { lastLesson: number | null; completedLessons: number[] };
 
 type CourseProgressCardProps = {
   level: string;
   code: string;
   course: CourseSummary;
   lessons: LessonSummary[];
-  progress: CourseProgress;
+  progress: ProgressSummary;
 };
 
 export function CourseProgressCard({ level, code, course, lessons, progress }: CourseProgressCardProps) {
@@ -23,15 +22,10 @@ export function CourseProgressCard({ level, code, course, lessons, progress }: C
   return (
     <section className="progress-card" aria-labelledby={titleId}>
       <div className="progress-card-top">
-        <div>
-          <span className="progress-kicker">{level} · {code}</span>
-          <h2 id={titleId}>{course.title}</h2>
-        </div>
+        <div><span className="progress-kicker">{level} · {code}</span><h2 id={titleId}>{course.title}</h2></div>
         <strong className="progress-percent" aria-label={`${percent}% completado`}>{percent}%</strong>
       </div>
-      <div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={`Progreso ${code}`}>
-        <span style={{ width: `${percent}%` }} />
-      </div>
+      <div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={`Progreso ${code}`}><span style={{ width: `${percent}%` }} /></div>
       <p className="progress-summary">{completed} de {lessons.length} lecciones completadas.</p>
       <div className="progress-actions">
         <Link className="button primary" to={`${href}/lesson/${resume}`}>{progress.lastLesson ? 'Continuar donde me quedé' : `Comenzar ${code}`}</Link>

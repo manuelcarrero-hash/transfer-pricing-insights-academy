@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { j1Course } from '../content/curriculum/v1/j1';
+import { j1Course, j1Lessons } from '../content/curriculum/v1/j1';
 
 export function CoursePage() {
   return (
@@ -14,17 +14,15 @@ export function CoursePage() {
             <div className="course-meta"><span>{j1Course.lessonCount} lecciones</span><span>≈ {j1Course.estimatedMinutes} min</span><span>Sin prerrequisitos</span></div>
             <Link className="button primary" to="/courses/j1/lesson-1">Comenzar curso</Link>
           </div>
-          <aside className="outcome-card">
-            <h2>Al terminar podrás</h2>
-            <ul>{j1Course.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul>
-          </aside>
+          <aside className="outcome-card"><h2>Al terminar podrás</h2><ul>{j1Course.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul></aside>
         </div>
         <div className="course-index">
           <h2>Contenido del curso</h2>
           <ol>
-            <li className="lesson-row active"><Link to="/courses/j1/lesson-1"><span>1</span><div><strong>¿Qué son los Precios de Transferencia?</strong><small>Disponible ahora</small></div></Link></li>
-            {['¿Por qué existen los Precios de Transferencia?','Empresas relacionadas y operaciones controladas','El problema económico detrás de una operación','El principio de plena competencia','El ciclo general de un análisis','El papel del consultor','OCDE vs. legislación local'].map((title, index) => (
-              <li className="lesson-row locked" key={title}><div><span>{index + 2}</span><div><strong>{title}</strong><small>Se integrará después de validar la lección patrón</small></div></div></li>
+            {j1Lessons.map((lesson) => (
+              <li className="lesson-row active" key={lesson.id}>
+                <Link to={`/courses/j1/lesson-${lesson.sequence}`}><span>{lesson.sequence}</span><div><strong>{lesson.title}</strong><small>≈ {lesson.estimatedMinutes} min · Disponible</small></div></Link>
+              </li>
             ))}
           </ol>
         </div>

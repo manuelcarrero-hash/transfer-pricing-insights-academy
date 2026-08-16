@@ -1,13 +1,34 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { j1Course, j1Lessons } from '../content/curriculum/v1/j1';
+import { j2Course, j2Lessons } from '../content/curriculum/v1/j2';
+import { j3Course, j3Lessons } from '../content/curriculum/v1/j3';
 import { useProgress } from '../hooks/useProgress';
+import { courseProgressEventName, getCourseProgress } from '../services/courseProgress';
 
 export function MyPathPage() {
-  const progress = useProgress();
-  const completed = progress.completedLessons.length;
-  const percent = Math.round((completed / j1Lessons.length) * 100);
-  const resumeLesson = progress.lastLesson ?? 1;
-  const resumeTitle = j1Lessons[resumeLesson - 1]?.title ?? j1Lessons[0].title;
+  const j1Progress = useProgress();
+  const [j2Progress, setJ2Progress] = useState(() => getCourseProgress('J2', j2Lessons.length));
+  const [j3Progress, setJ3Progress] = useState(() => getCourseProgress('J3', j3Lessons.length));
+
+  useEffect(() => {
+    const sync = () => {
+      setJ2Progress(getCourseProgress('J2', j2Lessons.length));
+      setJ3Progress(getCourseProgress('J3', j3Lessons.length));
+    };
+    window.addEventListener(courseProgressEventName, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(courseProgressEventName, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
+
+  const courses = [
+    { code: 'J1', course: j1Course, lessons: j1Lessons, progress: j1Progress, href: '/courses/j1' },
+    { code: 'J2', course: j2Course, lessons: j2Lessons, progress: j2Progress, href: '/courses/j2' },
+    { code: 'J3', course: j3Course, lessons: j3Lessons, progress: j3Progress, href: '/courses/j3' },
+  ];
 
   return (
     <section className="section my-path-page">
@@ -16,43 +37,30 @@ export function MyPathPage() {
         <h1>Tu progreso, claro y sin ruido.</h1>
         <p className="lead small">Puedes estudiar sin cuenta. Mientras uses este dispositivo y navegador, la Academy recuerda dónde te quedaste y qué lecciones has demostrado comprender mediante sus comprobaciones formativas.</p>
 
-        <section className="progress-card" aria-labelledby="j1-progress-title">
-          <div className="progress-card-top">
-            <div>
-              <span className="progress-kicker">Junior · J1</span>
-              <h2 id="j1-progress-title">{j1Course.title}</h2>
-            </div>
-            <strong className="progress-percent">{percent}%</strong>
-          </div>
-          <div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={`Progreso de J1: ${percent}%`}>
-            <span style={{ width: `${percent}%` }} />
-          </div>
-          <p className="progress-summary">{completed} de {j1Lessons.length} lecciones completadas.</p>
-          <div className="progress-actions">
-            <Link className="button primary" to={`/courses/j1/lesson/${resumeLesson}`}>{progress.lastLesson ? 'Continuar donde me quedé' : 'Comenzar J1'}</Link>
-            <Link className="button secondary" to="/courses/j1/study-guide">Abrir guía de estudio</Link>
-          </div>
-          {progress.lastLesson && <p className="resume-note">Última lección visitada: <strong>{resumeLesson}. {resumeTitle}</strong></p>}
-        </section>
-
-        <section className="progress-lessons">
-          <h2>Lecciones de J1</h2>
-          <ol>
-            {j1Lessons.map((lesson) => {
-              const done = progress.completedLessons.includes(lesson.sequence);
-              const current = progress.lastLesson === lesson.sequence;
-              return (
-                <li key={lesson.id} className={done ? 'progress-lesson done' : 'progress-lesson'}>
-                  <span className="progress-status" aria-hidden="true">{done ? '✓' : lesson.sequence}</span>
-                  <div>
-                    <Link to={`/courses/j1/lesson/${lesson.sequence}`}>{lesson.title}</Link>
-                    <small>{done ? 'Completada' : current ? 'Última visitada' : 'Pendiente'}</small>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
+        {courses.map(({ code, course, lessons, progress, href }) => {
+          const completed = progress.completedLessons.length;
+          const percent = Math.round((completed / lessons.length) * 100);
+          const resumeLesson = progress.lastLesson ?? 1;
+          const resumeTitle = lessons[resumeLesson - 1]?.title ?? lessons[0].title;
+          return (
+            <section className="progress-card" aria-labelledby={`${code.toLowerCase()}-progress-title`} key={code}>
+              <div className="progress-card-top">
+                <div>
+                  <span className="progress-kicker">Junior · {code}</span>
+                  <h2 id={`${code.toLowerCase()}-progress-title`}>{course.title}</h2>
+                </div>
+                <strong className="progress-percent">{percent}%</strong>
+              </div>
+              <div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={`Progreso de ${code}: ${percent}%`}><span style={{ width: `${percent}%` }} /></div>
+              <p className="progress-summary">{completed} de {lessons.length} lecciones completadas.</p>
+              <div className="progress-actions">
+                <Link className="button primary" to={`${href}/lesson/${resumeLesson}`}>{progress.lastLesson ? 'Continuar donde me quedé' : `Comenzar ${code}`}</Link>
+                <Link className="button secondary" to={href}>Ver curso</Link>
+              </div>
+              {progress.lastLesson && <p className="resume-note">Última lección visitada: <strong>{resumeLesson}. {resumeTitle}</strong></p>}
+            </section>
+          );
+        })}
 
         <aside className="local-progress-note">
           <strong>Sobre este progreso</strong>

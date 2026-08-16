@@ -1,0 +1,10 @@
+export const c6Assessments=[
+{lesson:1,prompt:'¿Qué expresa mejor la lógica del rango?',options:['Existe un único resultado correcto','Puede existir una pluralidad de resultados independientes confiables','La mediana siempre es obligatoria','El rango sustituye comparabilidad'],correctIndex:1,feedback:'El rango resume resultados previamente comparables; no crea comparabilidad.'},
+{lesson:2,prompt:'El rango completo se extiende entre:',options:['Q1 y Q3','Mínimo y máximo','Mediana y máximo','Media y mediana'],correctIndex:1,feedback:'El rango completo va de la observación mínima a la máxima.'},
+{lesson:3,prompt:'¿Puede variar Q1/Q3 entre herramientas?',options:['No, nunca','Sí, según la convención estadística utilizada','Sólo si hay error','Sólo en Excel'],correctIndex:1,feedback:'Distintas convenciones inclusivas/exclusivas pueden producir resultados diferentes.'},
+{lesson:4,prompt:'Mediana de 2%, 3%, 5%, 8%:',options:['3%','4%','5%','4.5%'],correctIndex:1,feedback:'Con cuatro observaciones, la mediana es el promedio de 3% y 5% = 4%.'},
+{lesson:5,prompt:'Rango dado 3.2%–5.8%; tested party 4.6%. ¿Conclusión económica básica?',options:['Fuera del rango','Dentro del rango','Debe ajustarse a mediana','Incumplimiento automático'],correctIndex:1,feedback:'4.6% está dentro del rango dado; las consecuencias jurídicas requieren análisis local.'},
+{lesson:6,prompt:'¿La estadística puede corregir comparables funcionalmente débiles?',options:['Sí','No'],correctIndex:1,feedback:'El rango sólo resume observaciones; no repara deficiencias de comparabilidad.'},
+{lesson:7,prompt:'¿Debe eliminarse una empresa únicamente porque tiene margen extremo?',options:['Sí','No; se necesita fundamento objetivo independiente'],correctIndex:1,feedback:'Eliminar por resultado constituye riesgo de cherry-picking.'},
+{lesson:8,prompt:'Manufacturas del Bajío: Q1 4.95%, mediana 5.70%, Q3 6.25%, resultado 5.9%.',options:['Fuera del rango','Dentro del rango y arriba de la mediana','Dentro del rango y debajo de la mediana','Debe ajustarse automáticamente'],correctIndex:1,feedback:'5.9% está entre Q1 y Q3 y por encima de la mediana, sin que ello implique incumplimiento.'}
+];

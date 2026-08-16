@@ -1,9 +1,11 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 360px; background: var(--color-bg); color: var(--color-text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.65; }
+body { margin: 0; min-width: 320px; background: var(--color-bg); color: var(--color-text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.65; overflow-wrap: anywhere; }
 a { color: inherit; }
-button, input { font: inherit; }
-button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #4c8bd9; outline-offset: 3px; }
+button, input, select, textarea { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid #4c8bd9; outline-offset: 3px; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 100; padding: 10px 14px; border-radius: var(--radius-sm); background: white; color: var(--color-brand-navy-strong); font-weight: 800; text-decoration: none; box-shadow: var(--shadow-soft); transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
 .container { width: min(calc(100% - 40px), var(--container)); margin-inline: auto; }
 .narrow { max-width: 960px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -21,7 +23,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .mobile-nav summary { list-style: none; cursor: pointer; min-height: 44px; padding: 9px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-brand-navy); font-weight: 700; }
 .mobile-nav summary::-webkit-details-marker { display: none; }
 .mobile-nav-panel { position: absolute; right: 0; top: calc(100% + 10px); width: min(290px, calc(100vw - 28px)); padding: 10px; display: grid; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); }
-.mobile-nav-panel .nav-link { display: block; }
+.mobile-nav-panel .nav-link { display: block; min-height: 44px; }
 .welcome-banner { background: #f7f1e6; border-bottom: 1px solid #dbc9a7; }
 .welcome-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding-block: 18px; }
 .welcome-banner-copy { min-width: 0; display: grid; gap: 3px; }
@@ -82,8 +84,8 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
 .course-index ol { list-style: none; padding: 0; margin: 0; }
 .lesson-row { border-top: 1px solid var(--color-border); }
 .lesson-row > a, .lesson-row > div { display: flex; gap: 18px; align-items: center; text-decoration: none; padding: 18px 8px; }
-.lesson-row span { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; font-weight: 800; }
-.lesson-row div div { display: grid; }
+.lesson-row span { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--color-border); display: grid; place-items: center; font-weight: 800; flex: 0 0 34px; }
+.lesson-row div div { display: grid; min-width: 0; }
 .lesson-row small { color: var(--color-text-muted); }
 .lesson-row.locked { opacity: .55; }
 .lesson-row.active a:hover { background: #f5f7fa; }
@@ -101,8 +103,8 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
 .consultant-card h2 { color: white; margin: 8px 0; }
 .quiz-card { padding: 28px; margin: 42px 0; }
 .quiz-card h2 { margin: 8px 0 12px; }
-.quiz-card fieldset { border: 0; padding: 0; margin: 22px 0; display: grid; gap: 10px; }
-.quiz-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; }
+.quiz-card fieldset { border: 0; padding: 0; margin: 22px 0; display: grid; gap: 10px; min-width: 0; }
+.quiz-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; min-height: 44px; }
 .quiz-option:has(input:checked) { border-color: var(--color-brand-gold); background: #fbf8f1; }
 .feedback { margin-top: 18px; padding: 16px; border-radius: var(--radius-sm); }
 .feedback.correct { background: #eaf6f0; color: #1f6448; }
@@ -132,15 +134,28 @@ h1, h2, h3 { color: var(--color-brand-navy); line-height: 1.15; margin-top: 0; }
   .container, .lesson-content { width: min(calc(100% - 28px), var(--container)); }
   .brand-copy { display: none; }
   .section { padding: 54px 0; }
+  .section-block { margin-top: 44px; }
+  .hero { padding: 54px 0; }
+  .hero h1, .section h1, .lesson-content > h1 { overflow-wrap: anywhere; }
   .lesson-content { padding-top: 42px; }
   .lesson-topbar .container { min-height: 62px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 2px; padding-block: 10px; font-size: .82rem; }
   .lesson-nav, .footer-inner { flex-direction: column; align-items: stretch; }
   .lesson-nav .button { width: 100%; }
+  .choice-card, .course-index, .outcome-card, .learning-outcomes, .quiz-card, .remember-card, .feature-card { padding: 20px; }
+  .lesson-row > a, .lesson-row > div { align-items: flex-start; gap: 12px; }
+  .button-row { display: grid; grid-template-columns: 1fr; }
+  .button-row .button { width: 100%; }
   .welcome-banner-inner { align-items: stretch; flex-direction: column; gap: 14px; padding-block: 16px; }
   .welcome-banner-copy { gap: 6px; }
   .welcome-banner-copy strong { font-size: 1.15rem; line-height: 1.25; }
   .welcome-banner-actions { width: 100%; }
   .welcome-banner-actions .button { flex: 1; }
+}
+@media (max-width: 359px) {
+  .container, .lesson-content { width: min(calc(100% - 20px), var(--container)); }
+  .header-inner { gap: 12px; }
+  .brand-mark { width: 38px; height: 38px; }
+  .mobile-nav-panel { width: calc(100vw - 20px); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }

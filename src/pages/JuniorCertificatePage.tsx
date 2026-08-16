@@ -81,12 +81,12 @@ export function JuniorCertificatePage() {
               </div>
               <div className="certificate-meta-block">
                 <strong>{issuedAt || 'Fecha de emisión'}</strong>
-                <small>Certificate ID · {certificateId}</small>
+                <small>Local Certificate ID · {certificateId}</small>
                 <small>Completed Successfully</small>
               </div>
             </footer>
 
-            <div className="certificate-disclaimer">Este certificado reconoce la finalización satisfactoria de una ruta de aprendizaje. No representa experiencia profesional, licencia, certificación regulatoria ni acreditación académica oficial.</div>
+            <div className="certificate-disclaimer">Este certificado reconoce la finalización satisfactoria de una ruta de aprendizaje. No representa experiencia profesional, licencia, certificación regulatoria ni acreditación académica oficial. El ID se genera localmente en este navegador y actualmente no dispone de verificación pública centralizada.</div>
           </div>
         </article>
       </div>

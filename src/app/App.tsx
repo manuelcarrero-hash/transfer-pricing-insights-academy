@@ -7,6 +7,8 @@ import { J2CoursePage } from '../pages/J2CoursePage';
 import { J2LessonPage } from '../pages/J2LessonPage';
 import { J3CoursePage } from '../pages/J3CoursePage';
 import { J3LessonPage } from '../pages/J3LessonPage';
+import { J4CoursePage } from '../pages/J4CoursePage';
+import { J4LessonPage } from '../pages/J4LessonPage';
 import { LessonPage } from '../pages/LessonPage';
 import { MyPathPage } from '../pages/MyPathPage';
 import { StartPage } from '../pages/StartPage';
@@ -28,6 +30,8 @@ export function App() {
         <Route path="/courses/j2/lesson/:lessonNumber" element={<J2LessonPage />} />
         <Route path="/courses/j3" element={<J3CoursePage />} />
         <Route path="/courses/j3/lesson/:lessonNumber" element={<J3LessonPage />} />
+        <Route path="/courses/j4" element={<J4CoursePage />} />
+        <Route path="/courses/j4/lesson/:lessonNumber" element={<J4LessonPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>

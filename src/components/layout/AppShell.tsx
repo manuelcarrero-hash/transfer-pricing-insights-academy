@@ -8,6 +8,8 @@ const activeNavItems = [
   ['Recursos', '/resources'],
 ] as const;
 
+const PILOT_FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScPILOT_PLACEHOLDER/viewform';
+
 type NavigationLinksProps = { onNavigate?: () => void };
 
 function NavigationLinks({ onNavigate }: NavigationLinksProps) {
@@ -51,6 +53,11 @@ export function AppShell({ children }: PropsWithChildren) {
           </details>
         </div>
       </header>
+      <aside className="pilot-notice" aria-label="Aviso sobre el progreso">
+        <div className="container pilot-notice-inner">
+          <span><strong>Piloto RC1.</strong> Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo y evita borrar los datos del sitio durante la prueba.</span>
+        </div>
+      </aside>
       <main id="main-content" tabIndex={-1}>{children}</main>
       <footer className="site-footer">
         <div className="container footer-inner">
@@ -58,7 +65,10 @@ export function AppShell({ children }: PropsWithChildren) {
             <strong>Transfer Pricing Insights Academy</strong>
             <p>Conocimiento. Criterio. Impacto.</p>
           </div>
-          <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
+          <div className="footer-pilot-actions">
+            <a className="footer-feedback" href={PILOT_FEEDBACK_URL} target="_blank" rel="noreferrer">Enviar comentarios del piloto</a>
+            <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
+          </div>
         </div>
       </footer>
     </div>

@@ -1,7 +1,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
-const roots = ['src', 'public'];
+const roots = ['src', 'public', 'dist'];
 const standaloneFiles = ['index.html', 'vite.config.ts'];
 const textExtensions = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json', '.html', '.css', '.txt']);
 

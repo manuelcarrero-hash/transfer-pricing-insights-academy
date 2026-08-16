@@ -6,6 +6,11 @@ async function seedStorage(page: Page, values: Record<string, string>) {
   }, values);
 }
 
+async function expectNoHorizontalOverflow(page: Page) {
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+}
+
 const j1CorrectAnswers = [
   'No. Con los hechos dados, es una operación entre partes independientes.',
   'Que existe una operación controlada que debe analizarse.',
@@ -107,5 +112,32 @@ test.describe('Academy critical path', () => {
     await menu.getByRole('link', { name: 'Recursos' }).click();
     await expect(page).toHaveURL(/\/resources$/);
     await expect(menu).not.toHaveAttribute('open', '');
+  });
+
+  test('mobile and tablet layouts avoid horizontal overflow on critical pages', async ({ page }) => {
+    for (const viewport of [{ width: 320, height: 800 }, { width: 390, height: 844 }, { width: 768, height: 1024 }]) {
+      await page.setViewportSize(viewport);
+      for (const route of ['/', '/start', '/resources', '/courses/j1', '/courses/j1/lesson/1']) {
+        await page.goto(route);
+        await expectNoHorizontalOverflow(page);
+      }
+    }
+  });
+
+  test('keyboard users can skip navigation and operate a formative check', async ({ page }) => {
+    await page.goto('/courses/j1/lesson/1');
+    await page.keyboard.press('Tab');
+    const skipLink = page.getByRole('link', { name: 'Saltar al contenido principal' });
+    await expect(skipLink).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#main-content')).toBeFocused();
+
+    const correctOption = page.getByLabel(j1CorrectAnswers[0]);
+    await correctOption.focus();
+    await page.keyboard.press('Space');
+    await expect(correctOption).toBeChecked();
+    await page.getByRole('button', { name: 'Comprobar' }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('status')).toContainText('Correcto.');
   });
 });

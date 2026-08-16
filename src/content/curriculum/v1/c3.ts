@@ -7,5 +7,5 @@ export const c3Lessons=[
 {id:'c3-lesson-5',sequence:5,title:'Segmentación financiera',estimatedMinutes:22,learningOutcomes:['Identificar cuándo los estados totales distorsionan el análisis.','Explicar criterios razonables y documentables de segmentación.']},
 {id:'c3-lesson-6',sequence:6,title:'Cálculos básicos',estimatedMinutes:28,learningOutcomes:['Calcular los cuatro PLI con datos simplificados.','Identificar errores de base o numerador.']},
 {id:'c3-lesson-7',sequence:7,title:'Interpretación del resultado',estimatedMinutes:20,learningOutcomes:['Comparar el PLI con una referencia arm’s length.','Redactar una conclusión limitada al alcance del análisis.']},
-{id:'c3-lesson-8',sequence:8,title:'Laboratorio C3',estimatedMinutes:25,learningOutcomes:['Aplicar PLI al dataset didáctico.','Resolver la Fase 8 de Manufacturas del Bajío.']}
+{id:'c3-lesson-8',sequence:8,title:'Laboratorio C3',estimatedMinutes:25,learningOutcomes:['Aplicar PLI al dataset didáctico.','Resolver la Fase 7 de Manufacturas del Bajío.']}
 ].map(l=>({...l,courseId:'course-c3',curriculumVersion:'v1'}));

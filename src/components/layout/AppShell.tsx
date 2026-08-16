@@ -51,9 +51,9 @@ export function AppShell({ children }: PropsWithChildren) {
           </details>
         </div>
       </header>
-      <aside className="pilot-notice" aria-label="Aviso sobre el progreso">
-        <div className="container pilot-notice-inner">
-          <span><strong>Piloto RC1.</strong> Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo y evita borrar los datos del sitio durante la prueba.</span>
+      <aside aria-label="Aviso sobre el progreso" style={{ background: '#f7f1e6', borderBottom: '1px solid #dbc9a7' }}>
+        <div className="container" style={{ paddingBlock: '10px', color: '#26384d', fontSize: '.88rem', lineHeight: 1.45 }}>
+          <strong>Piloto RC1.</strong> Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo y evita borrar los datos del sitio durante la prueba.
         </div>
       </aside>
       <main id="main-content" tabIndex={-1}>{children}</main>

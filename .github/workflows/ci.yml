@@ -33,6 +33,9 @@ jobs:
       - name: Dependency audit
         run: npm audit --audit-level=high
 
+      - name: Curriculum integrity
+        run: npm run curriculum:check
+
       - name: Typecheck
         run: npm run typecheck
 

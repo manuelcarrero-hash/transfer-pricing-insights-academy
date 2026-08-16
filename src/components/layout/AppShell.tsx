@@ -8,8 +8,6 @@ const activeNavItems = [
   ['Recursos', '/resources'],
 ] as const;
 
-const PILOT_FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScPILOT_PLACEHOLDER/viewform';
-
 type NavigationLinksProps = { onNavigate?: () => void };
 
 function NavigationLinks({ onNavigate }: NavigationLinksProps) {
@@ -65,10 +63,7 @@ export function AppShell({ children }: PropsWithChildren) {
             <strong>Transfer Pricing Insights Academy</strong>
             <p>Conocimiento. Criterio. Impacto.</p>
           </div>
-          <div className="footer-pilot-actions">
-            <a className="footer-feedback" href={PILOT_FEEDBACK_URL} target="_blank" rel="noreferrer">Enviar comentarios del piloto</a>
-            <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
-          </div>
+          <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
         </div>
       </footer>
     </div>

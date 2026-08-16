@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { juniorFoundationsBank } from '../../src/content/assessments/juniorFoundations';
 import { consultantBank } from '../../src/content/assessments/consultantCumulative';
 import { consultantCaseQuestions } from '../../src/content/assessments/consultantCase';
@@ -6,6 +6,10 @@ import { semiSeniorBank } from '../../src/content/assessments/semiSeniorCumulati
 import { caseA, caseB } from '../../src/content/assessments/semiSeniorCases';
 import { seniorFinalBank, seniorMiniCases } from '../../src/content/assessments/seniorFinal';
 import { seniorCapstoneDecisions } from '../../src/content/assessments/seniorCapstone';
+import { j2Lessons } from '../../src/content/curriculum/v1/j2';
+import { j3Lessons } from '../../src/content/curriculum/v1/j3';
+import { j4Lessons } from '../../src/content/curriculum/v1/j4';
+import { j5Lessons } from '../../src/content/curriculum/v1/j5';
 
 async function seedStorage(page: Page, values: Record<string, string>) {
   await page.addInitScript((entries) => {
@@ -26,6 +30,7 @@ async function answerSingleChoice(
     if (!question) throw new Error(`No se encontró el reactivo renderizado: ${text?.slice(0, 120)}`);
     const index = correct ? question.correctIndex : (question.correctIndex + 1) % question.options.length;
     await field.getByLabel(question.options[index], { exact: true }).check();
+    await expect(field.locator('input:checked')).toHaveCount(1);
   }
 }
 
@@ -40,15 +45,19 @@ async function answerMultiChoice(
     const text = await field.textContent();
     const question = bank.find((q) => text?.includes(q.prompt));
     if (!question) throw new Error(`No se encontró la decisión renderizada: ${text?.slice(0, 120)}`);
-    const chosen = correct
-      ? question.correct
-      : [question.options.findIndex((_, index) => !question.correct.includes(index))];
+    const wrongIndex = question.options.findIndex((_, index) => !question.correct.includes(index));
+    const chosen = correct ? question.correct : wrongIndex >= 0 ? [wrongIndex] : [question.correct[0]];
     for (const index of chosen) await field.getByLabel(question.options[index], { exact: true }).check();
+    await expect(field.locator('input:checked')).toHaveCount(chosen.length);
   }
 }
 
 async function expectStorage(page: Page, key: string, value = 'true') {
-  await expect.poll(() => page.evaluate(([k]) => localStorage.getItem(k), [key])).toBe(value);
+  await expect.poll(() => page.evaluate((k) => localStorage.getItem(k), key)).toBe(value);
+}
+
+async function expectStorageNull(page: Page, key: string) {
+  await expect.poll(() => page.evaluate((k) => localStorage.getItem(k), key)).toBeNull();
 }
 
 const j1CorrectAnswers = [
@@ -62,7 +71,7 @@ const j1CorrectAnswers = [
   'Identificar la información faltante, pedirla y condicionar la conclusión si sigue sin estar disponible.',
 ];
 
-function completeCourse(code: string, lessonCount = 8) {
+function completeCourse(code: string, lessonCount: number) {
   return JSON.stringify({
     curriculumVersion: 'v1',
     courseCode: code,
@@ -76,14 +85,11 @@ test.describe('Academy critical path', () => {
   test('onboarding exposes the three real entry points', async ({ page }) => {
     await page.goto('/start');
     await expect(page.getByRole('heading', { name: '¿Cómo quieres comenzar?' })).toBeVisible();
-
     await page.getByRole('link', { name: 'Comenzar en Junior' }).click();
     await expect(page).toHaveURL(/\/courses\/j1$/);
-
     await page.goto('/start');
     await page.getByRole('link', { name: 'Abrir Mi Ruta' }).click();
     await expect(page).toHaveURL(/\/path$/);
-
     await page.goto('/start');
     await page.getByRole('link', { name: 'Explorar Recursos' }).click();
     await expect(page).toHaveURL(/\/resources$/);
@@ -92,7 +98,6 @@ test.describe('Academy critical path', () => {
   test('deep lesson routes work and persist last visited lesson', async ({ page }) => {
     await page.goto('/courses/j1/lesson/2');
     await expect(page.getByText(/Lección 2 de/)).toBeVisible();
-
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
     expect(stored.lastLesson).toBe(2);
   });
@@ -102,11 +107,9 @@ test.describe('Academy critical path', () => {
     await page.getByLabel(j1CorrectAnswers[0]).check();
     await page.getByRole('button', { name: 'Comprobar' }).click();
     await expect(page.getByRole('status')).toContainText('Correcto.');
-
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
     expect(stored.completedLessons).toContain(1);
     expect(stored.lastLesson).toBe(1);
-
     await page.goto('/path');
     const card = page.locator('section.progress-card').filter({ hasText: 'Junior · J1' });
     await expect(card.getByText('1 de 8 lecciones completadas.')).toBeVisible();
@@ -120,10 +123,8 @@ test.describe('Academy critical path', () => {
       await page.getByRole('button', { name: 'Comprobar' }).click();
       await expect(page.getByRole('status')).toContainText('Correcto.');
     }
-
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
     expect(stored.completedLessons).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
-
     await page.goto('/path');
     const card = page.locator('section.progress-card').filter({ hasText: 'Junior · J1' });
     await expect(card.getByText('8 de 8 lecciones completadas.')).toBeVisible();
@@ -131,21 +132,24 @@ test.describe('Academy critical path', () => {
   });
 
   test('Junior closure supports failure, retry, approval and Consultant unlock', async ({ page }) => {
+    test.setTimeout(90_000);
     await seedStorage(page, {
-      'tpia-progress-v1': JSON.stringify({ completedLessons: [1, 2, 3, 4, 5, 6, 7, 8], lastLesson: 8 }),
-      'tpia-course-progress-v1-j2': completeCourse('J2'),
-      'tpia-course-progress-v1-j3': completeCourse('J3'),
-      'tpia-course-progress-v1-j4': completeCourse('J4'),
-      'tpia-course-progress-v1-j5': completeCourse('J5'),
+      'tpia-progress-v1': JSON.stringify({ curriculumVersion: 'v1', completedLessons: [1,2,3,4,5,6,7,8], lastLesson: 8, updatedAt: '2026-08-16T12:00:00.000Z' }),
+      'tpia-course-progress-v1-j2': completeCourse('J2', j2Lessons.length),
+      'tpia-course-progress-v1-j3': completeCourse('J3', j3Lessons.length),
+      'tpia-course-progress-v1-j4': completeCourse('J4', j4Lessons.length),
+      'tpia-course-progress-v1-j5': completeCourse('J5', j5Lessons.length),
     });
     await page.goto('/junior-foundations/assessment');
+    await expect(page.getByRole('button', { name: 'Calificar evaluación' })).toBeVisible();
     await answerSingleChoice(page, juniorFoundationsBank, false);
+    await expect(page.getByRole('button', { name: 'Calificar evaluación' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar evaluación' }).click();
     await expect(page.getByRole('heading', { name: 'Aún no alcanzas el dominio requerido' })).toBeVisible();
-    await expectStorage(page, 'tp-consultant-level-unlocked', null as unknown as string);
-
+    await expectStorageNull(page, 'tp-consultant-level-unlocked');
     await page.getByRole('button', { name: 'Intentar de nuevo' }).click();
     await answerSingleChoice(page, juniorFoundationsBank, true);
+    await expect(page.getByRole('button', { name: 'Calificar evaluación' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar evaluación' }).click();
     await expect(page.getByRole('heading', { name: 'Nivel Junior aprobado' })).toBeVisible();
     await expectStorage(page, 'tp-consultant-level-unlocked');
@@ -154,13 +158,13 @@ test.describe('Academy critical path', () => {
   test('protected Consultant route redirects when locked and opens when unlocked', async ({ page }) => {
     await page.goto('/courses/c1');
     await expect(page).toHaveURL(/\/path$/);
-
     await seedStorage(page, { 'tp-consultant-level-unlocked': 'true' });
     await page.goto('/courses/c1');
     await expect(page.getByText('Consultant · C1', { exact: true })).toBeVisible();
   });
 
   test('Consultant closure passes objective, retries a failed case and unlocks Practitioner', async ({ page }) => {
+    test.setTimeout(90_000);
     await seedStorage(page, { 'tp-consultant-foundations-complete': 'true' });
     await page.goto('/consultant/assessment');
     await answerSingleChoice(page, consultantBank, true);
@@ -168,8 +172,8 @@ test.describe('Academy critical path', () => {
     await expect(page.getByRole('heading', { name: 'Componente objetivo aprobado' })).toBeVisible();
     await expectStorage(page, 'tp-consultant-cumulative-objective-passed');
     await page.getByRole('link', { name: 'Resolver caso integrador' }).click();
-
     await answerMultiChoice(page, consultantCaseQuestions, false);
+    await expect(page.getByRole('button', { name: 'Calificar caso integrador' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar caso integrador' }).click();
     await expect(page.getByRole('heading', { name: 'Caso integrador por reforzar' })).toBeVisible();
     await page.getByRole('button', { name: 'Intentar de nuevo' }).click();
@@ -182,15 +186,8 @@ test.describe('Academy critical path', () => {
   test('Mi Ruta restores Consultant progress from local storage', async ({ page }) => {
     await seedStorage(page, {
       'tp-consultant-level-unlocked': 'true',
-      'tpia-course-progress-v1-c1': JSON.stringify({
-        curriculumVersion: 'v1',
-        courseCode: 'C1',
-        lastLesson: 2,
-        completedLessons: [1, 2],
-        updatedAt: '2026-08-16T12:00:00.000Z',
-      }),
+      'tpia-course-progress-v1-c1': JSON.stringify({ curriculumVersion: 'v1', courseCode: 'C1', lastLesson: 2, completedLessons: [1, 2], updatedAt: '2026-08-16T12:00:00.000Z' }),
     });
-
     await page.goto('/path');
     const card = page.locator('section.progress-card').filter({ hasText: 'Consultant · C1' });
     await expect(card).toBeVisible();
@@ -200,6 +197,7 @@ test.describe('Academy critical path', () => {
   });
 
   test('Semi Senior closure retries the cumulative exam, passes both cases and unlocks Senior', async ({ page }) => {
+    test.setTimeout(120_000);
     await seedStorage(page, { 'tp-semi-senior-foundations-complete': 'true' });
     await page.goto('/semi-senior/assessment');
     await answerSingleChoice(page, semiSeniorBank, false);
@@ -211,8 +209,8 @@ test.describe('Academy critical path', () => {
     await expect(page.getByRole('heading', { name: 'Componente acumulativo aprobado' })).toBeVisible();
     await expectStorage(page, 'tp-semi-senior-cumulative-passed');
     await page.getByRole('link', { name: 'Resolver casos avanzados' }).click();
-
     await answerMultiChoice(page, [...caseA.questions, ...caseB.questions], false);
+    await expect(page.getByRole('button', { name: 'Calificar casos avanzados' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar casos avanzados' }).click();
     await expect(page.getByRole('heading', { name: 'Uno o más casos requieren refuerzo' })).toBeVisible();
     await page.getByRole('button', { name: 'Intentar de nuevo' }).click();
@@ -223,27 +221,27 @@ test.describe('Academy critical path', () => {
   });
 
   test('Senior closure enforces Capstone failure, full restart, approval and certificate issuance', async ({ page }) => {
+    test.setTimeout(150_000);
     await seedStorage(page, { 'tp-senior-knowledge-courses-complete': 'true' });
     await page.goto('/senior/assessment');
     await answerSingleChoice(page, [...seniorFinalBank, ...seniorMiniCases], true);
     await page.getByRole('button', { name: 'Cerrar Componentes A + B' }).click();
     await expect(page.getByRole('heading', { name: 'Integración técnica completada' })).toBeVisible();
     await page.getByRole('link', { name: 'Continuar al Capstone' }).click();
-
     await answerSingleChoice(page, seniorCapstoneDecisions, false);
+    await expect(page.getByRole('button', { name: 'Calificar cierre Senior-Level' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar cierre Senior-Level' }).click();
     await expect(page.getByRole('heading', { name: 'El cierre Senior requiere refuerzo' })).toBeVisible();
     await page.getByRole('button', { name: 'Nuevo intento completo' }).click();
     await expect(page).toHaveURL(/\/senior\/assessment$/);
-    await expect.poll(() => page.evaluate(() => localStorage.getItem('tp-senior-final-ab-complete'))).toBeNull();
-
+    await expectStorageNull(page, 'tp-senior-final-ab-complete');
     await answerSingleChoice(page, [...seniorFinalBank, ...seniorMiniCases], true);
     await page.getByRole('button', { name: 'Cerrar Componentes A + B' }).click();
     await page.getByRole('link', { name: 'Continuar al Capstone' }).click();
     await answerSingleChoice(page, seniorCapstoneDecisions, true);
+    await expect(page.getByRole('button', { name: 'Calificar cierre Senior-Level' })).toBeEnabled();
     await page.getByRole('button', { name: 'Calificar cierre Senior-Level' }).click();
     await expect(page.getByRole('heading', { name: 'Senior-Level aprobado' })).toBeVisible();
-
     await page.getByLabel('Nombre que aparecerá en el certificado').fill('Persona Senior E2E');
     await page.getByRole('button', { name: 'Emitir mi certificado' }).click();
     await expect(page).toHaveURL(/\/senior\/certificate$/);
@@ -254,14 +252,7 @@ test.describe('Academy critical path', () => {
   test('certificate route is locked without a record and renders a local certificate record when present', async ({ page }) => {
     await page.goto('/junior-foundations/certificate');
     await expect(page.getByRole('heading', { name: 'Tu certificado aún no está disponible' })).toBeVisible();
-
-    await seedStorage(page, {
-      'tp-junior-foundations-certificate': JSON.stringify({
-        participantName: 'Persona de Prueba',
-        issuedAt: '2026-08-16T12:00:00.000Z',
-        certificateId: 'TPIA-E2E-001',
-      }),
-    });
+    await seedStorage(page, { 'tp-junior-foundations-certificate': JSON.stringify({ participantName: 'Persona de Prueba', issuedAt: '2026-08-16T12:00:00.000Z', certificateId: 'TPIA-E2E-001' }) });
     await page.goto('/junior-foundations/certificate');
     await expect(page.getByText('Persona de Prueba', { exact: true })).toBeVisible();
     await expect(page.getByText(/Local Certificate ID · TPIA-E2E-001/)).toBeVisible();

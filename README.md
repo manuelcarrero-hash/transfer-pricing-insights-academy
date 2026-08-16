@@ -32,16 +32,19 @@ The first vertical slice validates:
 
 Backend integration is deliberately deferred until the public learning path is coherent and tested.
 
-## Development
+## Security baseline
 
-```bash
-npm install
-npm run typecheck
-npm run build
-npm run dev
-```
+- No backend API or elevated credential is present in the current client implementation.
+- `.env` files are excluded from source control; `.env.example` contains placeholders only.
+- `VITE_*` variables are explicitly treated as public browser configuration.
+- A CI guard scans source files and the final production bundle for common secret patterns.
+- CI also runs a dependency audit, TypeScript validation and a production build.
+- CodeQL scans JavaScript/TypeScript using the `security-extended` query suite.
+- Cloudflare Pages security headers are version-controlled in `public/_headers`, including CSP, anti-framing, MIME sniffing protection, referrer policy and permissions restrictions.
+- Dependabot monitors npm and GitHub Actions dependencies.
+- Future Supabase browser code may use only a publishable key. Secret/service-role credentials and certificable answer keys are backend-only.
 
-Pull requests run the same typecheck/build gate through GitHub Actions.
+See [SECURITY.md](./SECURITY.md) for the complete policy.
 
 ## Academic integrity
 

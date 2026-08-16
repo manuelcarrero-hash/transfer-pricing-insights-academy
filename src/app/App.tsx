@@ -4,6 +4,7 @@ import { ScrollToTop } from '../components/layout/ScrollToTop';
 import { CoursePage } from '../pages/CoursePage';
 import { HomePage } from '../pages/HomePage';
 import { LessonPage } from '../pages/LessonPage';
+import { MyPathPage } from '../pages/MyPathPage';
 import { StartPage } from '../pages/StartPage';
 import { StudyGuidePage } from '../pages/StudyGuidePage';
 
@@ -14,6 +15,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/start" element={<StartPage />} />
+        <Route path="/path" element={<MyPathPage />} />
         <Route path="/courses/j1" element={<CoursePage />} />
         <Route path="/courses/j1/study-guide" element={<StudyGuidePage />} />
         <Route path="/courses/j1/lesson/:lessonNumber" element={<LessonPage />} />

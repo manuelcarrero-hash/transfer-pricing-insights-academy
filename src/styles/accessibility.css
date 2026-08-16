@@ -1,0 +1,23 @@
+:root {
+  --color-brand-gold-text: #806226;
+}
+
+/* Use a darker brand-gold variant when gold carries readable text on light surfaces.
+   Decorative gold and gold on dark backgrounds keep the original brand token. */
+.eyebrow,
+.feature-card > span,
+.choice-number,
+.material-type,
+.progress-kicker {
+  color: var(--color-brand-gold-text);
+}
+
+.hero .eyebrow,
+.consultant-card .eyebrow,
+.site-footer .eyebrow {
+  color: var(--color-brand-gold);
+}
+
+.certificate-kicker {
+  color: var(--color-brand-gold-text);
+}

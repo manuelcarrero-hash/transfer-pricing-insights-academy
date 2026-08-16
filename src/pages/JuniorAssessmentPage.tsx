@@ -7,6 +7,7 @@ import { j4Lessons } from '../content/curriculum/v1/j4';
 import { j5Lessons } from '../content/curriculum/v1/j5';
 import { JUNIOR_DOMAIN_FLOOR, JUNIOR_PASS_SCORE, JuniorDomain, JuniorQuestion, juniorDomains, juniorFoundationsBank } from '../content/assessments/juniorFoundations';
 import { getCourseProgress } from '../services/courseProgress';
+import { getProgress } from '../services/progress';
 
 const RESULT_KEY = 'tp-junior-foundations-result';
 const CERTIFICATE_KEY = 'tp-junior-foundations-certificate';
@@ -34,8 +35,9 @@ function makeAttempt() {
 }
 
 function juniorCoursesComplete() {
-  const specs = [['J1', j1Lessons.length], ['J2', j2Lessons.length], ['J3', j3Lessons.length], ['J4', j4Lessons.length], ['J5', j5Lessons.length]] as const;
-  return specs.every(([code, count]) => getCourseProgress(code, count).completedLessons.length === count);
+  const j1Complete = getProgress().completedLessons.length === j1Lessons.length;
+  const laterCourses = [['J2', j2Lessons.length], ['J3', j3Lessons.length], ['J4', j4Lessons.length], ['J5', j5Lessons.length]] as const;
+  return j1Complete && laterCourses.every(([code, count]) => getCourseProgress(code, count).completedLessons.length === count);
 }
 
 type Result = { score: number; passed: boolean; domainScores: Record<JuniorDomain, number>; correct: number; total: number };

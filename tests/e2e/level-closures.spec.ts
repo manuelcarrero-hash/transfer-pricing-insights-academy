@@ -24,15 +24,24 @@ async function singles(page:Page, bank:Array<{prompt:string;options:string[];cor
     await f.getByLabel(q.options[oi],{exact:true}).check();await pause(page);
   }
 }
-async function multis(page:Page, bank:Array<{prompt:string;options:string[];correct:number[]}>, correct=true){
+async function multis(page:Page, bank:Array<{prompt:string;options:string[];correct:number[]}>) {
   const fields=page.locator('fieldset.assessment-question');
   for(let i=0;i<await fields.count();i++){
     const f=fields.nth(i), text=await f.textContent(), q=bank.find(x=>text?.includes(x.prompt));
     if(!q)throw new Error(`Missing case item: ${text?.slice(0,100)}`);
-    const wrong=q.options.findIndex((_,ix)=>!q.correct.includes(ix));
-    const picks=correct?q.correct:(wrong>=0?[wrong]:[q.correct[0]]);
-    for(const ix of picks){await f.getByLabel(q.options[ix],{exact:true}).check();await pause(page)}
+    for(const ix of q.correct){await f.getByLabel(q.options[ix],{exact:true}).check();await pause(page)}
   }
+}
+async function failEveryQuestion(page:Page){
+  const fields=page.locator('fieldset.assessment-question');
+  const total=await fields.count();
+  for(let i=0;i<total;i++){
+    const f=fields.nth(i);
+    await f.locator('input').first().check();
+    await pause(page);
+    await expect(f.locator('input:checked')).toHaveCount(1);
+  }
+  await expect(page.locator('.assessment-progress')).toContainText(`${total} / ${total}`);
 }
 async function enabled(page:Page,name:string){await expect(page.getByRole('button',{name})).toBeEnabled({timeout:10_000})}
 async function storage(page:Page,key:string,value='true'){await expect.poll(()=>page.evaluate(k=>localStorage.getItem(k),key)).toBe(value)}
@@ -55,20 +64,20 @@ test.describe('Level closures',()=>{
   test('Consultant: pass objective, fail/retry case and unlock Practitioner',async({page})=>{
     test.setTimeout(120_000);await seed(page,{'tp-consultant-foundations-complete':'true'});await page.goto('/consultant/assessment');await singles(page,consultantBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();
     await expect(page.getByRole('heading',{name:'Componente objetivo aprobado'})).toBeVisible();await page.getByRole('link',{name:'Resolver caso integrador'}).click();
-    await multis(page,consultantCaseQuestions,false);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador por reforzar'})).toBeVisible();
-    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,consultantCaseQuestions,true);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador aprobado'})).toBeVisible();await storage(page,'tp-practitioner-unlocked');
+    await failEveryQuestion(page);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador por reforzar'})).toBeVisible();
+    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,consultantCaseQuestions);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador aprobado'})).toBeVisible();await storage(page,'tp-practitioner-unlocked');
   });
 
   test('Semi Senior: fail/retry cumulative, fail/retry cases and unlock Senior',async({page})=>{
     test.setTimeout(150_000);await seed(page,{'tp-semi-senior-foundations-complete':'true'});await page.goto('/semi-senior/assessment');await singles(page,semiSeniorBank,false);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Hay dominios que necesitan refuerzo'})).toBeVisible();
     await page.getByRole('button',{name:'Intentar de nuevo'}).click();await singles(page,semiSeniorBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Componente acumulativo aprobado'})).toBeVisible();await page.getByRole('link',{name:'Resolver casos avanzados'}).click();
-    const bank=[...caseA.questions,...caseB.questions];await multis(page,bank,false);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Uno o más casos requieren refuerzo'})).toBeVisible();
-    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,bank,true);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Casos avanzados aprobados'})).toBeVisible();await storage(page,'tp-senior-track-unlocked');
+    const bank=[...caseA.questions,...caseB.questions];await failEveryQuestion(page);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Uno o más casos requieren refuerzo'})).toBeVisible();
+    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,bank);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Casos avanzados aprobados'})).toBeVisible();await storage(page,'tp-senior-track-unlocked');
   });
 
   test('Senior: fail Capstone, restart all, pass and issue certificate',async({page})=>{
     test.setTimeout(180_000);await seed(page,{'tp-senior-knowledge-courses-complete':'true'});await page.goto('/senior/assessment');await singles(page,[...seniorFinalBank,...seniorMiniCases],true);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();
-    await singles(page,seniorCapstoneDecisions,false);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'El cierre Senior requiere refuerzo'})).toBeVisible();await page.getByRole('button',{name:'Nuevo intento completo'}).click();await storageNull(page,'tp-senior-final-ab-complete');
+    await failEveryQuestion(page);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'El cierre Senior requiere refuerzo'})).toBeVisible();await page.getByRole('button',{name:'Nuevo intento completo'}).click();await storageNull(page,'tp-senior-final-ab-complete');
     await singles(page,[...seniorFinalBank,...seniorMiniCases],true);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();await singles(page,seniorCapstoneDecisions,true);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'Senior-Level aprobado'})).toBeVisible();
     await page.getByLabel('Nombre que aparecerá en el certificado').fill('Persona Senior E2E');await page.getByRole('button',{name:'Emitir mi certificado'}).click();await expect(page).toHaveURL(/\/senior\/certificate$/);await expect(page.getByText('Persona Senior E2E',{exact:true})).toBeVisible();
   });

@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const welcomeVideoDirect = 'https://drive.usercontent.google.com/download?id=1yJEKxVnUAz2VdrCXIPhhNwZ70E0Pb-YB&export=download&confirm=t';
 const welcomeVideoView = 'https://drive.google.com/file/d/1yJEKxVnUAz2VdrCXIPhhNwZ70E0Pb-YB/view?usp=sharing';
 const welcomeSeenKey = 'tpia-welcome-video-seen-v1';
 
 export function HomePage() {
   const [showWelcome, setShowWelcome] = useState(false);
-  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     try {
@@ -17,20 +15,6 @@ export function HomePage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!showVideoModal) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setShowVideoModal(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, [showVideoModal]);
-
   const rememberWelcome = () => {
     try { localStorage.setItem(welcomeSeenKey, '1'); } catch { /* local storage is optional */ }
     setShowWelcome(false);
@@ -38,7 +22,7 @@ export function HomePage() {
 
   const openWelcomeVideo = () => {
     rememberWelcome();
-    setShowVideoModal(true);
+    window.open(welcomeVideoView, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -52,26 +36,11 @@ export function HomePage() {
               <span>Conoce en unos minutos qué encontrarás aquí y cómo aprovechar tu ruta de aprendizaje.</span>
             </div>
             <div className="welcome-banner-actions">
-              <button className="button primary" type="button" onClick={openWelcomeVideo}>Ver bienvenida</button>
+              <button className="button primary" type="button" onClick={openWelcomeVideo}>Ver bienvenida ↗</button>
               <button className="welcome-dismiss" type="button" onClick={rememberWelcome} aria-label="Cerrar bienvenida">×</button>
             </div>
           </div>
         </aside>
-      )}
-
-      {showVideoModal && (
-        <div className="video-modal-backdrop" role="presentation" onMouseDown={() => setShowVideoModal(false)}>
-          <section className="video-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-video-title" onMouseDown={(event) => event.stopPropagation()}>
-            <div className="video-modal-header">
-              <div>
-                <span className="eyebrow">Empieza aquí</span>
-                <h2 id="welcome-video-title">Bienvenido a Transfer Pricing Insights Academy</h2>
-              </div>
-              <button className="video-modal-close" type="button" onClick={() => setShowVideoModal(false)} aria-label="Cerrar video">×</button>
-            </div>
-            <WelcomeVideo />
-          </section>
-        </div>
       )}
 
       <section className="hero">
@@ -97,7 +66,14 @@ export function HomePage() {
           <div className="eyebrow">Empieza aquí</div>
           <h2>Bienvenido a Transfer Pricing Insights Academy</h2>
           <p>Antes de comenzar, conoce el propósito de la plataforma, la lógica de la ruta y cómo aprovechar sus recursos de aprendizaje.</p>
-          <WelcomeVideo />
+
+          <article className="feature-card" aria-label="Video de bienvenida">
+            <span>VIDEO DE BIENVENIDA</span>
+            <h3>Conoce la Academy antes de empezar</h3>
+            <p>Una introducción breve a la plataforma, su propósito y la forma recomendada de recorrer tu ruta de aprendizaje.</p>
+            <p className="microcopy">Video complementario · Se abre en Google Drive</p>
+            <a className="button primary" href={welcomeVideoView} target="_blank" rel="noreferrer" onClick={rememberWelcome}>Ver video de bienvenida ↗</a>
+          </article>
         </div>
       </section>
 
@@ -114,17 +90,5 @@ export function HomePage() {
         </div>
       </section>
     </>
-  );
-}
-
-function WelcomeVideo() {
-  return (
-    <div className="welcome-video-player">
-      <video controls playsInline preload="metadata" aria-label="Video de bienvenida a Transfer Pricing Insights Academy">
-        <source src={welcomeVideoDirect} type="video/mp4" />
-        Tu navegador no puede reproducir este video.
-      </video>
-      <p className="video-fallback">Si el reproductor no funciona en tu navegador, <a href={welcomeVideoView} target="_blank" rel="noreferrer">abre el video en Google Drive</a>.</p>
-    </div>
   );
 }

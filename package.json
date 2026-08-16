@@ -10,6 +10,8 @@
     "security:client": "node scripts/check-client-secrets.mjs",
     "curriculum:check": "node scripts/check-curriculum-integrity.mjs",
     "path:check": "node scripts/check-learning-path-integrity.mjs",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install --with-deps chromium",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,6 +20,7 @@
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.4",

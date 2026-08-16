@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { j1Lessons } from '../content/curriculum/v1/j1';
 
 const oecdUrl = 'https://www.oecd.org/es/publications/2022/01/oecd-transfer-pricing-guidelines-for-multinational-enterprises-and-tax-administrations-2022_57104b3a.html';
+const bookUrl = 'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR6Q/view?usp=sharing';
 
 const studyQuestions = [
   '¿Qué diferencia existe entre identificar una operación controlada y concluir que cumple plena competencia?',
@@ -72,10 +73,13 @@ export function StudyGuidePage() {
           <p className="source-note">La página oficial de la OCDE ofrece la descarga en PDF. La Academy enlaza a la fuente oficial en lugar de redistribuir una copia propia.</p>
         </section>
 
-        <section className="guide-section">
-          <h2>Libro complementario</h2>
-          <p><strong>Manuel Carrero Rojo — Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica.</strong></p>
-          <p>Se incorporará aquí la descarga directa en cuanto la copia destinada a la Academy tenga acceso público estable. El archivo maestro permanece fuera del frontend.</p>
+        <section className="guide-section source-box">
+          <div className="eyebrow">Lectura complementaria</div>
+          <h2>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h2>
+          <p><strong>Manuel Carrero Rojo</strong></p>
+          <p>Utiliza el libro como lectura complementaria para profundizar los fundamentos doctrinales y conectar los conceptos del módulo con su aplicación práctica.</p>
+          <a className="button secondary no-print" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
+          <p className="source-note">El PDF se ofrece desde la copia pública autorizada por el autor en Google Drive.</p>
         </section>
       </div>
     </section>

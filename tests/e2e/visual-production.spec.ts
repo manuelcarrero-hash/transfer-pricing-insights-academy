@@ -23,7 +23,7 @@ const advancedPathSeed: Record<string, string> = {
   'tpia-course-progress-v1-j2': complete('J2', 8),
   'tpia-course-progress-v1-j3': complete('J3', 8),
   'tpia-course-progress-v1-j4': complete('J4', 8),
-  'tpia-course-progress-v1-j5': complete('J5', 8),
+  'tpia-course-progress-v1-j5': complete('J5', 9),
   'tpia-course-progress-v1-c3': complete('C3', 8),
   'tp-consultant-level-unlocked': 'true',
   'tp-practitioner-unlocked': 'true',

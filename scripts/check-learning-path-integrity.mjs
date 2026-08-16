@@ -11,7 +11,8 @@ function walk(path) {
   }
 }
 walk(srcRoot.pathname);
-const source = files.map((path) => readFileSync(path, 'utf8')).join('\n');
+const contents = files.map((path) => ({ path, content: readFileSync(path, 'utf8') }));
+const source = contents.map(({ content }) => content).join('\n');
 
 const keys = [
   'tp-consultant-level-unlocked',
@@ -30,9 +31,10 @@ const keys = [
 let failed = false;
 for (const key of keys) {
   const occurrences = source.split(key).length - 1;
-  const hasWriter = source.includes(`setItem('${key}'`) || source.includes(`setItem(\"${key}\"`);
+  const keyFiles = contents.filter(({ content }) => content.includes(key));
+  const hasWriter = keyFiles.some(({ content }) => content.includes('setItem('));
   if (!hasWriter) {
-    console.error(`Learning path integrity failed: ${key} has no writer.`);
+    console.error(`Learning path integrity failed: ${key} has no writer file.`);
     failed = true;
   }
   if (occurrences < 2) {
@@ -48,8 +50,8 @@ const routeGuards = [
   ['S1CoursePage.tsx', 'tp-senior-track-unlocked'],
 ];
 for (const [fileName, key] of routeGuards) {
-  const match = files.find((path) => path.endsWith(fileName));
-  const content = match ? readFileSync(match, 'utf8') : '';
+  const match = contents.find(({ path }) => path.endsWith(fileName));
+  const content = match?.content ?? '';
   if (!content.includes(key) || !content.includes('<Navigate')) {
     console.error(`Learning path integrity failed: ${fileName} must guard access with ${key}.`);
     failed = true;

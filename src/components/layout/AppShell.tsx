@@ -4,11 +4,9 @@ import { Link, NavLink } from 'react-router-dom';
 const activeNavItems = [
   ['Inicio', '/'],
   ['Mi Ruta', '/path'],
-  ['Cursos', '/courses/j1'],
+  ['Comenzar', '/start'],
   ['Recursos', '/resources'],
 ] as const;
-
-const futureNavItems = ['Practicar', 'Certificaciones'] as const;
 
 function NavigationLinks() {
   return (
@@ -17,11 +15,6 @@ function NavigationLinks() {
         <NavLink key={to} to={to} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           {label}
         </NavLink>
-      ))}
-      {futureNavItems.map((label) => (
-        <span key={label} className="nav-link nav-disabled" aria-disabled="true" title="Disponible en una fase posterior">
-          {label}
-        </span>
       ))}
     </>
   );

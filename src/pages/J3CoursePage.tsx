@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ExternalVideoCard } from '../components/learning/ExternalVideoCard';
 import { j3Course, j3Lessons } from '../content/curriculum/v1/j3';
 import { videoCurriculum } from '../content/media/videoCurriculum';
 import { courseProgressEventName, getCourseProgress } from '../services/courseProgress';
@@ -62,13 +63,8 @@ export function J3CoursePage() {
               <p>Refuerza el análisis funcional con explicaciones y ejemplos prácticos del libro de Manuel Carrero Rojo.</p>
               <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
             </article>
-            <article className="material-card muted-card">
-              <span className="material-type">Video relacionado</span>
-              <h3>{chapterVideo?.title ?? 'Directrices OCDE 2022 · Capítulo I'}</h3>
-              <p>El video del Capítulo I también complementa FAR. Se activará aquí cuando resolvamos su enlace individual de Google Drive.</p>
-              <span className="availability-note">Video pendiente de enlace</span>
-            </article>
           </div>
+          {chapterVideo?.href && <ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive" />}
         </div>
 
         <div className="course-index">

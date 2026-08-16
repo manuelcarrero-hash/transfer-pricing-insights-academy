@@ -5,13 +5,12 @@ export function HomePage() {
     <>
       <section className="hero">
         <div className="container hero-grid">
-          <div>
+          <div className="hero-copy">
             <div className="eyebrow">Formación gratuita en Precios de Transferencia</div>
             <h1>Aprende Precios de Transferencia desde cero.</h1>
             <p className="lead">Una ruta estructurada para desarrollar conocimiento técnico y criterio profesional, con las Directrices de la OCDE como columna vertebral académica.</p>
             <div className="button-row">
               <Link className="button primary" to="/start">Empezar desde cero</Link>
-              <button className="button secondary" type="button" disabled title="Disponible en una fase posterior">Hacer diagnóstico</button>
             </div>
             <p className="microcopy">Gratis. Sin tarjeta. Puedes comenzar sin crear una cuenta.</p>
           </div>

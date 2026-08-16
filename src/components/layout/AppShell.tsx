@@ -28,6 +28,7 @@ export function AppShell({ children }: PropsWithChildren) {
 
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main-content">Saltar al contenido principal</a>
       <header className="site-header">
         <div className="container header-inner">
           <Link className="brand" to="/" aria-label="Transfer Pricing Insights Academy — Inicio" onClick={closeMobileNav}>
@@ -50,7 +51,7 @@ export function AppShell({ children }: PropsWithChildren) {
           </details>
         </div>
       </header>
-      <main>{children}</main>
+      <main id="main-content" tabIndex={-1}>{children}</main>
       <footer className="site-footer">
         <div className="container footer-inner">
           <div>

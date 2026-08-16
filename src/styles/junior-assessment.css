@@ -5,7 +5,7 @@
 .assessment-question { margin: 0 0 22px; padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
 .assessment-question legend { display: flex; gap: 12px; align-items: flex-start; width: 100%; font-weight: 800; color: var(--color-brand-navy); line-height: 1.45; }
 .assessment-question legend > span { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 30px; background: #eef2f6; font-size: .82rem; }
-.assessment-question > small { display: block; margin: 6px 0 15px 42px; color: var(--color-brand-gold); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.assessment-question > small { display: block; margin: 6px 0 15px 42px; color: var(--color-brand-gold-text); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
 .assessment-option { display: flex; gap: 11px; align-items: flex-start; margin: 8px 0; padding: 11px 13px; border: 1px solid transparent; border-radius: 10px; cursor: pointer; }
 .assessment-option:hover { background: #f7f9fb; border-color: var(--color-border); }
 .assessment-option input { margin-top: 4px; }

@@ -5,6 +5,7 @@ import { App } from './app/App';
 import './styles/tokens.css';
 import './styles/global.css';
 import './styles/learning-experience.css';
+import './styles/junior-assessment.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

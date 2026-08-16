@@ -22,15 +22,12 @@ export function ExternalVideoCard({
   const meta = [durationLabel, sourceLabel].filter(Boolean).join(' · ');
 
   return (
-    <article className="external-video-card" aria-label={`Video: ${title}`}>
-      <div className="external-video-icon" aria-hidden="true">▶</div>
-      <div className="external-video-copy">
-        <span className="eyebrow">{eyebrow}</span>
-        <h3>{title}</h3>
-        <p>{description}</p>
-        {meta && <p className="external-video-meta">{meta}</p>}
-        <a className="button primary" href={href} target="_blank" rel="noreferrer" onClick={onOpen}>{ctaLabel}</a>
-      </div>
+    <article className="feature-card external-video-card" aria-label={`Video: ${title}`}>
+      <span>{eyebrow.toUpperCase()}</span>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      {meta && <p className="microcopy">{meta}</p>}
+      <a className="button primary" href={href} target="_blank" rel="noreferrer" onClick={onOpen}>{ctaLabel}</a>
     </article>
   );
 }

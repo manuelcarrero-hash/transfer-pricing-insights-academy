@@ -37,6 +37,18 @@ for (const code of sequencedCodes) {
   }
 }
 
+const coursePagePaths = [
+  'src/pages/CoursePage.tsx',
+  ...['J2','J3','J4','J5'].map(code => `src/pages/${code}CoursePage.tsx`),
+  ...['C1','C2','C3','C4','C5','C6','C7'].map(code => `src/pages/${code}CoursePage.tsx`),
+  ...['SS1','SS2','SS3','SS4','SS5','SS6','SS7','SS8'].map(code => `src/pages/${code}CoursePage.tsx`),
+  ...['S1','S2','S3','S4','S5','S6','S7'].map(code => `src/pages/${code}CoursePage.tsx`),
+];
+for (const path of coursePagePaths) {
+  const content = read(path);
+  if (!content.includes('Material de estudio')) fail(`${path} must expose a visible Material de estudio section.`);
+}
+
 const lessonPagePaths = [
   'src/pages/LessonPage.tsx',
   ...['J2','J3','J4','J5'].map(code => `src/pages/${code}LessonPage.tsx`),
@@ -59,4 +71,4 @@ for (const phrase of staleCopy) {
 if (!start.includes('to="/path"') || !start.includes('to="/resources"')) fail('Start page must expose Mi Ruta and Recursos as real choices.');
 if (!shell.includes("['Mi Ruta', '/path']") || !shell.includes("['Recursos', '/resources']")) fail('Primary navigation must expose Mi Ruta and Recursos.');
 
-if (!process.exitCode) console.log(`Curriculum integrity check passed across ${lessonPagePaths.length} lesson experiences.`);
+if (!process.exitCode) console.log(`Curriculum integrity check passed across ${coursePagePaths.length} courses and ${lessonPagePaths.length} lesson experiences.`);

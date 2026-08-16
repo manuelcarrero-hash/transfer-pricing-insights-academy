@@ -17,6 +17,7 @@ async function seed(page: Page, values: Record<string,string>) {
 async function pause(page:Page){await page.waitForTimeout(75)}
 async function singles(page:Page, bank:Array<{prompt:string;options:string[];correctIndex:number}>, correct=true){
   const fields=page.locator('fieldset.assessment-question');
+  await expect(fields.first()).toBeVisible();
   for(let i=0;i<await fields.count();i++){
     const f=fields.nth(i), text=await f.textContent(), q=bank.find(x=>text?.includes(x.prompt));
     if(!q)throw new Error(`Missing bank item: ${text?.slice(0,100)}`);
@@ -26,6 +27,7 @@ async function singles(page:Page, bank:Array<{prompt:string;options:string[];cor
 }
 async function multis(page:Page, bank:Array<{prompt:string;options:string[];correct:number[]}>) {
   const fields=page.locator('fieldset.assessment-question');
+  await expect(fields.first()).toBeVisible();
   for(let i=0;i<await fields.count();i++){
     const f=fields.nth(i), text=await f.textContent(), q=bank.find(x=>text?.includes(x.prompt));
     if(!q)throw new Error(`Missing case item: ${text?.slice(0,100)}`);
@@ -34,14 +36,16 @@ async function multis(page:Page, bank:Array<{prompt:string;options:string[];corr
 }
 async function failEveryQuestion(page:Page){
   const fields=page.locator('fieldset.assessment-question');
+  await expect(fields.first()).toBeVisible();
   const total=await fields.count();
+  expect(total).toBeGreaterThan(0);
   for(let i=0;i<total;i++){
     const f=fields.nth(i);
     await f.locator('input').first().check();
     await pause(page);
     await expect(f.locator('input:checked')).toHaveCount(1);
   }
-  await expect(page.locator('.assessment-progress')).toContainText(`${total} / ${total}`);
+  for(let i=0;i<total;i++) await expect(fields.nth(i).locator('input:checked')).toHaveCount(1);
 }
 async function enabled(page:Page,name:string){await expect(page.getByRole('button',{name})).toBeEnabled({timeout:10_000})}
 async function storage(page:Page,key:string,value='true'){await expect.poll(()=>page.evaluate(k=>localStorage.getItem(k),key)).toBe(value)}

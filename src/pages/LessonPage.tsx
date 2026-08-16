@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { FormativeCheck } from '../components/learning/FormativeCheck';
 import { j1Lessons } from '../content/curriculum/v1/j1';
+import { j1Assessments } from '../content/curriculum/v1/j1Assessments';
+import { markLessonCompleted, markLessonVisited } from '../services/progress';
 
 const lessonBodies = [
   {
@@ -107,7 +110,13 @@ export function LessonPage() {
   const index = Number(lessonNumber) - 1;
   const lesson = j1Lessons[index];
   const body = lessonBodies[index];
-  if (!lesson || !body) return <Navigate to="/courses/j1" replace />;
+  const assessment = j1Assessments[index];
+
+  useEffect(() => {
+    if (lesson) markLessonVisited(lesson.sequence);
+  }, [lesson]);
+
+  if (!lesson || !body || !assessment) return <Navigate to="/courses/j1" replace />;
   const previous = index > 0 ? `/courses/j1/lesson/${index}` : '/courses/j1';
   const next = index < j1Lessons.length - 1 ? `/courses/j1/lesson/${index + 2}` : '/courses/j1';
 
@@ -124,7 +133,7 @@ export function LessonPage() {
         <div className="concept-callout"><span className="eyebrow">Concepto clave</span><p>{body.key}</p></div>
         <h2>{body.exampleTitle}</h2><p>{body.example}</p>
         <div className="consultant-card"><span className="eyebrow">La Silla del Consultor</span><h2>Piensa como consultor.</h2><p>{body.chair}</p></div>
-        {index === 0 && <FormativeCheck />}
+        <FormativeCheck key={assessment.id} check={assessment} onCorrect={() => markLessonCompleted(lesson.sequence)} />
         <section className="remember-card"><div className="eyebrow">Lo que no debemos olvidar</div><p>{body.remember}</p></section>
         <div className="lesson-nav"><Link className="button secondary" to={previous}>{index === 0 ? 'Volver al curso' : 'Lección anterior'}</Link><Link className="button primary" to={next}>{index === j1Lessons.length - 1 ? 'Volver al curso' : 'Siguiente lección'}</Link></div>
       </article>

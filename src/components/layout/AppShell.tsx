@@ -3,10 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 
 const activeNavItems = [
   ['Inicio', '/'],
+  ['Mi Ruta', '/path'],
   ['Cursos', '/courses/j1'],
 ] as const;
 
-const futureNavItems = ['Mi Ruta', 'Practicar', 'Recursos', 'Certificaciones'] as const;
+const futureNavItems = ['Practicar', 'Recursos', 'Certificaciones'] as const;
 
 function NavigationLinks() {
   return (

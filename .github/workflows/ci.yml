@@ -36,6 +36,9 @@ jobs:
       - name: Curriculum integrity
         run: npm run curriculum:check
 
+      - name: Learning path integrity
+        run: npm run path:check
+
       - name: Typecheck
         run: npm run typecheck
 

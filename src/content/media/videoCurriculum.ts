@@ -26,7 +26,7 @@ export const videoCurriculum: VideoCurriculumEntry[] = [
   {
     id: 'oecd-chapter-1', category: 'oecd', title: 'Directrices OCDE 2022 · Capítulo I — Plena Competencia',
     description: 'Video doctrinal sobre el principio de plena competencia, delimitación precisa y características económicamente relevantes.',
-    href: 'https://drive.google.com/file/d/1njZMfDau0hSQAzE8Uq8yLVmkJpwjXvhD/view', primaryDestination: 'J2', relatedDestinations: ['J1', 'C1'], tags: ['plena competencia', 'delimitación precisa', 'OCDE'], status: 'active',
+    href: 'https://drive.google.com/file/d/1njZMfDau0hSQAzE8Uq8yLVmkJpwjXvhD/view', primaryDestination: 'J2', relatedDestinations: ['J1', 'C1', 'S1'], tags: ['plena competencia', 'delimitación precisa', 'OCDE'], status: 'active',
   },
   {
     id: 'oecd-chapter-2', category: 'oecd', title: 'Directrices OCDE 2022 · Capítulo II — Métodos de Precios de Transferencia',

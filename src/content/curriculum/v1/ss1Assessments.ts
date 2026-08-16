@@ -1,0 +1,10 @@
+export const ss1Assessments=[
+{lesson:1,prompt:'Antes de analizar mark-up, ¿qué debe determinarse primero?',options:['El porcentaje usado por la firma','Si existe realmente un servicio y beneficio para el receptor','La mediana','El país que factura'],correctIndex:1,feedback:'La existencia y sustancia del servicio preceden a la remuneración.'},
+{lesson:2,prompt:'¿El benefit test exige una utilidad financiera inmediata?',options:['Sí','No'],correctIndex:1,feedback:'El análisis pregunta si existe o se esperaba razonablemente un beneficio económico o comercial.'},
+{lesson:3,prompt:'¿Toda actividad realizada por la matriz es shareholder activity?',options:['Sí','No'],correctIndex:1,feedback:'Debe analizarse para quién se realiza la actividad y por qué.'},
+{lesson:4,prompt:'Dos departamentos llamados “TI” implican automáticamente duplicidad.',options:['Verdadero','Falso'],correctIndex:1,feedback:'Debe compararse el alcance real de las actividades.'},
+{lesson:5,prompt:'¿Cuándo es especialmente útil direct charge?',options:['Cuando costos y beneficiario pueden trazarse directamente','Cuando no existe información','Cuando todos reciben lo mismo','Para evitar FAR'],correctIndex:0,feedback:'La trazabilidad directa conecta claramente actividad, costo y receptor.'},
+{lesson:6,prompt:'Una allocation key razonable debe:',options:['Ser siempre ingresos','Reflejar razonablemente el beneficio o uso','Ser igual para todos los servicios','Minimizar impuestos'],correctIndex:1,feedback:'La clave depende de la naturaleza del servicio y su relación con el beneficio.'},
+{lesson:7,prompt:'¿Todo costo del service pool merece mark-up automáticamente?',options:['Sí','No'],correctIndex:1,feedback:'La base de costos y los pass-through costs deben analizarse antes de definir remuneración.'},
+{lesson:8,prompt:'¿Un servicio es low-value-adding sólo porque es barato?',options:['Sí','No'],correctIndex:1,feedback:'Importan su naturaleza de apoyo, ausencia de intangibles únicos y riesgos significativos, entre otras condiciones.'}
+];

@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "security:client": "node scripts/check-client-secrets.mjs",
+    "curriculum:check": "node scripts/check-curriculum-integrity.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

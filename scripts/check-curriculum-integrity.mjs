@@ -10,7 +10,7 @@ const videoCatalog = read('src/content/media/videoCurriculum.ts');
 const app = read('src/app/App.tsx');
 const start = read('src/pages/StartPage.tsx');
 const shell = read('src/components/layout/AppShell.tsx');
-const juniorVideoPages = ['src/pages/J2CoursePage.tsx', 'src/pages/J4CoursePage.tsx', 'src/pages/J5CoursePage.tsx'].map(read).join('\n');
+const juniorVideoPages = ['src/pages/J2CoursePage.tsx','src/pages/J3CoursePage.tsx','src/pages/J4CoursePage.tsx','src/pages/J5CoursePage.tsx'].map(read).join('\n');
 
 for (let chapter = 1; chapter <= 10; chapter += 1) {
   const id = `oecd-chapter-${chapter}`;

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ExternalVideoCard } from '../components/learning/ExternalVideoCard';
+import { videoCurriculum } from '../content/media/videoCurriculum';
 
-const welcomeVideoView = 'https://drive.google.com/file/d/1yJEKxVnUAz2VdrCXIPhhNwZ70E0Pb-YB/view?usp=sharing';
 const welcomeSeenKey = 'tpia-welcome-video-seen-v1';
+const welcomeVideo = videoCurriculum.find((video) => video.id === 'welcome-academy');
 
 export function HomePage() {
   const [showWelcome, setShowWelcome] = useState(false);
@@ -21,8 +23,9 @@ export function HomePage() {
   };
 
   const openWelcomeVideo = () => {
+    if (!welcomeVideo?.href) return;
     rememberWelcome();
-    window.open(welcomeVideoView, '_blank', 'noopener,noreferrer');
+    window.open(welcomeVideo.href, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -61,21 +64,24 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section welcome-video-section" id="bienvenida">
-        <div className="container narrow">
-          <div className="eyebrow">Empieza aquí</div>
-          <h2>Bienvenido a Transfer Pricing Insights Academy</h2>
-          <p>Antes de comenzar, conoce el propósito de la plataforma, la lógica de la ruta y cómo aprovechar sus recursos de aprendizaje.</p>
-
-          <article className="feature-card" aria-label="Video de bienvenida">
-            <span>VIDEO DE BIENVENIDA</span>
-            <h3>Conoce la Academy antes de empezar</h3>
-            <p>Una introducción breve a la plataforma, su propósito y la forma recomendada de recorrer tu ruta de aprendizaje.</p>
-            <p className="microcopy">Video complementario · Se abre en Google Drive</p>
-            <a className="button primary" href={welcomeVideoView} target="_blank" rel="noreferrer" onClick={rememberWelcome}>Ver video de bienvenida ↗</a>
-          </article>
-        </div>
-      </section>
+      {welcomeVideo?.href && (
+        <section className="section welcome-video-section" id="bienvenida">
+          <div className="container narrow">
+            <div className="eyebrow">Empieza aquí</div>
+            <h2>Bienvenido a Transfer Pricing Insights Academy</h2>
+            <p>Antes de comenzar, conoce el propósito de la plataforma, la lógica de la ruta y cómo aprovechar sus recursos de aprendizaje.</p>
+            <ExternalVideoCard
+              eyebrow="Video de bienvenida"
+              title="Conoce la Academy antes de empezar"
+              description={welcomeVideo.description}
+              href={welcomeVideo.href}
+              sourceLabel="Se abre en Google Drive"
+              ctaLabel="Ver video de bienvenida ↗"
+              onOpen={rememberWelcome}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="section">
         <div className="container narrow">

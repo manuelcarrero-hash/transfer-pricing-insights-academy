@@ -32,6 +32,17 @@ The first vertical slice validates:
 
 Backend integration is deliberately deferred until the public learning path is coherent and tested.
 
+## Development
+
+```bash
+npm install
+npm run typecheck
+npm run build
+npm run dev
+```
+
+Pull requests run the same typecheck/build gate through GitHub Actions.
+
 ## Academic integrity
 
 Transfer Pricing Insights Academy teaches the OECD framework as its doctrinal backbone. The OECD Guidelines do not automatically replace local law; jurisdiction-specific application must be verified separately.

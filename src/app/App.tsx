@@ -12,7 +12,8 @@ export function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/start" element={<StartPage />} />
         <Route path="/courses/j1" element={<CoursePage />} />
-        <Route path="/courses/j1/lesson-:lessonNumber" element={<LessonPage />} />
+        <Route path="/courses/j1/lesson/:lessonNumber" element={<LessonPage />} />
+        <Route path="/courses/j1/lesson-:lessonNumber" element={<Navigate to="/courses/j1" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>

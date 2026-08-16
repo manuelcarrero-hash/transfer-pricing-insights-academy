@@ -31,6 +31,22 @@ test.describe('Academy critical path', () => {
     expect(stored.lastLesson).toBe(2);
   });
 
+  test('a real formative answer completes J1 lesson 1 and updates Mi Ruta', async ({ page }) => {
+    await page.goto('/courses/j1/lesson/1');
+    await page.getByLabel('No. Con los hechos dados, es una operación entre partes independientes.').check();
+    await page.getByRole('button', { name: 'Comprobar' }).click();
+    await expect(page.getByRole('status')).toContainText('Correcto.');
+
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
+    expect(stored.completedLessons).toContain(1);
+    expect(stored.lastLesson).toBe(1);
+
+    await page.goto('/path');
+    const card = page.locator('section.progress-card').filter({ hasText: 'Junior · J1' });
+    await expect(card.getByText('1 de 8 lecciones completadas.')).toBeVisible();
+    await expect(card.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '13');
+  });
+
   test('protected Consultant route redirects when locked and opens when unlocked', async ({ page }) => {
     await page.goto('/courses/c1');
     await expect(page).toHaveURL(/\/path$/);

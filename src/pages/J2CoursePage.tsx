@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ExternalVideoCard } from '../components/learning/ExternalVideoCard';
 import { j2Course, j2Lessons } from '../content/curriculum/v1/j2';
 import { videoCurriculum } from '../content/media/videoCurriculum';
 import { courseProgressEventName, getCourseProgress } from '../services/courseProgress';
@@ -50,47 +51,15 @@ export function J2CoursePage() {
           <h2>Profundiza el principio antes de aplicar metodología.</h2>
           <p className="materials-intro">J2 conecta el contenido de la Academy con la fuente primaria, una explicación práctica y el video doctrinal del Capítulo I.</p>
           <div className="materials-grid">
-            <article className="material-card">
-              <span className="material-type">Fuente primaria</span>
-              <h3>Directrices OCDE 2022 · Capítulo I</h3>
-              <p>Consulta el marco internacional sobre plena competencia, delimitación precisa y análisis de riesgos.</p>
-              <a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a>
-            </article>
-            <article className="material-card">
-              <span className="material-type">Lectura complementaria</span>
-              <h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3>
-              <p>Usa el Capítulo I del libro de Manuel Carrero Rojo como explicación accesible, con ejemplos y lenguaje práctico.</p>
-              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
-            </article>
-            <article className="material-card muted-card">
-              <span className="material-type">Video doctrinal</span>
-              <h3>{chapterVideo?.title ?? 'Directrices OCDE 2022 · Capítulo I'}</h3>
-              <p>El espacio curricular ya está reservado. El enlace se activará cuando podamos resolver el archivo individual de Google Drive.</p>
-              <span className="availability-note">Video pendiente de enlace</span>
-            </article>
+            <article className="material-card"><span className="material-type">Fuente primaria</span><h3>Directrices OCDE 2022 · Capítulo I</h3><p>Consulta el marco internacional sobre plena competencia, delimitación precisa y análisis de riesgos.</p><a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a></article>
+            <article className="material-card"><span className="material-type">Lectura complementaria</span><h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3><p>Usa el Capítulo I del libro de Manuel Carrero Rojo como explicación accesible, con ejemplos y lenguaje práctico.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a></article>
           </div>
+          {chapterVideo?.href && <ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive" />}
         </div>
 
-        <div className="course-index">
-          <h2>Contenido del curso</h2>
-          <ol>
-            {j2Lessons.map((lesson) => {
-              const done = progress.completedLessons.includes(lesson.sequence);
-              return (
-                <li className="lesson-row active" key={lesson.id}>
-                  <Link to={`/courses/j2/lesson/${lesson.sequence}`}><span>{done ? '✓' : lesson.sequence}</span><div><strong>{lesson.title}</strong><small>{done ? 'Completada' : `≈ ${lesson.estimatedMinutes} min · Incluye comprobación formativa`}</small></div></Link>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+        <div className="course-index"><h2>Contenido del curso</h2><ol>{j2Lessons.map((lesson) => {const done = progress.completedLessons.includes(lesson.sequence);return <li className="lesson-row active" key={lesson.id}><Link to={`/courses/j2/lesson/${lesson.sequence}`}><span>{done ? '✓' : lesson.sequence}</span><div><strong>{lesson.title}</strong><small>{done ? 'Completada' : `≈ ${lesson.estimatedMinutes} min · Incluye comprobación formativa`}</small></div></Link></li>;})}</ol></div>
 
-        <div className="study-materials">
-          <div className="eyebrow">Siguiente curso</div>
-          <h2>J3 · Análisis Funcional: FAR</h2>
-          <p className="materials-intro">Convierte la lógica de J2 en una herramienta práctica para identificar funciones, activos, riesgos y construir una caracterización funcional.</p>
-          <Link className="button primary" to="/courses/j3">Ir a J3 →</Link>
-        </div>
+        <div className="study-materials"><div className="eyebrow">Siguiente curso</div><h2>J3 · Análisis Funcional: FAR</h2><p className="materials-intro">Convierte la lógica de J2 en una herramienta práctica para identificar funciones, activos, riesgos y construir una caracterización funcional.</p><Link className="button primary" to="/courses/j3">Ir a J3 →</Link></div>
       </div>
     </section>
   );

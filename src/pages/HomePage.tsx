@@ -1,17 +1,45 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const welcomeVideoPreview = 'https://drive.google.com/file/d/1yJEKxVnUAz2VdrCXIPhhNwZ70E0Pb-YB/preview';
+const welcomeVideoView = 'https://drive.google.com/file/d/1yJEKxVnUAz2VdrCXIPhhNwZ70E0Pb-YB/view?usp=sharing';
+const welcomeSeenKey = 'tpia-welcome-video-seen-v1';
+
 export function HomePage() {
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    try {
+      setShowWelcome(localStorage.getItem(welcomeSeenKey) !== '1');
+    } catch {
+      setShowWelcome(false);
+    }
+  }, []);
+
+  const dismissWelcome = () => {
+    try { localStorage.setItem(welcomeSeenKey, '1'); } catch { /* local storage is optional */ }
+    setShowWelcome(false);
+  };
+
   return (
     <>
+      {showWelcome && (
+        <div className="welcome-banner" role="region" aria-label="Bienvenida a la Academy">
+          <div className="container welcome-banner-inner">
+            <div><strong>¿Es tu primera visita?</strong><span>Conoce la Academy y cómo aprovechar tu ruta de aprendizaje.</span></div>
+            <a className="button secondary" href="#bienvenida" onClick={dismissWelcome}>Ver bienvenida</a>
+            <button className="welcome-dismiss" type="button" onClick={dismissWelcome} aria-label="Cerrar bienvenida">×</button>
+          </div>
+        </div>
+      )}
+
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
             <div className="eyebrow">Formación gratuita en Precios de Transferencia</div>
             <h1>Aprende Precios de Transferencia desde cero.</h1>
             <p className="lead">Una ruta estructurada para desarrollar conocimiento técnico y criterio profesional, con las Directrices de la OCDE como columna vertebral académica.</p>
-            <div className="button-row">
-              <Link className="button primary" to="/start">Empezar desde cero</Link>
-            </div>
+            <div className="button-row"><Link className="button primary" to="/start">Empezar desde cero</Link></div>
             <p className="microcopy">Gratis. Sin tarjeta. Puedes comenzar sin crear una cuenta.</p>
           </div>
           <aside className="hero-panel" aria-label="Ruta académica">
@@ -20,6 +48,16 @@ export function HomePage() {
             <div className="route-step"><span>03</span><div><strong>Semi Senior</strong><small>Análisis avanzado</small></div></div>
             <div className="route-step"><span>04</span><div><strong>Senior Knowledge</strong><small>Criterio y juicio profesional</small></div></div>
           </aside>
+        </div>
+      </section>
+
+      <section className="section welcome-video-section" id="bienvenida">
+        <div className="container narrow">
+          <div className="eyebrow">Empieza aquí</div>
+          <h2>Bienvenido a Transfer Pricing Insights Academy</h2>
+          <p>Conoce qué vas a encontrar en la plataforma y cómo aprovechar la ruta de aprendizaje antes de comenzar.</p>
+          <div className="video-frame"><iframe src={welcomeVideoPreview} title="Bienvenida a Transfer Pricing Insights Academy" allow="autoplay; fullscreen" allowFullScreen loading="lazy" /></div>
+          <p className="video-fallback">¿El reproductor no carga? <a href={welcomeVideoView} target="_blank" rel="noreferrer">Abrir video en Google Drive</a>.</p>
         </div>
       </section>
 

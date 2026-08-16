@@ -8,7 +8,7 @@ Transfer Pricing Insights Academy treats assessment integrity, learner data and 
 - Every `VITE_*` environment variable is treated as public because Vite includes it in the client bundle.
 - When Supabase is introduced, the browser may use only the project URL and a publishable key.
 - Supabase secret keys and legacy service-role credentials are backend-only and must never appear in `src/`, `public/`, frontend build configuration, URLs, logs, documentation examples containing real values, or client-side environment variables.
-- Certifiable answer keys must never be shipped in the browser bundle.
+- Certifiable answer keys must never be shipped in the browser bundle or committed to a public repository.
 - Final scoring, demonstrated competencies and credential issuance must execute in trusted server-side code.
 
 ## Database and API rules
@@ -23,8 +23,13 @@ Transfer Pricing Insights Academy treats assessment integrity, learner data and 
 - Production deploys must use HTTPS.
 - Cloudflare security headers are version-controlled in `public/_headers`.
 - CI must pass the client secret exposure guard, dependency audit, TypeScript validation and production build before merge.
-- Environment files are ignored by Git. `.env.example` contains placeholders only.
+- Environment files and common key/certificate formats are ignored by Git. `.env.example` contains placeholders only.
 - Dependencies and GitHub Actions are monitored through Dependabot.
+- CodeQL runs the JavaScript/TypeScript `security-extended` query suite.
+
+## Public repository rule
+
+The repository may be public because source-code visibility is not treated as a security boundary. Security must remain intact even when an attacker can read the frontend source. Secrets, elevated credentials, certificable answer keys and private learner data therefore must live outside the client repository and outside the browser bundle.
 
 ## Secret incident rule
 

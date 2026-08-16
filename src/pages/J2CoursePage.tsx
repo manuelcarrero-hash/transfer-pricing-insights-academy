@@ -84,6 +84,13 @@ export function J2CoursePage() {
             })}
           </ol>
         </div>
+
+        <div className="study-materials">
+          <div className="eyebrow">Siguiente curso</div>
+          <h2>J3 · Análisis Funcional: FAR</h2>
+          <p className="materials-intro">Convierte la lógica de J2 en una herramienta práctica para identificar funciones, activos, riesgos y construir una caracterización funcional.</p>
+          <Link className="button primary" to="/courses/j3">Ir a J3 →</Link>
+        </div>
       </div>
     </section>
   );

@@ -108,8 +108,8 @@ export function LessonPage() {
   const lesson = j1Lessons[index];
   const body = lessonBodies[index];
   if (!lesson || !body) return <Navigate to="/courses/j1" replace />;
-  const previous = index > 0 ? `/courses/j1/lesson-${index}` : '/courses/j1';
-  const next = index < j1Lessons.length - 1 ? `/courses/j1/lesson-${index + 2}` : '/courses/j1';
+  const previous = index > 0 ? `/courses/j1/lesson/${index}` : '/courses/j1';
+  const next = index < j1Lessons.length - 1 ? `/courses/j1/lesson/${index + 2}` : '/courses/j1';
 
   return (
     <section className="lesson-page">

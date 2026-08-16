@@ -6,6 +6,17 @@ async function seedStorage(page: Page, values: Record<string, string>) {
   }, values);
 }
 
+const j1CorrectAnswers = [
+  'No. Con los hechos dados, es una operación entre partes independientes.',
+  'Que existe una operación controlada que debe analizarse.',
+  '¿Qué condiciones habrían acordado partes independientes en circunstancias comparables?',
+  'Obtener los hechos y delimitar la operación antes de seleccionar la metodología.',
+  '¿Quién toma las decisiones relevantes para controlar el riesgo y tiene capacidad para hacerlo?',
+  'No necesariamente; hay que evaluar si las diferencias son económicamente relevantes y si pueden ajustarse confiablemente.',
+  'Elegir el enfoque que produzca el análisis más confiable dadas las circunstancias y la información disponible.',
+  'Identificar la información faltante, pedirla y condicionar la conclusión si sigue sin estar disponible.',
+];
+
 test.describe('Academy critical path', () => {
   test('onboarding exposes the three real entry points', async ({ page }) => {
     await page.goto('/start');
@@ -33,7 +44,7 @@ test.describe('Academy critical path', () => {
 
   test('a real formative answer completes J1 lesson 1 and updates Mi Ruta', async ({ page }) => {
     await page.goto('/courses/j1/lesson/1');
-    await page.getByLabel('No. Con los hechos dados, es una operación entre partes independientes.').check();
+    await page.getByLabel(j1CorrectAnswers[0]).check();
     await page.getByRole('button', { name: 'Comprobar' }).click();
     await expect(page.getByRole('status')).toContainText('Correcto.');
 
@@ -45,6 +56,23 @@ test.describe('Academy critical path', () => {
     const card = page.locator('section.progress-card').filter({ hasText: 'Junior · J1' });
     await expect(card.getByText('1 de 8 lecciones completadas.')).toBeVisible();
     await expect(card.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '13');
+  });
+
+  test('J1 can be completed end to end through all eight formative checks', async ({ page }) => {
+    for (let lesson = 1; lesson <= j1CorrectAnswers.length; lesson += 1) {
+      await page.goto(`/courses/j1/lesson/${lesson}`);
+      await page.getByLabel(j1CorrectAnswers[lesson - 1]).check();
+      await page.getByRole('button', { name: 'Comprobar' }).click();
+      await expect(page.getByRole('status')).toContainText('Correcto.');
+    }
+
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
+    expect(stored.completedLessons).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+
+    await page.goto('/path');
+    const card = page.locator('section.progress-card').filter({ hasText: 'Junior · J1' });
+    await expect(card.getByText('8 de 8 lecciones completadas.')).toBeVisible();
+    await expect(card.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100');
   });
 
   test('protected Consultant route redirects when locked and opens when unlocked', async ({ page }) => {

@@ -37,3 +37,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Production bundle secret exposure guard
+        run: npm run security:client

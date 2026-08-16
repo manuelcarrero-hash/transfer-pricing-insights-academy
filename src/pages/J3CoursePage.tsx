@@ -84,6 +84,13 @@ export function J3CoursePage() {
             })}
           </ol>
         </div>
+
+        <div className="study-materials">
+          <div className="eyebrow">Siguiente curso</div>
+          <h2>J4 · Métodos de Precios de Transferencia</h2>
+          <p className="materials-intro">Ahora que puedes construir una caracterización funcional básica, conoce qué pregunta responde cada metodología y cómo empezar a pensar en su selección.</p>
+          <Link className="button primary" to="/courses/j4">Ir a J4 →</Link>
+        </div>
       </div>
     </section>
   );

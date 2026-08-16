@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { j1Course, j1Lessons } from '../content/curriculum/v1/j1';
 import { j2Course, j2Lessons } from '../content/curriculum/v1/j2';
 import { j3Course, j3Lessons } from '../content/curriculum/v1/j3';
+import { j4Course, j4Lessons } from '../content/curriculum/v1/j4';
 import { useProgress } from '../hooks/useProgress';
 import { courseProgressEventName, getCourseProgress } from '../services/courseProgress';
 
@@ -10,11 +11,13 @@ export function MyPathPage() {
   const j1Progress = useProgress();
   const [j2Progress, setJ2Progress] = useState(() => getCourseProgress('J2', j2Lessons.length));
   const [j3Progress, setJ3Progress] = useState(() => getCourseProgress('J3', j3Lessons.length));
+  const [j4Progress, setJ4Progress] = useState(() => getCourseProgress('J4', j4Lessons.length));
 
   useEffect(() => {
     const sync = () => {
       setJ2Progress(getCourseProgress('J2', j2Lessons.length));
       setJ3Progress(getCourseProgress('J3', j3Lessons.length));
+      setJ4Progress(getCourseProgress('J4', j4Lessons.length));
     };
     window.addEventListener(courseProgressEventName, sync);
     window.addEventListener('storage', sync);
@@ -28,6 +31,7 @@ export function MyPathPage() {
     { code: 'J1', course: j1Course, lessons: j1Lessons, progress: j1Progress, href: '/courses/j1' },
     { code: 'J2', course: j2Course, lessons: j2Lessons, progress: j2Progress, href: '/courses/j2' },
     { code: 'J3', course: j3Course, lessons: j3Lessons, progress: j3Progress, href: '/courses/j3' },
+    { code: 'J4', course: j4Course, lessons: j4Lessons, progress: j4Progress, href: '/courses/j4' },
   ];
 
   return (

@@ -92,7 +92,12 @@ async function writeRoute(baseHtml, route, metadata, shell) {
 async function writeStandaloneRoute(baseHtml, route, metadata, shell) {
   const canonical = `${SITE_URL}${route}`;
   const html = replaceHead(baseHtml, { ...metadata, canonical });
-  const withoutAppScript = html.replace(/<script[^>]+type="module"[^>]*><\/script>/g, '');
+  let withoutAppScript = html;
+  let previousHtml;
+  do {
+    previousHtml = withoutAppScript;
+    withoutAppScript = withoutAppScript.replace(/<script[^>]+type="module"[^>]*><\/script>/g, '');
+  } while (withoutAppScript !== previousHtml);
   const hydrated = withoutAppScript.replace('<div id="root"></div>', `<div id="root">${shell}</div>`);
   const targetDir = join(DIST_DIR, route.slice(1));
   await mkdir(targetDir, { recursive: true });

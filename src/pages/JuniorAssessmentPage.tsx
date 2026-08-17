@@ -28,15 +28,28 @@ function previewAssessmentAccess() {
   return typeof window !== 'undefined' && window.location.hostname === P1A_PREVIEW_HOST;
 }
 
+function storedResult(): Result | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(RESULT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<Result>;
+    if (typeof parsed.attemptId !== 'string' || typeof parsed.score !== 'number' || typeof parsed.passed !== 'boolean' || typeof parsed.correct !== 'number' || typeof parsed.total !== 'number' || typeof parsed.gradedAt !== 'string' || !parsed.domainScores) return null;
+    return parsed as Result;
+  } catch {
+    return null;
+  }
+}
+
 export function JuniorAssessmentPage() {
   const eligible = juniorCoursesComplete() || previewAssessmentAccess();
   const [attemptId, setAttemptId] = useState('');
   const [questions, setQuestions] = useState<JuniorQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [result, setResult] = useState<Result | null>(null);
+  const [result, setResult] = useState<Result | null>(() => storedResult());
   const [participantName, setParticipantName] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
-  const [loading, setLoading] = useState(eligible);
+  const [loading, setLoading] = useState(eligible && !result);
   const [submitting, setSubmitting] = useState(false);
   const [issuing, setIssuing] = useState(false);
   const [error, setError] = useState('');
@@ -50,6 +63,7 @@ export function JuniorAssessmentPage() {
 
   const startAttempt = useCallback(async () => {
     setLoading(true); setError(''); setAnswers({}); setResult(null); setParticipantName(''); setTurnstileToken('');
+    localStorage.removeItem(RESULT_KEY);
     try {
       const response = await fetch('/api/junior/attempt', { method: 'POST', headers: { accept: 'application/json' } });
       if (!response.ok) throw new Error('No fue posible iniciar la evaluación.');
@@ -60,7 +74,7 @@ export function JuniorAssessmentPage() {
     } finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { if (eligible) void startAttempt(); }, [eligible, startAttempt]);
+  useEffect(() => { if (eligible && !result) void startAttempt(); }, [eligible, result, startAttempt]);
 
   async function grade(event: FormEvent) {
     event.preventDefault();
@@ -105,9 +119,10 @@ export function JuniorAssessmentPage() {
 
   if (!eligible) return <section className="section"><div className="container narrow"><div className="eyebrow">Evaluación acumulativa</div><h1>Completa primero J1–J5</h1><p className="lead small">La evaluación Junior Foundations se habilita cuando las comprobaciones formativas de todas las lecciones de J1 a J5 están completadas en este navegador.</p><Link className="button primary" to="/path">Revisar Mi Ruta</Link></div></section>;
   if (loading) return <section className="section"><div className="container narrow"><div className="eyebrow">Evaluación acumulativa</div><h1>Preparando tu intento…</h1><p className="lead small">Las preguntas de certificación se generan y registran de forma segura.</p></div></section>;
-  if (!questions.length) return <section className="section"><div className="container narrow"><h1>No pudimos iniciar la evaluación</h1><p className="lead small">{error || 'Intenta nuevamente.'}</p><button className="button primary" type="button" onClick={() => void startAttempt()}>Reintentar</button></div></section>;
 
   if (result) return <section className="section"><div className="container narrow assessment-result"><div className="eyebrow">Transfer Pricing Junior Foundations</div><h1>{result.passed ? 'Nivel Junior aprobado' : 'Aún no alcanzas el dominio requerido'}</h1><div className="result-score"><strong>{result.score}%</strong><span>{result.correct} de {result.total} respuestas correctas</span></div><div className="domain-results">{juniorDomains.map((domain) => <div key={domain}><span>{domain}</span><strong className={result.domainScores[domain] < JUNIOR_DOMAIN_FLOOR ? 'below-floor' : ''}>{result.domainScores[domain]}%</strong></div>)}</div>{result.passed ? <><p>La Academy validó este resultado en servidor. Superaste el 80% global y ningún dominio quedó por debajo de 60%. El nivel Consultant queda desbloqueado en este navegador.</p><div className="certificate-name-form"><label htmlFor="participant-name">Nombre que aparecerá en el certificado</label><input id="participant-name" value={participantName} onChange={(event) => setParticipantName(event.target.value)} placeholder="Nombre completo" autoComplete="name" maxLength={120}/><TurnstileWidget onToken={handleTurnstileToken}/>{error && <p role="alert">{error}</p>}<button className="button primary" type="button" disabled={!participantName.trim() || !turnstileToken || issuing} onClick={() => void issueCertificate()}>{issuing ? 'Emitiendo…' : 'Emitir certificado verificable'}</button></div></> : <><p>Tu principal área a reforzar es <strong>{weakDomain}</strong>. Revisa ese dominio antes del siguiente intento. Los intentos son ilimitados.</p>{error && <p role="alert">{error}</p>}<button className="button primary" type="button" onClick={() => void startAttempt()}>Intentar de nuevo</button></>}</div></section>;
+
+  if (!questions.length) return <section className="section"><div className="container narrow"><h1>No pudimos iniciar la evaluación</h1><p className="lead small">{error || 'Intenta nuevamente.'}</p><button className="button primary" type="button" onClick={() => void startAttempt()}>Reintentar</button></div></section>;
 
   return <section className="section assessment-page"><div className="container narrow"><div className="eyebrow">Cierre del nivel Junior</div><h1>Evaluación Acumulativa — Transfer Pricing Junior Foundations</h1><p className="lead small">20 reactivos aleatorios del banco protegido de certificación. La calificación se realiza en servidor. Para aprobar necesitas 80% global y al menos 60% en cada dominio.</p><div className="assessment-progress"><strong>{answered} / {questions.length}</strong><span>respondidas</span></div>{error && <p role="alert">{error}</p>}<form onSubmit={grade}>{questions.map((question, index) => <fieldset className="assessment-question" key={question.id}><legend><span>{index + 1}</span>{question.prompt}</legend><small>{question.domain}</small>{question.options.map((option, optionIndex) => <label className="assessment-option" key={option}><input type="radio" name={`question-${question.id}`} checked={answers[question.id] === optionIndex} onChange={() => setAnswers((current) => ({ ...current, [question.id]: optionIndex }))}/><span>{option}</span></label>)}</fieldset>)}<button className="button primary assessment-submit" type="submit" disabled={answered !== questions.length || submitting}>{submitting ? 'Calificando…' : 'Calificar evaluación'}</button></form></div></section>;
 }

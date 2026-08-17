@@ -1,25 +1,9 @@
 import { ensureSchema, json, makeId, type Env } from '../../_lib/certificates';
 import { makeAttempt, publicQuestion } from '../../_lib/juniorBank';
 
-function hasDb(context: { env: Env }) {
-  const db = context.env.CERTIFICATES_DB;
-  return !!db && typeof db.prepare === 'function' && typeof db.batch === 'function';
-}
-
-export async function onRequestGet(context: { env: Env }) {
-  if (!hasDb(context)) return json({ ok: false, error: 'certificates_db_binding_missing' }, 503);
-  try {
-    await context.env.CERTIFICATES_DB.prepare('SELECT 1').first();
-    return json({ ok: true, binding: 'CERTIFICATES_DB', databaseReachable: true, check: 'preview-secret-v3' });
-  } catch (cause) {
-    console.error('junior_attempt_health_failed', cause);
-    return json({ ok: false, error: 'certificates_db_unreachable' }, 500);
-  }
-}
-
 export async function onRequestPost(context: { env: Env }) {
   const db = context.env.CERTIFICATES_DB;
-  if (!hasDb(context)) {
+  if (!db || typeof db.prepare !== 'function' || typeof db.batch !== 'function') {
     return json({ error: 'certificates_db_binding_missing' }, 503);
   }
 

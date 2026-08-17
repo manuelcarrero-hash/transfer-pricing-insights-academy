@@ -64,6 +64,7 @@ export function AppShell({ children }: PropsWithChildren) {
           <div>
             <strong>Transfer Pricing Insights Academy</strong>
             <p>Conocimiento. Criterio. Impacto.</p>
+            <p><a href="/autor">Sobre el autor — Manuel Carrero Rojo</a></p>
             <p>
               <a href={supportUrl} target="_blank" rel="noopener noreferrer">Apoya voluntariamente la Academy</a>
             </p>
@@ -71,7 +72,7 @@ export function AppShell({ children }: PropsWithChildren) {
               El apoyo es completamente voluntario. No constituye la compra de un producto o servicio, no otorga beneficios adicionales y no es una donación deducible para efectos fiscales.
             </p>
           </div>
-          <p className="footer-credit">Creada por Manuel Carrero Rojo.</p>
+          <p className="footer-credit">Creada por <a href="/autor">Manuel Carrero Rojo</a>.</p>
         </div>
       </footer>
     </div>

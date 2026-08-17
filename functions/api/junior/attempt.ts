@@ -10,7 +10,7 @@ export async function onRequestGet(context: { env: Env }) {
   if (!hasDb(context)) return json({ ok: false, error: 'certificates_db_binding_missing' }, 503);
   try {
     await context.env.CERTIFICATES_DB.prepare('SELECT 1').first();
-    return json({ ok: true, binding: 'CERTIFICATES_DB', databaseReachable: true, check: 'preview-binding-v2' });
+    return json({ ok: true, binding: 'CERTIFICATES_DB', databaseReachable: true, check: 'preview-secret-v3' });
   } catch (cause) {
     console.error('junior_attempt_health_failed', cause);
     return json({ ok: false, error: 'certificates_db_unreachable' }, 500);

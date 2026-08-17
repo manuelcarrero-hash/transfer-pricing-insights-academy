@@ -12,7 +12,6 @@ import { getProgress } from '../services/progress';
 
 const RESULT_KEY = 'tp-junior-foundations-result';
 const UNLOCK_KEY = 'tp-consultant-level-unlocked';
-const P1A_PREVIEW_HOST = 'feat-p1a-verifiable-certific.transfer-pricing-insights-academy.pages.dev';
 
 type AttemptResponse = { attemptId: string; expiresAt: string; questions: JuniorQuestion[] };
 type Result = { attemptId: string; score: number; passed: boolean; domainScores: Record<JuniorDomain, number>; correct: number; total: number; gradedAt: string };
@@ -22,10 +21,6 @@ function juniorCoursesComplete() {
   const j1Complete = getProgress().completedLessons.length === j1Lessons.length;
   const laterCourses = [['J2', j2Lessons.length], ['J3', j3Lessons.length], ['J4', j4Lessons.length], ['J5', j5Lessons.length]] as const;
   return j1Complete && laterCourses.every(([code, count]) => getCourseProgress(code, count).completedLessons.length === count);
-}
-
-function previewAssessmentAccess() {
-  return typeof window !== 'undefined' && window.location.hostname === P1A_PREVIEW_HOST;
 }
 
 function storedResult(): Result | null {
@@ -42,7 +37,7 @@ function storedResult(): Result | null {
 }
 
 export function JuniorAssessmentPage() {
-  const eligible = juniorCoursesComplete() || previewAssessmentAccess();
+  const eligible = juniorCoursesComplete();
   const [attemptId, setAttemptId] = useState('');
   const [questions, setQuestions] = useState<JuniorQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<number, number>>({});

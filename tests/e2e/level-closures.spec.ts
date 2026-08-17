@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { juniorFoundationsBank } from '../../src/content/assessments/juniorFoundations';
+import { bank as juniorFoundationsBank } from '../../functions/_lib/juniorBank';
 import { consultantBank } from '../../src/content/assessments/consultantCumulative';
 import { consultantCaseQuestions } from '../../src/content/assessments/consultantCase';
 import { semiSeniorBank } from '../../src/content/assessments/semiSeniorCumulative';
@@ -52,9 +52,23 @@ async function storage(page:Page,key:string,value='true'){await expect.poll(()=>
 async function storageNull(page:Page,key:string){await expect.poll(()=>page.evaluate(k=>localStorage.getItem(k),key)).toBeNull()}
 function complete(code:string,n:number){return JSON.stringify({curriculumVersion:'v1',courseCode:code,lastLesson:n,completedLessons:Array.from({length:n},(_,i)=>i+1),updatedAt:'2026-08-16T12:00:00.000Z'})}
 
+async function mockJuniorApi(page: Page) {
+  let gradeCalls = 0;
+  const questions = juniorFoundationsBank.slice(0,20).map(({correctIndex: _correctIndex, ...question}) => question);
+  await page.route('**/api/junior/attempt', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ attemptId: `TPIA-JA-E2E-${gradeCalls}`, expiresAt: '2099-01-01T00:00:00.000Z', questions }) });
+  });
+  await page.route('**/api/junior/grade', async (route) => {
+    gradeCalls += 1;
+    const passed = gradeCalls > 1;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ attemptId: `TPIA-JA-E2E-${gradeCalls-1}`, score: passed ? 100 : 0, passed, domainScores: { 'Fundamentos': passed ? 100 : 0, "Arm's Length / delimitación": passed ? 100 : 0, 'FAR': passed ? 100 : 0, 'Métodos': passed ? 100 : 0, 'Comparabilidad': passed ? 100 : 0 }, correct: passed ? 20 : 0, total: 20, gradedAt: '2026-08-17T12:00:00.000Z' }) });
+  });
+}
+
 test.describe('Level closures',()=>{
   test('Junior: fail, retry, pass and unlock Consultant',async({page})=>{
     test.setTimeout(90_000);
+    await mockJuniorApi(page);
     await seed(page,{
       'tpia-progress-v1':JSON.stringify({curriculumVersion:'v1',lastLesson:8,completedLessons:[1,2,3,4,5,6,7,8],updatedAt:'2026-08-16T12:00:00.000Z'}),
       'tpia-course-progress-v1-j2':complete('J2',j2Lessons.length),'tpia-course-progress-v1-j3':complete('J3',j3Lessons.length),'tpia-course-progress-v1-j4':complete('J4',j4Lessons.length),'tpia-course-progress-v1-j5':complete('J5',j5Lessons.length)

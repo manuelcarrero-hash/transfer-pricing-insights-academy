@@ -93,14 +93,21 @@ test.describe('Academy critical path', () => {
     await expect(card.getByRole('progressbar')).toHaveAttribute('aria-valuenow', /\d+/);
   });
 
-  test('certificate route is locked without a record and renders a local certificate record when present', async ({ page }) => {
+  test('certificate route rejects missing and locally forged certificate records', async ({ page }) => {
     await page.goto('/junior-foundations/certificate');
-    await expect(page.getByRole('heading', { name: 'Tu certificado aún no está disponible' })).toBeVisible();
-    await seedStorage(page, { 'tp-junior-foundations-certificate': JSON.stringify({ participantName: 'Persona de Prueba', issuedAt: '2026-08-16T12:00:00.000Z', certificateId: 'TPIA-E2E-001' }) });
+    await expect(page.getByRole('heading', { name: 'Certificado no disponible o no verificable' })).toBeVisible();
+
+    await seedStorage(page, {
+      'tp-junior-foundations-certificate': JSON.stringify({
+        participantName: 'Persona de Prueba',
+        issuedAt: '2026-08-16T12:00:00.000Z',
+        certificateId: 'TPIA-E2E-FORGED',
+      }),
+    });
     await page.goto('/junior-foundations/certificate');
-    await expect(page.getByText('Persona de Prueba', { exact: true })).toBeVisible();
-    await expect(page.getByText(/Local Certificate ID · TPIA-E2E-001/)).toBeVisible();
-    await expect(page.getByText(/no dispone de verificación pública centralizada/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Certificado no disponible o no verificable' })).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('Persona de Prueba', { exact: true })).toHaveCount(0);
+    await expect(page.getByText(/Los certificados válidos deben existir en el registro central/)).toBeVisible();
   });
 
   test('mobile navigation closes after selecting a destination', async ({ page }) => {

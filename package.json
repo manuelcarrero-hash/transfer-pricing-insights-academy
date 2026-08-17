@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/generate-seo-static.mjs",
     "typecheck": "tsc -b --pretty false",
     "security:client": "node scripts/check-client-secrets.mjs",
     "curriculum:check": "node scripts/check-curriculum-integrity.mjs",

@@ -40,7 +40,7 @@ async function discoverCourses() {
     const description = extractString(source, 'description');
     const lessonCount = extractNumber(source, 'lessonCount');
 
-    if (!code || !title || !description || !lessonCount || !/^(J|C|SS|S)\\d+$/.test(code)) continue;
+    if (!code || !title || !description || !lessonCount || !/^(J|C|SS|S)\d+$/.test(code)) continue;
 
     courses.push({
       code,

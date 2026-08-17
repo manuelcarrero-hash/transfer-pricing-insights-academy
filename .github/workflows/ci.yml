@@ -45,6 +45,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: SEO output integrity
+        run: npm run seo:check
+
       - name: Production bundle secret exposure guard
         run: npm run security:client
 

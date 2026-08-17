@@ -11,8 +11,8 @@ import { getCourseProgress } from '../services/courseProgress';
 import { getProgress } from '../services/progress';
 
 const RESULT_KEY = 'tp-junior-foundations-result';
-const CERTIFICATE_KEY = 'tp-junior-foundations-certificate';
 const UNLOCK_KEY = 'tp-consultant-level-unlocked';
+const P1A_PREVIEW_HOST = 'feat-p1a-verifiable-certific.transfer-pricing-insights-academy.pages.dev';
 
 type AttemptResponse = { attemptId: string; expiresAt: string; questions: JuniorQuestion[] };
 type Result = { attemptId: string; score: number; passed: boolean; domainScores: Record<JuniorDomain, number>; correct: number; total: number; gradedAt: string };
@@ -24,8 +24,12 @@ function juniorCoursesComplete() {
   return j1Complete && laterCourses.every(([code, count]) => getCourseProgress(code, count).completedLessons.length === count);
 }
 
+function previewAssessmentAccess() {
+  return typeof window !== 'undefined' && window.location.hostname === P1A_PREVIEW_HOST;
+}
+
 export function JuniorAssessmentPage() {
-  const eligible = juniorCoursesComplete();
+  const eligible = juniorCoursesComplete() || previewAssessmentAccess();
   const [attemptId, setAttemptId] = useState('');
   const [questions, setQuestions] = useState<JuniorQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -92,7 +96,6 @@ export function JuniorAssessmentPage() {
         throw new Error(detail.error === 'turnstile_failed' ? 'La verificación de seguridad expiró. Vuelve a completarla.' : 'No fue posible emitir el certificado.');
       }
       const certificate = await response.json() as CertificateResponse;
-      localStorage.setItem(CERTIFICATE_KEY, JSON.stringify({ certificateId: certificate.certificateId }));
       window.location.href = `/junior-foundations/certificate?id=${encodeURIComponent(certificate.certificateId)}`;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'No fue posible emitir el certificado.');

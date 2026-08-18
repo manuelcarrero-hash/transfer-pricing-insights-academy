@@ -39,6 +39,9 @@ jobs:
       - name: Learning path integrity
         run: npm run path:check
 
+      - name: Frontend polish integrity
+        run: npm run polish:check
+
       - name: Typecheck
         run: npm run typecheck
 

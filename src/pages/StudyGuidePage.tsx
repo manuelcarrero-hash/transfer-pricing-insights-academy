@@ -78,7 +78,7 @@ export function StudyGuidePage() {
           <h2>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h2>
           <p><strong>Manuel Carrero Rojo</strong></p>
           <p>Utiliza el libro como lectura complementaria para profundizar los fundamentos doctrinales y conectar los conceptos del módulo con su aplicación práctica.</p>
-          <a className="button secondary no-print" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
+          <a className="button secondary no-print" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a>
           <p className="source-note">El PDF se ofrece desde la copia pública autorizada por el autor en Google Drive.</p>
         </section>
       </div>

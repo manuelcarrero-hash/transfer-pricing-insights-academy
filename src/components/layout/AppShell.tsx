@@ -18,15 +18,7 @@ const supportOptions = [
 type NavigationLinksProps = { onNavigate?: () => void };
 
 function NavigationLinks({ onNavigate }: NavigationLinksProps) {
-  return (
-    <>
-      {activeNavItems.map(([label, to]) => (
-        <NavLink key={to} to={to} onClick={onNavigate} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          {label}
-        </NavLink>
-      ))}
-    </>
-  );
+  return <>{activeNavItems.map(([label, to]) => <NavLink key={to} to={to} onClick={onNavigate} className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>{label}</NavLink>)}</>;
 }
 
 export function AppShell({ children }: PropsWithChildren) {
@@ -40,30 +32,18 @@ export function AppShell({ children }: PropsWithChildren) {
         <div className="container header-inner">
           <Link className="brand" to="/" aria-label="Transfer Pricing Insights Academy — Inicio" onClick={closeMobileNav}>
             <AcademyLogo className="brand-logo" variant="isotype" alt="" />
-            <span className="brand-copy">
-              <strong>Transfer Pricing Insights</strong>
-              <span>Academy</span>
-            </span>
+            <span className="brand-copy"><strong>Transfer Pricing Insights</strong><span>Academy</span></span>
           </Link>
-
-          <nav className="main-nav" aria-label="Navegación principal">
-            <NavigationLinks />
-          </nav>
-
+          <nav className="main-nav" aria-label="Navegación principal"><NavigationLinks /></nav>
           <details className="mobile-nav" ref={mobileNavRef}>
             <summary aria-label="Abrir navegación">Menú</summary>
-            <nav className="mobile-nav-panel" aria-label="Navegación móvil">
-              <NavigationLinks onNavigate={closeMobileNav} />
-            </nav>
+            <nav className="mobile-nav-panel" aria-label="Navegación móvil"><NavigationLinks onNavigate={closeMobileNav} /></nav>
           </details>
         </div>
       </header>
 
       <aside className="pilot-notice" aria-label="Aviso sobre el progreso">
-        <div className="container pilot-notice-inner">
-          <span className="pilot-badge">Piloto RC1</span>
-          <span>Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo durante la prueba.</span>
-        </div>
+        <div className="container pilot-notice-inner"><span className="pilot-badge">Piloto RC1</span><span>Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo durante la prueba.</span></div>
       </aside>
 
       <main id="main-content" tabIndex={-1}>{children}</main>
@@ -71,44 +51,34 @@ export function AppShell({ children }: PropsWithChildren) {
       <footer className="site-footer polished-footer">
         <div className="container footer-grid">
           <section className="footer-brand-block" aria-label="Transfer Pricing Insights Academy">
-            <div className="footer-brand-lockup">
-              <AcademyLogo className="footer-isotype" variant="isotype" alt="" />
-              <div><strong>Transfer Pricing Insights</strong><span>Academy</span></div>
-            </div>
+            <div className="footer-brand-lockup"><AcademyLogo className="footer-isotype" variant="isotype" alt="" /><div><strong>Transfer Pricing Insights</strong><span>Academy</span></div></div>
             <p>Conocimiento. Criterio. Impacto.</p>
             <p className="footer-muted">Formación abierta y estructurada en Precios de Transferencia.</p>
           </section>
 
           <nav className="footer-column" aria-label="Navegación del sitio">
-            <strong>Academy</strong>
-            <Link to="/">Inicio</Link>
-            <Link to="/path">Mi Ruta</Link>
-            <Link to="/start">Comenzar</Link>
-            <Link to="/resources">Recursos</Link>
+            <strong>Academy</strong><Link to="/">Inicio</Link><Link to="/path">Mi Ruta</Link><Link to="/start">Comenzar</Link><Link to="/resources">Recursos</Link>
           </nav>
 
           <section className="footer-column">
             <strong>Proyecto</strong>
-            <a href="/autor">Sobre el autor</a>
+            <Link to="/autor">Sobre el autor</Link>
             <span className="footer-author">Manuel Carrero Rojo</span>
-            <span className="footer-muted">Transfer Pricing Insights</span>
+            <a href="https://mx.linkedin.com/in/manuel-carrero-rojo-937118113" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://manuelcarrerorojo.substack.com/" target="_blank" rel="noopener noreferrer">Transfer Pricing Insights</a>
           </section>
 
           <section className="footer-support footer-column">
             <strong>Apoya la Academy</strong>
             <p className="footer-muted">Si este proyecto te resulta útil, puedes apoyarlo voluntariamente.</p>
             <div className="footer-support-options" aria-label="Opciones de apoyo voluntario">
-              {supportOptions.map(({ amount, url }) => (
-                <a key={amount} className="footer-support-button" href={url} target="_blank" rel="noopener noreferrer">
-                  {amount}
-                </a>
-              ))}
+              {supportOptions.map(({ amount, url }) => <a key={amount} className="footer-support-button" href={url} target="_blank" rel="noopener noreferrer">{amount}</a>)}
             </div>
           </section>
         </div>
 
         <div className="container footer-bottom">
-          <p>Transfer Pricing Insights Academy · Creada por <a href="/autor">Manuel Carrero Rojo</a>.</p>
+          <p>Transfer Pricing Insights Academy · Creada por <Link to="/autor">Manuel Carrero Rojo</Link>.</p>
           <p>El apoyo voluntario no compra acceso, beneficios ni certificaciones.</p>
         </div>
       </footer>

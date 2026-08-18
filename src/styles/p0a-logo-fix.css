@@ -1,0 +1,63 @@
+.brand {
+  min-width: 0;
+}
+
+/*
+ * P0-A visual correction: the approved source asset carries generous canvas
+ * whitespace. Keep the approved artwork intact, but crop it at presentation
+ * level so the institutional mark reads at navigation scale.
+ */
+.brand img {
+  display: none !important;
+}
+
+.brand::before {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  background-image: url('/brand/tpia-isotype.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 220%;
+}
+
+.brand-copy {
+  display: grid !important;
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .brand {
+    gap: 9px;
+  }
+
+  .brand::before {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+    background-size: 235%;
+  }
+
+  .brand-copy {
+    display: grid !important;
+    line-height: 1.08;
+  }
+
+  .brand-copy strong {
+    font-size: .78rem;
+  }
+
+  .brand-copy span {
+    font-size: .68rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .brand-copy strong {
+    max-width: 148px;
+    white-space: normal;
+  }
+}

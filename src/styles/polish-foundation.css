@@ -1,0 +1,207 @@
+body {
+  font-family: var(--font-ui);
+}
+
+h1,
+.hero h1,
+.lesson-content > h1,
+.certificate-body h1,
+.certificate-name {
+  font-family: var(--font-editorial);
+  font-weight: 700;
+}
+
+.academy-logo-crop {
+  position: relative;
+  display: block;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  flex: 0 0 46px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.academy-logo-source {
+  position: absolute;
+  width: 576px;
+  max-width: none;
+  height: auto;
+  left: -271px;
+  top: -128px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.brand-logo {
+  width: 46px;
+  height: 46px;
+}
+
+.brand-copy {
+  display: grid;
+  gap: 1px;
+  line-height: 1.08;
+  color: var(--color-brand-navy);
+}
+
+.brand-copy strong {
+  font-size: .92rem;
+  letter-spacing: -.01em;
+}
+
+.brand-copy span {
+  font-size: .78rem;
+  color: var(--color-text-muted);
+  letter-spacing: .01em;
+}
+
+.site-header,
+.feature-card,
+.choice-card,
+.outcome-card,
+.course-index,
+.learning-outcomes,
+.quiz-card,
+.remember-card,
+.material-card,
+.progress-card {
+  border-color: var(--color-border-subtle);
+}
+
+.feature-card,
+.choice-card,
+.outcome-card,
+.course-index,
+.learning-outcomes,
+.quiz-card,
+.remember-card,
+.material-card,
+.progress-card {
+  box-shadow: var(--shadow-xs);
+}
+
+.button,
+.nav-link,
+.mobile-nav summary,
+.quiz-option,
+.lesson-row > a,
+.footer-support-button {
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.button:not(:disabled):not(.disabled-button):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.button:not(:disabled):not(.disabled-button):active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.button.secondary:hover {
+  background: var(--color-surface-editorial);
+  border-color: #c9d0d9;
+}
+
+.button:disabled,
+.button.disabled-button,
+[aria-disabled='true'] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.nav-link:hover {
+  background: #f4f6f8;
+  color: var(--color-brand-navy);
+}
+
+.nav-link.active {
+  background: #edf1f5;
+  box-shadow: inset 0 -2px 0 var(--color-brand-gold);
+}
+
+.eyebrow,
+.material-type,
+.progress-kicker,
+.domain-label {
+  color: var(--color-brand-gold-text);
+}
+
+.hero .eyebrow,
+.consultant-card .eyebrow,
+.site-footer .eyebrow {
+  color: #d7b874;
+}
+
+.progress-track {
+  background: #e9edf2;
+}
+
+.progress-track > span {
+  background: var(--color-progress);
+}
+
+.completed-level,
+.is-complete,
+[data-state='completed'] {
+  --state-color: var(--color-completed);
+}
+
+.locked,
+.lesson-row.locked,
+[data-state='locked'] {
+  color: var(--color-locked);
+}
+
+.quiz-option:hover {
+  border-color: #b9c3cf;
+  background: var(--color-surface-editorial);
+}
+
+.quiz-option:has(input:checked) {
+  border-color: var(--color-brand-gold);
+  background: #fbf8f1;
+  box-shadow: inset 0 0 0 1px rgba(183, 144, 77, .2);
+}
+
+.certificate-monogram .academy-logo-crop {
+  margin: auto;
+}
+
+@media (max-width: 560px) {
+  .brand-copy {
+    display: none;
+  }
+
+  .brand-logo,
+  .academy-logo-crop {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .brand-logo .academy-logo-source,
+  .brand .academy-logo-source {
+    width: 526px;
+    left: -248px;
+    top: -117px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .nav-link,
+  .mobile-nav summary,
+  .quiz-option,
+  .lesson-row > a,
+  .footer-support-button {
+    transition: none !important;
+  }
+}

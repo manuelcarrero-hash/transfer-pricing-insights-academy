@@ -10,6 +10,7 @@
     "security:client": "node scripts/check-client-secrets.mjs",
     "curriculum:check": "node scripts/check-curriculum-integrity.mjs",
     "path:check": "node scripts/check-learning-path-integrity.mjs",
+    "polish:check": "node scripts/check-frontend-polish-integrity.mjs",
     "seo:check": "node scripts/check-seo-output.mjs",
     "e2e": "playwright test",
     "e2e:install": "playwright install --with-deps chromium",

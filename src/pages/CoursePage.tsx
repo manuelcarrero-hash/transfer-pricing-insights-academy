@@ -53,7 +53,7 @@ export function CoursePage() {
               <span className="material-type">Lectura complementaria</span>
               <h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3>
               <p>Libro de Manuel Carrero Rojo para profundizar los fundamentos doctrinales con lenguaje sencillo y ejemplos.</p>
-              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
+              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a>
             </article>
           </div>
         </div>

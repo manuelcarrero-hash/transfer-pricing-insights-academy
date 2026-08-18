@@ -6,103 +6,14 @@ import { j1Assessments } from '../content/curriculum/v1/j1Assessments';
 import { markLessonCompleted, markLessonVisited } from '../services/progress';
 
 const lessonBodies = [
-  {
-    heading: 'El punto de partida',
-    paragraphs: [
-      'Una empresa puede pertenecer a un grupo junto con muchas otras entidades. Aunque todas formen parte del mismo grupo económico, jurídicamente pueden ser compañías distintas: una fabrica, otra distribuye, otra presta servicios, otra posee una marca y otra financia operaciones.',
-      'Cuando esas entidades realizan operaciones entre sí, aparecen los Precios de Transferencia.',
-      'En términos sencillos, los Precios de Transferencia estudian las condiciones bajo las cuales se realizan operaciones entre empresas relacionadas y evalúan si esas condiciones son consistentes con el principio de plena competencia.',
-    ],
-    key: 'No reduzcas Transfer Pricing a la palabra “precio”. Una operación puede analizarse mediante un precio unitario, pero también mediante una tasa de interés, una regalía, un margen, una comisión, un mark-up, una garantía u otra condición económicamente relevante.',
-    exampleTitle: 'Un ejemplo sencillo',
-    example: 'Manufacturas del Bajío fabrica componentes industriales y vende parte de su producción a una distribuidora del mismo grupo. La relación no vuelve incorrecta la venta; indica que sus condiciones deben analizarse frente a las que habrían acordado partes independientes en circunstancias comparables.',
-    chair: 'Empieza con hechos, no con sospechas. Identifica quiénes son las partes, qué operación ocurrió y qué información falta antes de formular una conclusión.',
-    remember: 'Transfer Pricing no estudia únicamente precios. Estudia las condiciones económicas de operaciones entre partes relacionadas.',
-  },
-  {
-    heading: 'Primero: ¿quiénes participan?',
-    paragraphs: [
-      'Antes de evaluar una operación necesitamos identificar a las partes y comprender la relación que existe entre ellas. Una misma operación económica puede requerir un tratamiento analítico distinto dependiendo de si ocurre entre independientes o entre entidades vinculadas.',
-      'La expresión operación controlada describe, en el lenguaje de precios de transferencia, una operación entre empresas asociadas. Identificarla es un paso de clasificación; todavía no nos dice si sus condiciones cumplen o no con plena competencia.',
-    ],
-    key: 'Relación no significa incumplimiento. Ser partes relacionadas activa la pregunta de precios de transferencia; no predetermina la respuesta.',
-    exampleTitle: 'Mismo producto, preguntas distintas',
-    example: 'Una manufacturera vende la misma pieza a una subsidiaria y a un cliente independiente. La venta a la subsidiaria es controlada. La venta al tercero puede convertirse, además, en información muy valiosa para analizar comparabilidad.',
-    chair: 'Separa dos preguntas: “¿es una operación controlada?” y “¿sus condiciones son de plena competencia?”. Confundirlas conduce a conclusiones prematuras.',
-    remember: 'La relación entre las partes permite identificar la operación controlada; el cumplimiento del principio de plena competencia requiere un análisis posterior.',
-  },
-  {
-    heading: 'El estándar central',
-    paragraphs: [
-      'El principio de plena competencia pregunta qué condiciones habrían acordado empresas independientes en circunstancias comparables. Es el punto de referencia económico que organiza el análisis de precios de transferencia.',
-      'La comparación no exige imaginar un precio perfecto ni asumir que existe una única respuesta correcta. Exige analizar las circunstancias económicamente relevantes y utilizar información suficientemente comparable para construir una conclusión defendible.',
-    ],
-    key: 'Plena competencia es un estándar de comparación, no una acusación. El análisis intenta aproximar las condiciones que habrían prevalecido entre independientes.',
-    exampleTitle: 'Más que buscar un número',
-    example: 'En un préstamo intragrupo no basta con observar la tasa. Moneda, plazo, solvencia, garantías, subordinación y condiciones de mercado pueden cambiar lo que un prestamista independiente exigiría.',
-    chair: 'Pregunta siempre: ¿qué circunstancias habrían importado a dos partes independientes al negociar esta operación?',
-    remember: 'El principio de plena competencia compara condiciones entre relacionadas con las que habrían acordado independientes en circunstancias comparables.',
-  },
-  {
-    heading: 'La metodología viene después',
-    paragraphs: [
-      'Una tentación frecuente del consultor principiante es elegir un método demasiado pronto. Antes necesitamos delimitar la operación y entender qué ocurrió realmente: partes, bienes o servicios, términos contractuales, funciones, activos, riesgos, mercado y estrategia.',
-      'El contrato es evidencia importante, pero no sustituye el análisis de la conducta real. Si lo escrito y lo ejecutado divergen, esa diferencia debe investigarse antes de concluir.',
-    ],
-    key: 'Un método aplicado a una operación mal entendida puede producir un cálculo impecable y una conclusión equivocada.',
-    exampleTitle: 'La pregunta que falta',
-    example: 'Dos entidades firman un contrato de servicios. Antes de buscar un mark-up comparable, el consultor debe saber qué servicios se prestaron, quién los ejecutó, qué recursos utilizó, quién recibió el beneficio y cómo se remuneraron realmente.',
-    chair: 'Cuando alguien te pida “el método”, responde primero con preguntas sobre los hechos. Esa disciplina evita que la técnica se convierta en automatismo.',
-    remember: 'La delimitación y comprensión de la operación preceden a la selección y aplicación del método.',
-  },
-  {
-    heading: 'Entender cómo se crea valor',
-    paragraphs: [
-      'El análisis funcional organiza la realidad económica alrededor de tres dimensiones: funciones realizadas, activos utilizados y riesgos asumidos. En conjunto ayudan a comprender qué aporta cada parte a la operación.',
-      'No se trata de llenar una lista. Importa distinguir actividades rutinarias de decisiones relevantes, activos comunes de recursos económicamente significativos y riesgos escritos en un contrato de riesgos realmente controlados y soportados.',
-    ],
-    key: 'FAR significa funciones, activos y riesgos. Su valor no está en las siglas, sino en explicar económicamente qué hace cada parte y por qué debería recibir determinada remuneración.',
-    exampleTitle: 'Dos distribuidores que no son iguales',
-    example: 'Un distribuidor que únicamente ejecuta instrucciones, mantiene inventario limitado y no decide estrategia comercial puede tener un perfil distinto de otro que desarrolla mercado, decide precios y soporta riesgos comerciales relevantes.',
-    chair: 'No preguntes solamente “¿qué hace la empresa?”. Pregunta quién decide, con qué recursos, qué puede salir mal y quién controla las decisiones asociadas a ese riesgo.',
-    remember: 'El análisis FAR ayuda a conectar la conducta económica de las partes con la remuneración que corresponde analizar.',
-  },
-  {
-    heading: 'Comparar exige criterio',
-    paragraphs: [
-      'Una comparación útil requiere suficiente similitud en las características económicamente relevantes o la posibilidad de realizar ajustes razonablemente confiables. Dos empresas del mismo sector no son automáticamente comparables.',
-      'Las características del bien o servicio, funciones, activos, riesgos, términos contractuales, circunstancias económicas y estrategias de negocio pueden afectar materialmente las condiciones de una operación.',
-    ],
-    key: 'Comparabilidad no significa identidad. Significa que las diferencias relevantes no afectan materialmente la comparación o pueden ajustarse con suficiente confiabilidad.',
-    exampleTitle: 'Parecidas a primera vista',
-    example: 'Dos distribuidoras venden productos similares, pero una posee intangibles locales valiosos y asume riesgo significativo de inventario mientras la otra opera de manera limitada. El sector común no elimina esas diferencias.',
-    chair: 'Una base de datos encuentra candidatos; el consultor determina comparabilidad. Documenta tanto por qué aceptas como por qué rechazas.',
-    remember: 'La comparabilidad depende de características económicamente relevantes, no de semejanzas superficiales.',
-  },
-  {
-    heading: 'Un mapa de herramientas',
-    paragraphs: [
-      'Los métodos de precios de transferencia son herramientas para contrastar las condiciones de una operación controlada con plena competencia. Algunos observan precios; otros márgenes brutos, costos y beneficios o resultados netos.',
-      'No existe una regla profesional válida que permita escoger siempre el mismo método. La naturaleza de la operación, la información disponible, la comparabilidad y la confiabilidad de los ajustes determinan qué enfoque resulta más apropiado.',
-    ],
-    key: 'El método no es el punto de partida ni un ritual. Es una herramienta seleccionada después de comprender la operación y evaluar la información disponible.',
-    exampleTitle: 'La mejor herramienta depende del problema',
-    example: 'Si existe una operación independiente altamente comparable, un análisis directo de precio puede ser poderoso. Si esa información no existe o presenta diferencias difíciles de ajustar, otro método puede producir una conclusión más confiable.',
-    chair: 'Defiende la selección del método explicando por qué es apropiado para estos hechos, no diciendo únicamente que es un método aceptado.',
-    remember: 'La confiabilidad del análisis importa más que aplicar mecánicamente un método favorito.',
-  },
-  {
-    heading: 'El razonamiento completo',
-    paragraphs: [
-      'Un consultor de precios de transferencia convierte información dispersa en una cadena lógica: identifica las partes, delimita la operación, comprende funciones, activos y riesgos, reconoce las circunstancias económicas, evalúa comparabilidad, selecciona una metodología y contrasta el resultado con plena competencia.',
-      'La calidad profesional también depende de reconocer límites. Cuando falta información material, la respuesta correcta puede ser formular una pregunta adicional o expresar una conclusión condicionada, no llenar el vacío con una suposición.',
-    ],
-    key: 'Una conclusión fuerte permite seguir el camino desde los hechos hasta el resultado. Si un eslabón no puede explicarse, el análisis necesita más trabajo.',
-    exampleTitle: 'De junior a consultor',
-    example: 'Ante una regalía intragrupo, un buen inicio no es buscar porcentajes. Es identificar el intangible, las partes, los derechos concedidos, las funciones relevantes, el mercado, la base de cálculo y la evidencia disponible antes de decidir cómo analizarla.',
-    chair: 'Tu valor no está en producir una respuesta rápida, sino en saber qué hechos sostienen la respuesta, qué evidencia falta y qué tan lejos permite llegar la información.',
-    remember: 'Precios de Transferencia es una disciplina de razonamiento económico sustentado en hechos, comparabilidad y evidencia.',
-  },
+  { heading: 'El punto de partida', paragraphs: ['Una empresa puede pertenecer a un grupo junto con muchas otras entidades. Aunque todas formen parte del mismo grupo económico, jurídicamente pueden ser compañías distintas: una fabrica, otra distribuye, otra presta servicios, otra posee una marca y otra financia operaciones.', 'Cuando esas entidades realizan operaciones entre sí, aparecen los Precios de Transferencia.', 'En términos sencillos, los Precios de Transferencia estudian las condiciones bajo las cuales se realizan operaciones entre empresas relacionadas y evalúan si esas condiciones son consistentes con el principio de plena competencia.'], key: 'No reduzcas Transfer Pricing a la palabra “precio”. Una operación puede analizarse mediante un precio unitario, pero también mediante una tasa de interés, una regalía, un margen, una comisión, un mark-up, una garantía u otra condición económicamente relevante.', exampleTitle: 'Un ejemplo sencillo', example: 'Manufacturas del Bajío fabrica componentes industriales y vende parte de su producción a una distribuidora del mismo grupo. La relación no vuelve incorrecta la venta; indica que sus condiciones deben analizarse frente a las que habrían acordado partes independientes en circunstancias comparables.', chair: 'Empieza con hechos, no con sospechas. Identifica quiénes son las partes, qué operación ocurrió y qué información falta antes de formular una conclusión.', remember: 'Transfer Pricing no estudia únicamente precios. Estudia las condiciones económicas de operaciones entre partes relacionadas.' },
+  { heading: 'Primero: ¿quiénes participan?', paragraphs: ['Antes de evaluar una operación necesitamos identificar a las partes y comprender la relación que existe entre ellas. Una misma operación económica puede requerir un tratamiento analítico distinto dependiendo de si ocurre entre independientes o entre entidades vinculadas.', 'La expresión operación controlada describe, en el lenguaje de precios de transferencia, una operación entre empresas asociadas. Identificarla es un paso de clasificación; todavía no nos dice si sus condiciones cumplen o no con plena competencia.'], key: 'Relación no significa incumplimiento. Ser partes relacionadas activa la pregunta de precios de transferencia; no predetermina la respuesta.', exampleTitle: 'Mismo producto, preguntas distintas', example: 'Una manufacturera vende la misma pieza a una subsidiaria y a un cliente independiente. La venta a la subsidiaria es controlada. La venta al tercero puede convertirse, además, en información muy valiosa para analizar comparabilidad.', chair: 'Separa dos preguntas: “¿es una operación controlada?” y “¿sus condiciones son de plena competencia?”. Confundirlas conduce a conclusiones prematuras.', remember: 'La relación entre las partes permite identificar la operación controlada; el cumplimiento del principio de plena competencia requiere un análisis posterior.' },
+  { heading: 'El estándar central', paragraphs: ['El principio de plena competencia pregunta qué condiciones habrían acordado empresas independientes en circunstancias comparables. Es el punto de referencia económico que organiza el análisis de precios de transferencia.', 'La comparación no exige imaginar un precio perfecto ni asumir que existe una única respuesta correcta. Exige analizar las circunstancias económicamente relevantes y utilizar información suficientemente comparable para construir una conclusión defendible.'], key: 'Plena competencia es un estándar de comparación, no una acusación. El análisis intenta aproximar las condiciones que habrían prevalecido entre independientes.', exampleTitle: 'Más que buscar un número', example: 'En un préstamo intragrupo no basta con observar la tasa. Moneda, plazo, solvencia, garantías, subordinación y condiciones de mercado pueden cambiar lo que un prestamista independiente exigiría.', chair: 'Pregunta siempre: ¿qué circunstancias habrían importado a dos partes independientes al negociar esta operación?', remember: 'El principio de plena competencia compara condiciones entre relacionadas con las que habrían acordado independientes en circunstancias comparables.' },
+  { heading: 'La metodología viene después', paragraphs: ['Una tentación frecuente del consultor principiante es elegir un método demasiado pronto. Antes necesitamos delimitar la operación y entender qué ocurrió realmente: partes, bienes o servicios, términos contractuales, funciones, activos, riesgos, mercado y estrategia.', 'El contrato es evidencia importante, pero no sustituye el análisis de la conducta real. Si lo escrito y lo ejecutado divergen, esa diferencia debe investigarse antes de concluir.'], key: 'Un método aplicado a una operación mal entendida puede producir un cálculo impecable y una conclusión equivocada.', exampleTitle: 'La pregunta que falta', example: 'Dos entidades firman un contrato de servicios. Antes de buscar un mark-up comparable, el consultor debe saber qué servicios se prestaron, quién los ejecutó, qué recursos utilizó, quién recibió el beneficio y cómo se remuneraron realmente.', chair: 'Cuando alguien te pida “el método”, responde primero con preguntas sobre los hechos. Esa disciplina evita que la técnica se convierta en automatismo.', remember: 'La delimitación y comprensión de la operación preceden a la selección y aplicación del método.' },
+  { heading: 'Entender cómo se crea valor', paragraphs: ['El análisis funcional organiza la realidad económica alrededor de tres dimensiones: funciones realizadas, activos utilizados y riesgos asumidos. En conjunto ayudan a comprender qué aporta cada parte a la operación.', 'No se trata de llenar una lista. Importa distinguir actividades rutinarias de decisiones relevantes, activos comunes de recursos económicamente significativos y riesgos escritos en un contrato de riesgos realmente controlados y soportados.'], key: 'FAR significa funciones, activos y riesgos. Su valor no está en las siglas, sino en explicar económicamente qué hace cada parte y por qué debería recibir determinada remuneración.', exampleTitle: 'Dos distribuidores que no son iguales', example: 'Un distribuidor que únicamente ejecuta instrucciones, mantiene inventario limitado y no decide estrategia comercial puede tener un perfil distinto de otro que desarrolla mercado, decide precios y soporta riesgos comerciales relevantes.', chair: 'No preguntes solamente “¿qué hace la empresa?”. Pregunta quién decide, con qué recursos, qué puede salir mal y quién controla las decisiones asociadas a ese riesgo.', remember: 'El análisis FAR ayuda a conectar la conducta económica de las partes con la remuneración que corresponde analizar.' },
+  { heading: 'Comparar exige criterio', paragraphs: ['Una comparación útil requiere suficiente similitud en las características económicamente relevantes o la posibilidad de realizar ajustes razonablemente confiables. Dos empresas del mismo sector no son automáticamente comparables.', 'Las características del bien o servicio, funciones, activos, riesgos, términos contractuales, circunstancias económicas y estrategias de negocio pueden afectar materialmente las condiciones de una operación.'], key: 'Comparabilidad no significa identidad. Significa que las diferencias relevantes no afectan materialmente la comparación o pueden ajustarse con suficiente confiabilidad.', exampleTitle: 'Parecidas a primera vista', example: 'Dos distribuidoras venden productos similares, pero una posee intangibles locales valiosos y asume riesgo significativo de inventario mientras la otra opera de manera limitada. El sector común no elimina esas diferencias.', chair: 'Una base de datos encuentra candidatos; el consultor determina comparabilidad. Documenta tanto por qué aceptas como por qué rechazas.', remember: 'La comparabilidad depende de características económicamente relevantes, no de semejanzas superficiales.' },
+  { heading: 'Un mapa de herramientas', paragraphs: ['Los métodos de precios de transferencia son herramientas para contrastar las condiciones de una operación controlada con plena competencia. Algunos observan precios; otros márgenes brutos, costos y beneficios o resultados netos.', 'No existe una regla profesional válida que permita escoger siempre el mismo método. La naturaleza de la operación, la información disponible, la comparabilidad y la confiabilidad de los ajustes determinan qué enfoque resulta más apropiado.'], key: 'El método no es el punto de partida ni un ritual. Es una herramienta seleccionada después de comprender la operación y evaluar la información disponible.', exampleTitle: 'La mejor herramienta depende del problema', example: 'Si existe una operación independiente altamente comparable, un análisis directo de precio puede ser poderoso. Si esa información no existe o presenta diferencias difíciles de ajustar, otro método puede producir una conclusión más confiable.', chair: 'Defiende la selección del método explicando por qué es apropiado para estos hechos, no diciendo únicamente que es un método aceptado.', remember: 'La confiabilidad del análisis importa más que aplicar mecánicamente un método favorito.' },
+  { heading: 'El razonamiento completo', paragraphs: ['Un consultor de precios de transferencia convierte información dispersa en una cadena lógica: identifica las partes, delimita la operación, comprende funciones, activos y riesgos, reconoce las circunstancias económicas, evalúa comparabilidad, selecciona una metodología y contrasta el resultado con plena competencia.', 'La calidad profesional también depende de reconocer límites. Cuando falta información material, la respuesta correcta puede ser formular una pregunta adicional o expresar una conclusión condicionada, no llenar el vacío con una suposición.'], key: 'Una conclusión fuerte permite seguir el camino desde los hechos hasta el resultado. Si un eslabón no puede explicarse, el análisis necesita más trabajo.', exampleTitle: 'De junior a consultor', example: 'Ante una regalía intragrupo, un buen inicio no es buscar porcentajes. Es identificar el intangible, las partes, los derechos concedidos, las funciones relevantes, el mercado, la base de cálculo y la evidencia disponible antes de decidir cómo analizarla.', chair: 'Tu valor no está en producir una respuesta rápida, sino en saber qué hechos sostienen la respuesta, qué evidencia falta y qué tan lejos permite llegar la información.', remember: 'Precios de Transferencia es una disciplina de razonamiento económico sustentado en hechos, comparabilidad y evidencia.' },
 ];
 
 export function LessonPage() {
@@ -112,30 +23,30 @@ export function LessonPage() {
   const body = lessonBodies[index];
   const assessment = j1Assessments[index];
 
-  useEffect(() => {
-    if (lesson) markLessonVisited(lesson.sequence);
-  }, [lesson]);
-
+  useEffect(() => { if (lesson) markLessonVisited(lesson.sequence); }, [lesson]);
   if (!lesson || !body || !assessment) return <Navigate to="/courses/j1" replace />;
+
   const previous = index > 0 ? `/courses/j1/lesson/${index}` : '/courses/j1';
   const next = index < j1Lessons.length - 1 ? `/courses/j1/lesson/${index + 2}` : '/courses/j1';
+  const lessonPercent = Math.round((lesson.sequence / j1Lessons.length) * 100);
 
   return (
     <section className="lesson-page">
       <div className="lesson-topbar"><div className="container"><Link to="/courses/j1">← J1 · Introducción a Precios de Transferencia</Link><span>Lección {lesson.sequence} de {j1Lessons.length}</span></div></div>
+      <div className="lesson-progress-shell" aria-label={`Progreso de la lección ${lesson.sequence} de ${j1Lessons.length}`}><div className="container lesson-progress-inner"><strong>{lesson.sequence}/{j1Lessons.length}</strong><div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={lessonPercent}><span style={{ width: `${lessonPercent}%` }} /></div><span>{lessonPercent}% de J1 recorrido</span></div></div>
       <article className="lesson-content">
-        <div className="eyebrow">Lección {lesson.sequence}</div>
+        <div className="eyebrow">Junior · J1 · Lección {lesson.sequence}</div>
         <h1>{lesson.title}</h1>
-        <p className="lesson-meta">≈ {lesson.estimatedMinutes} min · Curriculum v1</p>
-        <section className="learning-outcomes"><h2>Qué vas a aprender</h2><ul>{lesson.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul></section>
+        <p className="lesson-meta">≈ {lesson.estimatedMinutes} min · Lección {lesson.sequence} de {j1Lessons.length}</p>
+        <section className="learning-outcomes"><h2>Al terminar esta lección podrás</h2><ul>{lesson.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul></section>
         <h2>{body.heading}</h2>
         {body.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         <div className="concept-callout"><span className="eyebrow">Concepto clave</span><p>{body.key}</p></div>
         <h2>{body.exampleTitle}</h2><p>{body.example}</p>
         <div className="consultant-card"><span className="eyebrow">La Silla del Consultor</span><h2>Piensa como consultor.</h2><p>{body.chair}</p></div>
         <FormativeCheck key={assessment.id} check={assessment} onCorrect={() => markLessonCompleted(lesson.sequence)} />
-        <section className="remember-card"><div className="eyebrow">Lo que no debemos olvidar</div><p>{body.remember}</p></section>
-        <div className="lesson-nav"><Link className="button secondary" to={previous}>{index === 0 ? 'Volver al curso' : 'Lección anterior'}</Link><Link className="button primary" to={next}>{index === j1Lessons.length - 1 ? 'Volver al curso' : 'Siguiente lección'}</Link></div>
+        <section className="remember-card"><div className="eyebrow">Lo que no debes olvidar</div><p>{body.remember}</p></section>
+        <div className="lesson-nav"><Link className="button secondary" to={previous}>{index === 0 ? 'Volver al curso' : '← Lección anterior'}</Link><Link className="button primary" to={next}>{index === j1Lessons.length - 1 ? 'Volver al curso' : 'Siguiente lección →'}</Link></div>
       </article>
     </section>
   );

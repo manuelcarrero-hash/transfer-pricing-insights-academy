@@ -52,7 +52,7 @@ export function J2CoursePage() {
           <p className="materials-intro">J2 conecta el contenido de la Academy con la fuente primaria, una explicación práctica y el video doctrinal del Capítulo I.</p>
           <div className="materials-grid">
             <article className="material-card"><span className="material-type">Fuente primaria</span><h3>Directrices OCDE 2022 · Capítulo I</h3><p>Consulta el marco internacional sobre plena competencia, delimitación precisa y análisis de riesgos.</p><a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a></article>
-            <article className="material-card"><span className="material-type">Lectura complementaria</span><h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3><p>Usa el Capítulo I del libro de Manuel Carrero Rojo como explicación accesible, con ejemplos y lenguaje práctico.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a></article>
+            <article className="material-card"><span className="material-type">Lectura complementaria</span><h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3><p>Usa el Capítulo I del libro de Manuel Carrero Rojo como explicación accesible, con ejemplos y lenguaje práctico.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a></article>
           </div>
           {chapterVideo?.href && <ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive" />}
         </div>

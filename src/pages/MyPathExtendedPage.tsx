@@ -44,21 +44,31 @@ export function MyPathExtendedPage() {
 
   if (!hasExtendedPath) return <MyPathPage />;
 
-  return (
+  const semiSeniorExtension = (
     <>
-      <MyPathPage showLocalNote={false} />
-      <section className="section my-path-page semi-senior-extension">
-        <div className="container narrow">
-          {unlocked('tp-ss6-unlocked') && <CourseProgressCard level="Semi Senior" code="SS6" course={ss6Course} lessons={ss6Lessons} progress={progress.SS6} />}
-          {unlocked('tp-ss7-unlocked') && <CourseProgressCard level="Semi Senior" code="SS7" course={ss7Course} lessons={ss7Lessons} progress={progress.SS7} />}
-          {unlocked('tp-ss8-unlocked') && <CourseProgressCard level="Semi Senior" code="SS8" course={ss8Course} lessons={ss8Lessons} progress={progress.SS8} />}
-
-          {levelComplete && <section className="progress-card completed-level"><div className="progress-card-top"><div><span className="progress-kicker">Cierre de nivel</span><h2>Advanced Transfer Pricing Practitioner</h2></div><strong className="progress-percent">{seniorUnlocked ? '✓' : 'Ready'}</strong></div><p className="progress-summary">{seniorUnlocked ? 'Nivel Semi Senior acreditado. Senior Knowledge Track habilitado.' : cumulativePassed ? 'Componente objetivo aprobado. Faltan los dos casos avanzados obligatorios.' : 'SS1–SS8 completados. Continúa con la evaluación acumulativa: 24 reactivos, 80% global y piso de 60% por dominio.'}</p><div className="progress-actions"><a className="button secondary" href={semiSeniorIntegralGuideUrl} target="_blank" rel="noreferrer">Guía integral Semi Senior</a>{seniorUnlocked ? <Link className="button primary" to="/advanced-practitioner/certificate">Ver certificado</Link> : cumulativePassed ? <Link className="button primary" to="/semi-senior/cases">Resolver casos avanzados</Link> : <Link className="button primary" to="/semi-senior/assessment">Presentar evaluación acumulativa</Link>}</div></section>}
-
-          {seniorUnlocked && <><div className="eyebrow">Senior Knowledge Track</div><CourseProgressCard level="Senior Knowledge" code="S1" course={s1Course} lessons={s1Lessons} progress={progress.S1} />{unlocked('tp-s2-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S2" course={s2Course} lessons={s2Lessons} progress={progress.S2} />}{unlocked('tp-s3-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S3" course={s3Course} lessons={s3Lessons} progress={progress.S3} />}{unlocked('tp-s4-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S4" course={s4Course} lessons={s4Lessons} progress={progress.S4} />}{unlocked('tp-s5-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S5" course={s5Course} lessons={s5Lessons} progress={progress.S5} />}{unlocked('tp-s6-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S6" course={s6Course} lessons={s6Lessons} progress={progress.S6} />}{unlocked('tp-s7-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S7" course={s7Course} lessons={s7Lessons} progress={progress.S7} />}<SeniorClosureProgress /></>}
-          <LocalProgressNote />
-        </div>
-      </section>
+      <div className="path-course-list path-course-list-extension">
+        {unlocked('tp-ss6-unlocked') && <CourseProgressCard level="Semi Senior" code="SS6" course={ss6Course} lessons={ss6Lessons} progress={progress.SS6} />}
+        {unlocked('tp-ss7-unlocked') && <CourseProgressCard level="Semi Senior" code="SS7" course={ss7Course} lessons={ss7Lessons} progress={progress.SS7} />}
+        {unlocked('tp-ss8-unlocked') && <CourseProgressCard level="Semi Senior" code="SS8" course={ss8Course} lessons={ss8Lessons} progress={progress.SS8} />}
+      </div>
+      {levelComplete && <section className="progress-card level-closure-card completed-level"><div className="progress-card-top"><div><span className="progress-kicker">Cierre de nivel</span><h2>Advanced Transfer Pricing Practitioner</h2></div><strong className="progress-percent">{seniorUnlocked ? '✓' : 'Ready'}</strong></div><p className="progress-summary">{seniorUnlocked ? 'Nivel Semi Senior acreditado. Senior Knowledge Track habilitado.' : cumulativePassed ? 'Componente objetivo aprobado. Faltan los dos casos avanzados obligatorios.' : 'SS1–SS8 completados. Continúa con la evaluación acumulativa: 24 reactivos, 80% global y piso de 60% por dominio.'}</p><div className="progress-actions"><a className="button secondary" href={semiSeniorIntegralGuideUrl} target="_blank" rel="noreferrer">Guía integral Semi Senior</a>{seniorUnlocked ? <Link className="button primary" to="/advanced-practitioner/certificate">Ver certificado</Link> : cumulativePassed ? <Link className="button primary" to="/semi-senior/cases">Resolver casos avanzados</Link> : <Link className="button primary" to="/semi-senior/assessment">Presentar evaluación acumulativa</Link>}</div></section>}
     </>
   );
+
+  const seniorExtension = seniorUnlocked ? (
+    <>
+      <div className="path-course-list">
+        <CourseProgressCard level="Senior Knowledge" code="S1" course={s1Course} lessons={s1Lessons} progress={progress.S1} />
+        {unlocked('tp-s2-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S2" course={s2Course} lessons={s2Lessons} progress={progress.S2} />}
+        {unlocked('tp-s3-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S3" course={s3Course} lessons={s3Lessons} progress={progress.S3} />}
+        {unlocked('tp-s4-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S4" course={s4Course} lessons={s4Lessons} progress={progress.S4} />}
+        {unlocked('tp-s5-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S5" course={s5Course} lessons={s5Lessons} progress={progress.S5} />}
+        {unlocked('tp-s6-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S6" course={s6Course} lessons={s6Lessons} progress={progress.S6} />}
+        {unlocked('tp-s7-unlocked') && <CourseProgressCard level="Senior Knowledge" code="S7" course={s7Course} lessons={s7Lessons} progress={progress.S7} />}
+      </div>
+      <SeniorClosureProgress />
+    </>
+  ) : null;
+
+  return <><MyPathPage showLocalNote={false} semiSeniorExtension={semiSeniorExtension} seniorExtension={seniorExtension} /><div className="container path-container"><LocalProgressNote /></div></>;
 }

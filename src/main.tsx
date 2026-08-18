@@ -6,6 +6,13 @@ import './styles/tokens.css';
 import './styles/global.css';
 import './styles/learning-experience.css';
 import './styles/junior-assessment.css';
+import './styles/polish-foundation.css';
+import './styles/p0b-home-shell.css';
+import './styles/path-journey.css';
+import './styles/p0d-course-lesson.css';
+import './styles/p0e-resources.css';
+import './styles/p0f-assessment-certificate.css';
+import './styles/p0g-microinteractions-mobile.css';
 import './styles/accessibility.css';
 
 createRoot(document.getElementById('root')!).render(

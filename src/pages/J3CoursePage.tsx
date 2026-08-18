@@ -61,7 +61,7 @@ export function J3CoursePage() {
               <span className="material-type">Lectura complementaria</span>
               <h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3>
               <p>Refuerza el análisis funcional con explicaciones y ejemplos prácticos del libro de Manuel Carrero Rojo.</p>
-              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir / descargar libro</a>
+              <a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a>
             </article>
           </div>
           {chapterVideo?.href && <ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive" />}

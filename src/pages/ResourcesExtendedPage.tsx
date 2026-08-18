@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ExternalVideoCard } from '../components/learning/ExternalVideoCard';
 import { getAllActiveVideos } from '../content/media/videoCurriculum';
 
-type ResourceCategory = 'OCDE' | 'Guías' | 'Libro' | 'Datasets' | 'Videos';
+type ResourceCategory = 'OCDE' | 'Guías' | 'Libro' | 'Datasets' | 'Labs' | 'Toolkits' | 'Videos';
 type ResourceLevel = 'Todos' | 'Junior' | 'Consultant' | 'Semi Senior' | 'Senior';
 
 type LibraryResource = {
@@ -31,6 +31,9 @@ const resources: LibraryResource[] = [
   { id:'c7', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C7 — Guía de Documentación de Precios de Transferencia', description:'EPT, Local File, Master File, CbC Report, Fase 11 y respuestas razonadas.', href:'https://drive.google.com/file/d/1yyzN_emA2ebR5LMsnlcD4ARJgO02sekM/view' },
   { id:'c3-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C3 — Dataset TNMM / MTUO v1.0', description:'Datos de práctica para Operating Margin, Mark-up on Costs, Berry Ratio, ROA y segmentación.', href:'https://docs.google.com/spreadsheets/d/1_1KV_MMz3Ia-3E9KVM7gJS9KhaRod90pXsgjMceL_OY/export?format=xlsx' },
   { id:'c4-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C4 — Dataset Accept / Reject Comparables v1.0', description:'Comparables ficticios para practicar filtros, análisis funcional y decisiones Accept/Reject con documentación de motivos.', href:'https://docs.google.com/spreadsheets/d/1IKMvH2vzzhecVmnH3vmx3JndqEM_r3ZogomE8Iq9pAw/export?format=xlsx' },
+  { id:'transaction-labs', category:'Labs', level:'Todos', type:'Biblioteca práctica', title:'Transaction Labs Library v1.1', description:'Quince escenarios de operaciones controladas para practicar delimitación, FAR, selección de método y razonamiento antes de calcular.', href:'https://docs.google.com/document/d/1G7JHrbk88ZHc-5bM_gGJn2bIj6uMkC21SRrsJzXBZ6A/edit' },
+  { id:'client-toolkit', category:'Toolkits', level:'Todos', type:'Herramienta de trabajo', title:'Client Information Gathering & Interview Toolkit v1.0', description:'Guía transversal para solicitar información, entrevistar al cliente, documentar sustancia económica y reconciliar evidencia.', href:'https://docs.google.com/document/d/1d6VWPIL67U92uiLNnqqPxUVeA1HHTD3LcChla6u_Syc/edit', featured:true },
+  { id:'client-onboarding-lab', category:'Labs', level:'Todos', type:'Laboratorio interactivo', title:'Client Onboarding Case Lab v1.0', description:'Experiencia guiada para convertir solicitud, entrevista y evidencia en un expediente técnico con hechos, FAR, vacíos e inconsistencias.', href:'/labs/client-onboarding', featured:true },
   { id:'ss1', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS1 — Guía de Estudio Servicios Intragrupo', description:'Benefit test, shareholder activities, duplicidad, allocation keys, cost base, low-value services y respuestas razonadas.', href:'https://drive.google.com/file/d/1TZCCsv4Nt9haMgH-rvzu6w-s203DudI1/view' },
   { id:'ss2', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS2 — Guía de Estudio Activos Intangibles', description:'Propiedad legal vs. retornos, DEMPE conceptual, licencia/transferencia, métodos, HTVI, laboratorios y Fase 13.', href:'https://drive.google.com/file/d/1tqga90WpxOiFECau4AMGmww1Qb5PSPcc/view' },
   { id:'ss3', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS3 — Guía de Estudio DEMPE', description:'Development, Enhancement, Maintenance, Protection, Exploitation, control del riesgo, financiamiento, laboratorios y Fase 14.', href:'https://drive.google.com/file/d/1EejgsPK4CFUjmMFnPOQYkX6VhDWnkUiE/view' },
@@ -50,13 +53,15 @@ const resources: LibraryResource[] = [
   { id:'s7', category:'Guías', level:'Senior', type:'Guía de curso', title:'S7 — Professional Judgment', description:'Hechos, supuestos, inferencias, límites, certeza, consistencia narrativa, documentación de juicio y Fase 25.', href:'https://drive.google.com/file/d/12d6lNSo-r6i7zrBNZxh_xuB7Rj-1hrsS/view' },
 ];
 
-const categories: Array<'Todos' | ResourceCategory> = ['Todos', 'OCDE', 'Guías', 'Libro', 'Datasets', 'Videos'];
+const categories: Array<'Todos' | ResourceCategory> = ['Todos', 'OCDE', 'Guías', 'Libro', 'Datasets', 'Labs', 'Toolkits', 'Videos'];
 const levels: ResourceLevel[] = ['Todos', 'Junior', 'Consultant', 'Semi Senior', 'Senior'];
 
 function resourceActionLabel(resource: LibraryResource) {
   if (resource.category === 'Guías') return 'Descargar guía';
   if (resource.category === 'Libro') return 'Abrir libro';
   if (resource.category === 'Datasets') return 'Descargar dataset';
+  if (resource.category === 'Labs') return 'Abrir laboratorio';
+  if (resource.category === 'Toolkits') return 'Abrir toolkit';
   return 'Abrir recurso';
 }
 
@@ -77,7 +82,7 @@ export function ResourcesExtendedPage(){
   const totalVisible=visibleResources.length+(showVideos?videos.filter(video=>!normalized||`${video.title} ${video.description}`.toLocaleLowerCase('es').includes(normalized)).length:0);
 
   return <section className="section resources-page library-page"><div className="container library-container">
-    <header className="library-hero"><div className="eyebrow">Biblioteca</div><h1>Recursos para estudiar con criterio.</h1><p className="lead small">Fuentes primarias, guías de estudio, datasets y videos doctrinales organizados para encontrar rápido lo que necesitas en cada etapa de la ruta.</p></header>
+    <header className="library-hero"><div className="eyebrow">Biblioteca</div><h1>Recursos para estudiar con criterio.</h1><p className="lead small">Fuentes primarias, guías de estudio, datasets, laboratorios, toolkits y videos doctrinales organizados para encontrar rápido lo que necesitas en cada etapa de la ruta.</p></header>
 
     <section className="library-featured" aria-labelledby="featured-resources-title"><div className="library-section-heading"><div><span className="eyebrow">Selección esencial</span><h2 id="featured-resources-title">Empieza por aquí.</h2></div><p>Las referencias que acompañan toda la ruta académica.</p></div><div className="library-featured-grid">{featured.map(resource=><article className="library-featured-card" key={resource.id}><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a></article>)}</div></section>
 

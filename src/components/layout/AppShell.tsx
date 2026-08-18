@@ -1,5 +1,6 @@
 import { useRef, type PropsWithChildren } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { AcademyLogo } from '../brand/AcademyLogo';
 
 const activeNavItems = [
   ['Inicio', '/'],
@@ -38,7 +39,7 @@ export function AppShell({ children }: PropsWithChildren) {
       <header className="site-header">
         <div className="container header-inner">
           <Link className="brand" to="/" aria-label="Transfer Pricing Insights Academy — Inicio" onClick={closeMobileNav}>
-            <span className="brand-mark" aria-hidden="true">TP</span>
+            <AcademyLogo className="brand-logo" variant="isotype" alt="" />
             <span className="brand-copy">
               <strong>Transfer Pricing Insights</strong>
               <span>Academy</span>

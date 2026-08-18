@@ -15,6 +15,8 @@ const supportOptions = [
   { amount: '$500 MXN', url: 'https://buy.stripe.com/cNi4grdJccXi9qj4bQ18c0b' },
 ] as const;
 
+const podcastUrl = 'https://open.spotify.com/search/Precios%20de%20Transferencia%3A%20The%20VIP%20Access';
+
 type NavigationLinksProps = { onNavigate?: () => void };
 
 function NavigationLinks({ onNavigate }: NavigationLinksProps) {
@@ -63,9 +65,9 @@ export function AppShell({ children }: PropsWithChildren) {
           <section className="footer-column">
             <strong>Proyecto</strong>
             <Link to="/autor">Sobre el autor</Link>
-            <span className="footer-author">Manuel Carrero Rojo</span>
             <a href="https://mx.linkedin.com/in/manuel-carrero-rojo-937118113" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a href="https://manuelcarrerorojo.substack.com/" target="_blank" rel="noopener noreferrer">Transfer Pricing Insights</a>
+            <a href={podcastUrl} target="_blank" rel="noopener noreferrer">Podcast · The VIP Access</a>
           </section>
 
           <section className="footer-support footer-column">

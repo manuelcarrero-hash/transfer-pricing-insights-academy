@@ -36,6 +36,18 @@ test.describe('Academy critical path', () => {
     await expect(page).toHaveURL(/\/resources$/);
   });
 
+  test('Resources library search and filters narrow visible materials', async ({ page }) => {
+    await page.goto('/resources');
+    await expect(page.getByRole('heading', { name: 'Recursos para estudiar con criterio.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Guías', exact: true }).click();
+    await page.getByRole('button', { name: 'Senior', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'S7 — Professional Judgment' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'C3 — Guía de Estudio TNMM / MTUO' })).toHaveCount(0);
+    await page.getByRole('searchbox', { name: 'Buscar' }).fill('comparability');
+    await expect(page.getByRole('heading', { name: 'S3 — Advanced Comparability' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'S7 — Professional Judgment' })).toHaveCount(0);
+  });
+
   test('deep lesson routes work and persist last visited lesson', async ({ page }) => {
     await page.goto('/courses/j1/lesson/2');
     await expect(page.locator('.lesson-topbar').getByText('Lección 2 de 8', { exact: true })).toBeVisible();

@@ -13,7 +13,7 @@ export function AcademyLogo({ variant = 'isotype', className = '', alt = '' }: A
   if (variant === 'isotype') {
     return (
       <span className={`academy-logo-crop ${className}`.trim()} role={alt ? 'img' : undefined} aria-label={alt || undefined} aria-hidden={alt ? undefined : true}>
-        <img className="academy-logo-source" src={LOGO_URLS.isotype} alt="" decoding="async" loading="eager" referrerPolicy="no-referrer" />
+        <img className="academy-logo-source" src={LOGO_URLS.isotype} alt="" decoding="async" loading="eager" fetchPriority="high" referrerPolicy="no-referrer" />
       </span>
     );
   }
@@ -24,7 +24,7 @@ export function AcademyLogo({ variant = 'isotype', className = '', alt = '' }: A
       src={LOGO_URLS.principal}
       alt={alt}
       decoding="async"
-      loading="eager"
+      loading="lazy"
       referrerPolicy="no-referrer"
     />
   );

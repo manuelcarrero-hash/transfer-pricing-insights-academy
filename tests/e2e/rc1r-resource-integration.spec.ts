@@ -15,7 +15,7 @@ test.describe('RC1-R resource integration', () => {
   test('client onboarding case lab preserves the eight-phase Nortek practice flow and local progress', async ({ page }) => {
     await page.goto('/labs/client-onboarding');
     await expect(page.getByRole('heading', { name: 'Client Onboarding Case Lab' })).toBeVisible();
-    await expect(page.getByText(/Nortek Industrial México/)).toBeVisible();
+    await expect(page.getByText('Caso · Nortek Industrial México, S.A. de C.V. (“NIM”)', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: '8. Client Technical Intake Memo' })).toBeVisible();
     await expect(page.getByText('0 de 54 verificaciones completadas')).toBeVisible();
 

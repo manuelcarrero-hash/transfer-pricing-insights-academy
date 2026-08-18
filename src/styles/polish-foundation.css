@@ -11,21 +11,49 @@ h1,
   font-weight: 700;
 }
 
-.brand-logo {
+.academy-logo-crop {
+  position: relative;
   display: block;
-  object-fit: contain;
-  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  flex: 0 0 46px;
+  background: #fff;
+  border-radius: 10px;
 }
 
-.brand-logo-principal {
-  width: 238px;
-  max-height: 48px;
+.academy-logo-source {
+  position: absolute;
+  width: 576px;
+  max-width: none;
+  height: auto;
+  left: -271px;
+  top: -128px;
+  pointer-events: none;
+  user-select: none;
 }
 
-.brand-logo-isotype {
-  display: none;
-  width: 44px;
-  height: 44px;
+.brand-logo {
+  width: 46px;
+  height: 46px;
+}
+
+.brand-copy {
+  display: grid;
+  gap: 1px;
+  line-height: 1.08;
+  color: var(--color-brand-navy);
+}
+
+.brand-copy strong {
+  font-size: .92rem;
+  letter-spacing: -.01em;
+}
+
+.brand-copy span {
+  font-size: .78rem;
+  color: var(--color-text-muted);
+  letter-spacing: .01em;
 }
 
 .site-header,
@@ -143,20 +171,27 @@ h1,
   box-shadow: inset 0 0 0 1px rgba(183, 144, 77, .2);
 }
 
-.certificate-monogram img,
-.certificate-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.certificate-monogram .academy-logo-crop {
+  margin: auto;
 }
 
 @media (max-width: 560px) {
-  .brand-logo-principal {
+  .brand-copy {
     display: none;
   }
 
-  .brand-logo-isotype {
-    display: block;
+  .brand-logo,
+  .academy-logo-crop {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .brand-logo .academy-logo-source,
+  .brand .academy-logo-source {
+    width: 526px;
+    left: -248px;
+    top: -117px;
   }
 }
 

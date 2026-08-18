@@ -12,22 +12,15 @@ const LOGO_URLS = {
 } as const;
 
 export function AcademyLogo({ variant = 'isotype', className = '', alt = '' }: AcademyLogoProps) {
-  if (variant === 'isotype') {
-    return (
-      <span className={`academy-logo-crop ${className}`.trim()} role={alt ? 'img' : undefined} aria-label={alt || undefined} aria-hidden={alt ? undefined : true}>
-        <img className="academy-logo-source" src={LOGO_URLS.isotype} alt="" decoding="async" loading="eager" fetchPriority="high" />
-      </span>
-    );
-  }
-
   return (
     <img
       className={className}
-      src={LOGO_URLS.principal}
+      src={LOGO_URLS[variant]}
       alt={alt}
       decoding="async"
-      loading="lazy"
-      referrerPolicy="no-referrer"
+      loading={variant === 'isotype' ? 'eager' : 'lazy'}
+      fetchPriority={variant === 'isotype' ? 'high' : 'auto'}
+      referrerPolicy={variant === 'principal' ? 'no-referrer' : undefined}
     />
   );
 }

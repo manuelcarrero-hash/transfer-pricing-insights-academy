@@ -1,0 +1,338 @@
+/* P0-D — Course + Lesson */
+
+.course-page > .container {
+  display: grid;
+  gap: 0;
+}
+
+.course-page .breadcrumb {
+  margin-bottom: 24px;
+}
+
+.course-page .course-hero {
+  padding: clamp(28px, 4vw, 52px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top right, rgba(183, 144, 77, .12), transparent 34%),
+    linear-gradient(180deg, #fff 0%, #fbfaf7 100%);
+  box-shadow: var(--shadow-xs);
+}
+
+.course-page .course-hero h1 {
+  font-family: var(--font-editorial);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  letter-spacing: -.04em;
+  margin: 10px 0 18px;
+  max-width: 900px;
+}
+
+.course-page .course-meta {
+  margin: 26px 0 30px;
+  gap: 8px;
+}
+
+.course-page .course-meta span {
+  border: 0;
+  background: #f1f4f7;
+  color: #526173;
+  padding: 7px 11px;
+  font-size: .82rem;
+}
+
+.course-page .outcome-card {
+  padding: 0 0 0 26px;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid #dfe4ea;
+  border-radius: 0;
+  box-shadow: none;
+  align-self: stretch;
+}
+
+.course-page .outcome-card h2 {
+  font-family: var(--font-editorial);
+  font-size: 1.35rem;
+}
+
+.course-page .outcome-card ul {
+  padding-left: 20px;
+}
+
+.course-page .outcome-card li {
+  margin: 13px 0;
+  color: #42536a;
+}
+
+.course-progress-card {
+  margin: 18px 0 0;
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: minmax(180px, .7fr) minmax(240px, 1.3fr) auto;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.78);
+}
+
+.course-progress-card > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+
+.course-progress-card > div:first-child span {
+  color: var(--color-text-muted);
+  font-size: .86rem;
+}
+
+.course-progress-card > a {
+  font-weight: 750;
+  font-size: .86rem;
+  text-decoration: none;
+}
+
+.study-materials {
+  margin-top: 72px;
+}
+
+.study-materials > h2,
+.course-index > h2 {
+  font-family: var(--font-editorial);
+  letter-spacing: -.02em;
+}
+
+.materials-intro {
+  max-width: 760px;
+  color: var(--color-text-muted);
+}
+
+.materials-grid {
+  gap: 12px;
+}
+
+.material-card {
+  box-shadow: none !important;
+  border-color: var(--color-border-subtle) !important;
+  background: #fff;
+}
+
+.material-card.featured {
+  background: var(--color-surface-editorial);
+  border-color: #d9c89f !important;
+}
+
+.course-index {
+  margin-top: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+.course-index ol {
+  margin-top: 20px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.course-index .lesson-row {
+  border-color: var(--color-border-subtle);
+}
+
+.course-index .lesson-row > a,
+.course-index .lesson-row > div {
+  padding: 18px 4px;
+  border-radius: var(--radius-sm);
+}
+
+.course-index .lesson-row > a:hover {
+  background: #f7f8fa;
+}
+
+.course-index .lesson-row span {
+  border-color: #d5dce5;
+  background: #fff;
+  color: var(--color-brand-navy);
+}
+
+.lesson-page,
+.lesson-content {
+  background: var(--color-bg);
+}
+
+.lesson-topbar {
+  position: sticky;
+  top: 74px;
+  z-index: 12;
+  background: rgba(9, 24, 46, .97);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.lesson-topbar .container {
+  min-height: 58px;
+}
+
+.lesson-progress-shell {
+  background: #fff;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.lesson-progress-inner {
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  font-size: .82rem;
+  color: var(--color-text-muted);
+}
+
+.lesson-progress-inner .progress-track {
+  height: 5px;
+}
+
+.lesson-content {
+  padding-top: 58px;
+  font-size: 1.04rem;
+}
+
+.lesson-content > .eyebrow {
+  margin-bottom: 10px;
+}
+
+.lesson-content > h1 {
+  font-size: clamp(2.35rem, 5vw, 4rem);
+  margin-bottom: 10px;
+}
+
+.lesson-meta {
+  font-size: .92rem;
+  margin-bottom: 34px;
+}
+
+.lesson-content .learning-outcomes {
+  padding: 0 0 0 24px;
+  border: 0;
+  border-left: 3px solid #d7b874;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.lesson-content .learning-outcomes h2 {
+  font-family: var(--font-editorial);
+  font-size: 1.25rem;
+}
+
+.lesson-content > h2 {
+  font-family: var(--font-editorial);
+  letter-spacing: -.01em;
+}
+
+.concept-callout {
+  background: #f7f1e6;
+  border-left-width: 3px;
+  box-shadow: none;
+}
+
+.consultant-card {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(183,144,77,.22), transparent 30%),
+    var(--color-brand-navy);
+  box-shadow: var(--shadow-soft);
+}
+
+.consultant-card::before {
+  content: 'TP';
+  position: absolute;
+  right: 24px;
+  bottom: -14px;
+  font-family: var(--font-editorial);
+  font-size: 5.5rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.045);
+  pointer-events: none;
+}
+
+.consultant-card h2 {
+  font-family: var(--font-editorial);
+}
+
+.remember-card {
+  background: #fff;
+  box-shadow: none !important;
+  border-color: var(--color-border-subtle) !important;
+}
+
+.lesson-nav {
+  margin-top: 52px;
+}
+
+@media (max-width: 900px) {
+  .course-page .course-hero {
+    padding: 28px;
+  }
+  .course-page .outcome-card {
+    border-left: 0;
+    border-top: 1px solid #dfe4ea;
+    padding: 24px 0 0;
+  }
+  .course-progress-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .lesson-topbar {
+    top: 74px;
+  }
+}
+
+@media (max-width: 560px) {
+  .course-page .course-hero {
+    padding: 22px;
+  }
+  .course-page .course-hero h1 {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+  .course-page .course-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .course-page .course-meta span {
+    width: fit-content;
+  }
+  .course-progress-card {
+    padding: 16px;
+  }
+  .study-materials {
+    margin-top: 52px;
+  }
+  .course-index {
+    margin-top: 50px;
+  }
+  .lesson-progress-inner {
+    grid-template-columns: auto 1fr;
+    padding-block: 9px;
+  }
+  .lesson-progress-inner > span:last-child {
+    grid-column: 1 / -1;
+  }
+  .lesson-content {
+    font-size: 1rem;
+  }
+  .consultant-card {
+    padding: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lesson-topbar {
+    backdrop-filter: none;
+  }
+}

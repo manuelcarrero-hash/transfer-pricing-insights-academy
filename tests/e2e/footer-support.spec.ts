@@ -12,7 +12,7 @@ test.describe('Footer and voluntary support smoke', () => {
 
   test('footer exposes the three approved Stripe support amounts without implying benefits', async ({ page }) => {
     await page.goto('/');
-    const support = page.getByRole('region', { name: 'Opciones de apoyo voluntario' });
+    const support = page.locator('[aria-label="Opciones de apoyo voluntario"]');
     const links = support.getByRole('link');
     await expect(links).toHaveCount(3);
 

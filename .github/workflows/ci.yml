@@ -94,3 +94,12 @@ jobs:
           path: test-results/p0a-visual/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Upload P0-I final visual audit screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: p0i-final-visual-audit
+          path: test-results/p0i-final-visual/
+          if-no-files-found: error
+          retention-days: 14

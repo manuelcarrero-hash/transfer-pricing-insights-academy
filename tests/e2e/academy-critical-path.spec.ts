@@ -38,7 +38,7 @@ test.describe('Academy critical path', () => {
 
   test('deep lesson routes work and persist last visited lesson', async ({ page }) => {
     await page.goto('/courses/j1/lesson/2');
-    await expect(page.getByText(/Lección 2 de/)).toBeVisible();
+    await expect(page.locator('.lesson-topbar').getByText('Lección 2 de 8', { exact: true })).toBeVisible();
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
     expect(stored.lastLesson).toBe(2);
   });

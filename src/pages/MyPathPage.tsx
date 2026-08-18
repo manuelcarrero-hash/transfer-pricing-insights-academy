@@ -51,10 +51,11 @@ export function MyPathPage({showLocalNote=true,semiSeniorExtension,seniorExtensi
   ...consultantCourses.filter(c=>c.visible).map(({code,course,lessons,p})=>({code,title:course.title,lessons,progress:p,href:`/courses/${code.toLowerCase()}`})),
   ...semiCourses.filter(c=>c.visible).map(({code,course,lessons,p})=>({code,title:course.title,lessons,progress:p,href:`/courses/${code.toLowerCase()}`})),
  ];
- const active=visibleJourney.find(item=>item.progress.completedLessons.length<item.lessons.length)??visibleJourney.at(-1);
  const completedLessons=visibleJourney.reduce((sum,item)=>sum+item.progress.completedLessons.length,0);
  const availableLessons=visibleJourney.reduce((sum,item)=>sum+item.lessons.length,0);
  const journeyPercent=availableLessons?Math.round((completedLessons/availableLessons)*100):0;
+ const summaryComplete=availableLessons>0&&completedLessons===availableLessons;
+ const active=summaryComplete?undefined:visibleJourney.find(item=>item.progress.completedLessons.length<item.lessons.length);
  const activeLesson=active?.progress.lastLesson??1;
  const activeHref=active?`${active.href}/lesson/${activeLesson}`:'/courses/j1';
  const currentLevel=seniorUnlocked?'Senior Knowledge':practitionerUnlocked?'Semi Senior':consultantUnlocked?'Consultant':'Junior';
@@ -62,12 +63,11 @@ export function MyPathPage({showLocalNote=true,semiSeniorExtension,seniorExtensi
  return <section className="section my-path-page"><div className="container path-container">
   <header className="path-overview">
    <div className="path-overview-copy"><div className="eyebrow">Mi Ruta</div><h1>Tu trayectoria de aprendizaje.</h1><p className="lead small">Ve qué has completado, dónde estás y cuál es el siguiente paso. Tu progreso permanece en este navegador mientras realizas el piloto.</p></div>
-   <aside className="path-summary-card" aria-label="Resumen de progreso">
-    <span className="path-summary-label">Nivel actual</span><strong className="path-summary-level">{currentLevel}</strong>
+   <aside className={`path-summary-card ${summaryComplete?'path-summary-complete':''}`} aria-label="Resumen de progreso">
+    <span className="path-summary-label">{summaryComplete?'Estado de la ruta':'Nivel actual'}</span><strong className="path-summary-level">{summaryComplete?'Ruta disponible completada':currentLevel}</strong>
     <div className="path-summary-progress"><span>{journeyPercent}%</span><div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={journeyPercent} aria-label="Progreso de la ruta disponible"><span style={{width:`${journeyPercent}%`}}/></div></div>
     <p>{completedLessons} de {availableLessons} lecciones disponibles completadas.</p>
-    <Link className="button primary" to={activeHref}>{active?.progress.lastLesson?'Continuar donde me quedé':'Continuar mi ruta'}</Link>
-    {active&&<small>Siguiente foco: <strong>{active.code} · {active.title}</strong></small>}
+    {summaryComplete?<><Link className="button secondary" to="/resources">Explorar recursos</Link><small>Has completado todas las lecciones actualmente reflejadas en este resumen.</small></>:<><Link className="button primary" to={activeHref}>{active?.progress.lastLesson?'Continuar donde me quedé':'Continuar mi ruta'}</Link>{active&&<small>Siguiente foco: <strong>{active.code} · {active.title}</strong></small>}</>}
    </aside>
   </header>
 

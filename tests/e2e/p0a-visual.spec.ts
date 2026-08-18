@@ -10,10 +10,11 @@ const viewports = [
 
 const routes = [
   { name: 'home', path: '/' },
-  { name: 'path', path: '/path' },
   { name: 'start', path: '/start' },
+  { name: 'path', path: '/path' },
   { name: 'resources', path: '/resources' },
-  { name: 'course-c1', path: '/courses/c1' },
+  { name: 'course-j1', path: '/courses/j1' },
+  { name: 'lesson-j1-1', path: '/courses/j1/lesson/1' },
 ] as const;
 
 for (const viewport of viewports) {

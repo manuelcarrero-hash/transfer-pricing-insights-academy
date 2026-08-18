@@ -13,14 +13,13 @@ type LibraryResource = {
   title: string;
   description: string;
   href: string;
-  action?: string;
   featured?: boolean;
 };
 
 const resources: LibraryResource[] = [
-  { id:'oecd-es', category:'OCDE', level:'Todos', type:'Fuente primaria', title:'Directrices OCDE 2022 · Español', description:'Versión de referencia para el estudio doctrinal y la consulta durante los cursos.', href:'https://drive.google.com/file/d/1JuCWOxPq6EGJ8Ig9EwkWLGhrflk038dY/view', action:'Abrir / descargar', featured:true },
-  { id:'oecd-en', category:'OCDE', level:'Todos', type:'Fuente primaria', title:'OECD Transfer Pricing Guidelines 2022 · English', description:'Versión en inglés para terminología técnica y contraste de conceptos.', href:'https://drive.google.com/file/d/1h7eGKum0AUO9b4s0ik0IV3QaIF4SO12K/view', action:'Open / download' },
-  { id:'book', category:'Libro', level:'Todos', type:'Lectura complementaria', title:'Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica', description:'Libro de Manuel Carrero Rojo como apoyo conceptual y práctico a lo largo de la ruta.', href:'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR6Q/view', action:'Abrir / descargar libro', featured:true },
+  { id:'oecd-es', category:'OCDE', level:'Todos', type:'Fuente primaria', title:'Directrices OCDE 2022 · Español', description:'Versión de referencia para el estudio doctrinal y la consulta durante los cursos.', href:'https://drive.google.com/file/d/1JuCWOxPq6EGJ8Ig9EwkWLGhrflk038dY/view', featured:true },
+  { id:'oecd-en', category:'OCDE', level:'Todos', type:'Fuente primaria', title:'OECD Transfer Pricing Guidelines 2022 · English', description:'Versión en inglés para terminología técnica y contraste de conceptos.', href:'https://drive.google.com/file/d/1h7eGKum0AUO9b4s0ik0IV3QaIF4SO12K/view' },
+  { id:'book', category:'Libro', level:'Todos', type:'Lectura complementaria', title:'Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica', description:'Libro de Manuel Carrero Rojo como apoyo conceptual y práctico a lo largo de la ruta.', href:'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR6Q/view', featured:true },
   { id:'junior-integral', category:'Guías', level:'Junior', type:'Guía de nivel', title:'Junior Foundations — Guía de Estudio Integral', description:'Repaso consolidado de J1–J5 con respuestas razonadas para preparar la evaluación acumulativa.', href:'https://drive.google.com/file/d/1Ql2l3w-6GRXRe2MMH_zKuqqW5qpXMB0N/view', featured:true },
   { id:'consultant-integral', category:'Guías', level:'Consultant', type:'Guía de nivel', title:'Transfer Pricing Practitioner — Guía de Estudio Integral', description:'Repaso acumulativo C1–C7, reglas críticas, preguntas razonadas y caso Manufacturas del Bajío.', href:'https://drive.google.com/file/d/1FO80dvP1i5fK6Js84Af7L2SQ8rVPkH0Z/view', featured:true },
   { id:'c1', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C1 — Guía de Estudio y Delimitación Precisa', description:'Checklist, matrices, laboratorios, caso integrador y respuestas razonadas.', href:'https://drive.google.com/file/d/1tFw3e-JdF5-DjoZ-KObypnP_RcFB__H0/view' },
@@ -30,7 +29,7 @@ const resources: LibraryResource[] = [
   { id:'c5', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C5 — Guía de Ajustes de Comparabilidad', description:'Materialidad, capital de trabajo, PP&E, volumen, cuándo no ajustar y respuestas razonadas.', href:'https://drive.google.com/file/d/1baUjdizfdfCC0YhVvmLmqGE0oRpbC9-n/view' },
   { id:'c6', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C6 — Guía del Rango de Plena Competencia', description:'Rango completo, cuartiles, mediana, outliers, laboratorios y respuestas razonadas.', href:'https://drive.google.com/file/d/1q1G4zUnNCPBvTdCqmAPppb6gQAH3v2pb/view' },
   { id:'c7', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C7 — Guía de Documentación de Precios de Transferencia', description:'EPT, Local File, Master File, CbC Report, Fase 11 y respuestas razonadas.', href:'https://drive.google.com/file/d/1yyzN_emA2ebR5LMsnlcD4ARJgO02sekM/view' },
-  { id:'c3-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C3 — Dataset TNMM / MTUO v1.0', description:'Datos de práctica para Operating Margin, Mark-up on Costs, Berry Ratio, ROA y segmentación.', href:'https://docs.google.com/spreadsheets/d/1_1KV_MMz3Ia-3E9KVM7gJS9KhaRod90pXsgjMceL_OY/edit', action:'Abrir dataset' },
+  { id:'c3-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C3 — Dataset TNMM / MTUO v1.0', description:'Datos de práctica para Operating Margin, Mark-up on Costs, Berry Ratio, ROA y segmentación.', href:'https://docs.google.com/spreadsheets/d/1_1KV_MMz3Ia-3E9KVM7gJS9KhaRod90pXsgjMceL_OY/edit' },
   { id:'ss1', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS1 — Guía de Estudio Servicios Intragrupo', description:'Benefit test, shareholder activities, duplicidad, allocation keys, cost base, low-value services y respuestas razonadas.', href:'https://drive.google.com/file/d/1TZCCsv4Nt9haMgH-rvzu6w-s203DudI1/view' },
   { id:'ss2', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS2 — Guía de Estudio Activos Intangibles', description:'Propiedad legal vs. retornos, DEMPE conceptual, licencia/transferencia, métodos, HTVI, laboratorios y Fase 13.', href:'https://drive.google.com/file/d/1tqga90WpxOiFECau4AMGmww1Qb5PSPcc/view' },
   { id:'ss3', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS3 — Guía de Estudio DEMPE', description:'Development, Enhancement, Maintenance, Protection, Exploitation, control del riesgo, financiamiento, laboratorios y Fase 14.', href:'https://drive.google.com/file/d/1EejgsPK4CFUjmMFnPOQYkX6VhDWnkUiE/view' },
@@ -53,6 +52,13 @@ const resources: LibraryResource[] = [
 const categories: Array<'Todos' | ResourceCategory> = ['Todos', 'OCDE', 'Guías', 'Libro', 'Datasets', 'Videos'];
 const levels: ResourceLevel[] = ['Todos', 'Junior', 'Consultant', 'Semi Senior', 'Senior'];
 
+function resourceActionLabel(resource: LibraryResource) {
+  if (resource.category === 'Guías') return 'Descargar guía';
+  if (resource.category === 'Libro') return 'Abrir libro';
+  if (resource.category === 'Datasets') return 'Abrir dataset';
+  return 'Abrir recurso';
+}
+
 export function ResourcesExtendedPage(){
   const [query,setQuery]=useState('');
   const [category,setCategory]=useState<(typeof categories)[number]>('Todos');
@@ -72,7 +78,7 @@ export function ResourcesExtendedPage(){
   return <section className="section resources-page library-page"><div className="container library-container">
     <header className="library-hero"><div className="eyebrow">Biblioteca</div><h1>Recursos para estudiar con criterio.</h1><p className="lead small">Fuentes primarias, guías de estudio, datasets y videos doctrinales organizados para encontrar rápido lo que necesitas en cada etapa de la ruta.</p></header>
 
-    <section className="library-featured" aria-labelledby="featured-resources-title"><div className="library-section-heading"><div><span className="eyebrow">Selección esencial</span><h2 id="featured-resources-title">Empieza por aquí.</h2></div><p>Las referencias que acompañan toda la ruta académica.</p></div><div className="library-featured-grid">{featured.map(resource=><article className="library-featured-card" key={resource.id}><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resource.action||'Abrir / descargar guía'}</a></article>)}</div></section>
+    <section className="library-featured" aria-labelledby="featured-resources-title"><div className="library-section-heading"><div><span className="eyebrow">Selección esencial</span><h2 id="featured-resources-title">Empieza por aquí.</h2></div><p>Las referencias que acompañan toda la ruta académica.</p></div><div className="library-featured-grid">{featured.map(resource=><article className="library-featured-card" key={resource.id}><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a></article>)}</div></section>
 
     <section className="library-browser" aria-labelledby="library-browser-title"><div className="library-section-heading"><div><span className="eyebrow">Explorar biblioteca</span><h2 id="library-browser-title">Encuentra un recurso.</h2></div><p><strong>{totalVisible}</strong> recursos visibles</p></div>
       <div className="library-controls">
@@ -82,7 +88,7 @@ export function ResourcesExtendedPage(){
       </div>
 
       {totalVisible===0?<div className="library-empty"><h3>No encontramos coincidencias.</h3><p>Prueba otro término o restablece los filtros.</p><button className="button secondary" type="button" onClick={()=>{setQuery('');setCategory('Todos');setLevel('Todos')}}>Ver todos los recursos</button></div>:<>
-        <div className="library-list">{visibleResources.map(resource=><article className="library-row" key={resource.id}><div className="library-row-meta"><span>{resource.category}</span><small>{resource.level}</small></div><div className="library-row-copy"><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p></div><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resource.action||'Abrir recurso'}</a></article>)}</div>
+        <div className="library-list">{visibleResources.map(resource=><article className="library-row" key={resource.id}><div className="library-row-meta"><span>{resource.category}</span><small>{resource.level}</small></div><div className="library-row-copy"><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p></div><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a></article>)}</div>
         {showVideos&&<section className="library-video-section"><div className="library-section-heading compact"><div><span className="eyebrow">Videoteca OCDE</span><h2>Los diez capítulos, disponibles en cualquier momento.</h2></div></div><div className="resource-video-grid">{videos.filter(video=>!normalized||`${video.title} ${video.description}`.toLocaleLowerCase('es').includes(normalized)).map(video=><ExternalVideoCard key={video.id} eyebrow="Video doctrinal" title={video.title} description={video.description} href={video.href!} sourceLabel="Google Drive"/>)}</div></section>}
       </>}
     </section>

@@ -8,7 +8,11 @@ const activeNavItems = [
   ['Recursos', '/resources'],
 ] as const;
 
-const supportUrl = 'https://buy.stripe.com/7sY4gr9sWg9u45ZaAe18c08';
+const supportOptions = [
+  { amount: '$100 MXN', url: 'https://buy.stripe.com/aFabIT6gKaPa0TNdMq18c09' },
+  { amount: '$200 MXN', url: 'https://buy.stripe.com/bJe9ALdJc4qMcCv0ZE18c0a' },
+  { amount: '$500 MXN', url: 'https://buy.stripe.com/cNi4grdJccXi9qj4bQ18c0b' },
+] as const;
 
 type NavigationLinksProps = { onNavigate?: () => void };
 
@@ -65,12 +69,19 @@ export function AppShell({ children }: PropsWithChildren) {
             <strong>Transfer Pricing Insights Academy</strong>
             <p>Conocimiento. Criterio. Impacto.</p>
             <p><a href="/autor">Sobre el autor — Manuel Carrero Rojo</a></p>
-            <p>
-              <a href={supportUrl} target="_blank" rel="noopener noreferrer">Apoya voluntariamente la Academy</a>
-            </p>
-            <p style={{ maxWidth: '46rem', fontSize: '.78rem', opacity: 0.82, lineHeight: 1.45 }}>
-              El apoyo es completamente voluntario. No constituye la compra de un producto o servicio, no otorga beneficios adicionales y no es una donación deducible para efectos fiscales.
-            </p>
+            <div className="footer-support">
+              <strong>Apoya voluntariamente la Academy</strong>
+              <div className="footer-support-options" aria-label="Opciones de apoyo voluntario">
+                {supportOptions.map(({ amount, url }) => (
+                  <a key={amount} className="footer-support-button" href={url} target="_blank" rel="noopener noreferrer">
+                    {amount}
+                  </a>
+                ))}
+              </div>
+              <p className="footer-support-note">
+                El apoyo es completamente voluntario. No constituye la compra de un producto o servicio, no otorga beneficios adicionales y no es una donación deducible para efectos fiscales.
+              </p>
+            </div>
           </div>
           <p className="footer-credit">Creada por <a href="/autor">Manuel Carrero Rojo</a>.</p>
         </div>

@@ -1,0 +1,180 @@
+/* P0-G — Microinteractions + Mobile Polish
+   Tactile, restrained interaction layer. No motion is required to complete an action. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .button,
+  .footer-support-button,
+  .resource-row,
+  .resource-featured-card,
+  .assessment-option,
+  .quiz-option,
+  .path-level-summary,
+  .path-level-number,
+  .progress-card,
+  .lesson-row,
+  .material-row {
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      opacity var(--transition-fast);
+  }
+
+  .progress-track > span,
+  .lesson-progress-fill,
+  .path-progress-fill,
+  [class*='progress'] > span[style*='width'] {
+    transition: width 420ms cubic-bezier(.2,.75,.25,1);
+  }
+}
+
+.button:not(:disabled):not(.disabled-button):active,
+.footer-support-button:active {
+  transform: translateY(1px) scale(.99);
+}
+
+.resource-row:hover,
+.resource-featured-card:hover,
+.progress-card:hover {
+  border-color: #d7dde5;
+  box-shadow: var(--shadow-xs);
+}
+
+.assessment-option:hover,
+.quiz-option:hover {
+  transform: translateY(-1px);
+}
+
+.assessment-option:has(input:checked),
+.quiz-option:has(input:checked) {
+  box-shadow: inset 0 0 0 1px rgba(183,144,77,.22), var(--shadow-xs);
+}
+
+.path-level:not(.path-level-locked) > .path-level-summary:hover {
+  background: var(--color-surface-editorial);
+}
+
+.path-level:not(.path-level-locked) > .path-level-summary:active .path-level-number {
+  transform: scale(.97);
+}
+
+.path-level-complete .path-level-number::after,
+.completed-level .path-level-number::after,
+[data-state='completed'] .path-level-number::after {
+  content: '✓';
+  position: absolute;
+  right: -4px;
+  bottom: -3px;
+  display: grid;
+  width: 19px;
+  height: 19px;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--color-completed);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.path-level-current,
+.path-level-available {
+  border-color: rgba(183,144,77,.34);
+}
+
+.path-level-current[open],
+.path-level-available[open] {
+  box-shadow: 0 12px 30px rgba(16,35,63,.08);
+}
+
+/* Mobile polish: preserve tap targets and prevent dense controls from colliding. */
+@media (max-width: 1024px) {
+  .button,
+  .footer-support-button,
+  .resource-filter,
+  .resource-search input,
+  .assessment-option,
+  .quiz-option,
+  .mobile-nav summary {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero .button-row,
+  .assessment-result .button-row,
+  .course-hero .button-row {
+    gap: 10px;
+  }
+
+  .resource-library-toolbar,
+  .resource-filter-row {
+    max-width: 100%;
+  }
+
+  .assessment-progress {
+    backdrop-filter: blur(8px);
+  }
+
+  .site-footer a,
+  .site-footer button {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 390px) {
+  .section {
+    overflow-x: clip;
+  }
+
+  .hero .button-row,
+  .assessment-result .button-row,
+  .course-hero .button-row,
+  .footer-support-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .hero .button-row .button,
+  .assessment-result .button-row .button,
+  .course-hero .button-row .button,
+  .footer-support-grid .footer-support-button {
+    width: 100%;
+  }
+
+  .path-level-heading strong {
+    font-size: 1.32rem;
+  }
+
+  .path-level-status {
+    white-space: normal;
+  }
+
+  .resource-row,
+  .assessment-question,
+  .certificate-shell {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .button,
+  .footer-support-button,
+  .assessment-option,
+  .quiz-option {
+    transform: none !important;
+  }
+}

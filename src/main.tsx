@@ -11,6 +11,7 @@ import './styles/p0b-home-shell.css';
 import './styles/path-journey.css';
 import './styles/p0d-course-lesson.css';
 import './styles/p0e-resources.css';
+import './styles/p0f-assessment-certificate.css';
 import './styles/accessibility.css';
 
 createRoot(document.getElementById('root')!).render(

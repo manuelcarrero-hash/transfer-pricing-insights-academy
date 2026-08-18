@@ -1,0 +1,388 @@
+.path-container {
+  width: min(calc(100% - 40px), 1080px);
+}
+
+.path-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+
+.path-overview-copy h1 {
+  margin: 10px 0 18px;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  letter-spacing: -.04em;
+}
+
+.path-summary-card {
+  position: sticky;
+  top: 106px;
+  padding: 28px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #fff, var(--color-surface-editorial));
+  box-shadow: var(--shadow-soft);
+}
+
+.path-summary-label {
+  display: block;
+  color: var(--color-brand-gold-text);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.path-summary-level {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-brand-navy);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  line-height: 1.05;
+}
+
+.path-summary-progress {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.path-summary-progress > span {
+  min-width: 48px;
+  color: var(--color-brand-navy);
+  font-weight: 850;
+}
+
+.path-summary-card p {
+  margin: 14px 0 20px;
+  color: var(--color-text-muted);
+  font-size: .92rem;
+}
+
+.path-summary-card .button {
+  width: 100%;
+}
+
+.path-summary-card > small {
+  display: block;
+  margin-top: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.path-journey {
+  position: relative;
+  display: grid;
+  gap: 18px;
+}
+
+.path-journey::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 27px;
+  width: 1px;
+  background: linear-gradient(var(--color-brand-gold), var(--color-border));
+  pointer-events: none;
+}
+
+.path-level {
+  position: relative;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  overflow: clip;
+}
+
+.path-level[open] {
+  box-shadow: var(--shadow-soft);
+}
+
+.path-level-summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  min-height: 112px;
+  padding: 22px 24px 22px 18px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.path-level-summary::-webkit-details-marker { display: none; }
+
+.path-level-summary::after {
+  content: '+';
+  position: absolute;
+  right: 24px;
+  bottom: 14px;
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.path-level[open] > .path-level-summary::after { content: '−'; }
+.path-level-locked > .path-level-summary::after { display: none; }
+.path-level-locked > .path-level-summary { cursor: default; }
+
+.path-level-number {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(183,144,77,.35);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-brand-gold-text);
+  font-weight: 850;
+  letter-spacing: -.02em;
+}
+
+.path-level-current .path-level-number,
+.path-level-available .path-level-number {
+  background: var(--color-brand-navy);
+  color: #e2c484;
+  border-color: var(--color-brand-navy);
+}
+
+.path-level-complete .path-level-number {
+  background: #edf7f2;
+  color: var(--color-completed);
+  border-color: #b9ddcd;
+}
+
+.path-level-locked {
+  background: #fbfcfd;
+}
+
+.path-level-locked .path-level-number,
+.path-level-locked .path-level-heading {
+  opacity: .58;
+}
+
+.path-level-heading {
+  display: grid;
+  min-width: 0;
+}
+
+.path-level-kicker {
+  color: var(--color-brand-gold-text);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.path-level-heading strong {
+  margin-top: 2px;
+  color: var(--color-brand-navy);
+  font-family: var(--font-editorial);
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.path-level-heading small {
+  margin-top: 5px;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+
+.path-level-status {
+  margin-right: 34px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  font-size: .72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.path-level-status-current,
+.path-level-status-available {
+  background: #f6efe3;
+  color: var(--color-brand-gold-text);
+}
+
+.path-level-status-complete {
+  background: #edf7f2;
+  color: var(--color-completed);
+}
+
+.path-level-status-locked {
+  background: #f0f2f5;
+  color: var(--color-locked);
+}
+
+.path-level-body {
+  padding: 8px 24px 28px 98px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.path-course-list {
+  display: grid;
+  gap: 10px;
+}
+
+.path-course-list-extension {
+  margin-top: 10px;
+}
+
+.path-course-list .progress-card {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  background: #fff;
+}
+
+.path-course-list .progress-card-top {
+  align-items: center;
+}
+
+.path-course-list .progress-card h2 {
+  margin: 3px 0 0;
+  font-size: 1.05rem;
+}
+
+.path-course-list .progress-percent {
+  font-size: 1rem;
+}
+
+.path-course-list .progress-track {
+  height: 5px;
+  margin-top: 12px;
+}
+
+.path-course-list .progress-summary {
+  margin: 8px 0 0;
+  font-size: .82rem;
+}
+
+.path-course-list .progress-actions {
+  margin-top: 12px;
+}
+
+.path-course-list .progress-actions .button {
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: .82rem;
+}
+
+.path-course-list .resume-note {
+  margin-top: 9px;
+  font-size: .78rem;
+}
+
+.level-closure-card {
+  margin: 18px 0 0;
+  background: var(--color-surface-editorial);
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.level-closure-card.completed-level {
+  border-style: solid;
+  border-color: #b9ddcd;
+  background: #f7fbf9;
+}
+
+.my-path-page .local-progress-note {
+  margin-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .path-overview {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .path-summary-card {
+    position: static;
+  }
+
+  .path-level-body {
+    padding-left: 24px;
+  }
+
+  .path-journey::before {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .path-container {
+    width: min(calc(100% - 28px), 1080px);
+  }
+
+  .path-overview {
+    margin-bottom: 34px;
+  }
+
+  .path-summary-card {
+    padding: 22px;
+  }
+
+  .path-level-summary {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    min-height: 102px;
+    padding: 18px 16px;
+  }
+
+  .path-level-number {
+    width: 44px;
+    height: 44px;
+  }
+
+  .path-level-status {
+    grid-column: 2;
+    justify-self: start;
+    margin: 4px 0 0;
+  }
+
+  .path-level-summary::after {
+    right: 16px;
+    bottom: 18px;
+  }
+
+  .path-level-body {
+    padding: 12px 14px 20px;
+  }
+
+  .path-course-list .progress-card {
+    padding: 16px;
+  }
+
+  .path-course-list .progress-card-top,
+  .level-closure-card .progress-card-top {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .path-course-list .progress-actions,
+  .level-closure-card .progress-actions {
+    display: grid;
+  }
+
+  .path-course-list .progress-actions .button,
+  .level-closure-card .progress-actions .button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .path-level,
+  .path-level-summary,
+  .path-level-number {
+    transition: box-shadow var(--transition-normal), border-color var(--transition-normal), background-color var(--transition-normal), color var(--transition-normal);
+  }
+}

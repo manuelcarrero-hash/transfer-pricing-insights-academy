@@ -450,9 +450,32 @@
 }
 
 @media print {
+  .site-header,
+  .pilot-notice,
+  .site-footer,
+  .skip-link,
+  .certificate-actions,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-shell,
+  #main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
   .certificate-page {
     padding: 0;
     background: #fff;
+  }
+
+  .certificate-page > .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
   .academic-certificate {

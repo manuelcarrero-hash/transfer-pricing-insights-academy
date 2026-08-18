@@ -23,11 +23,14 @@ const j1CorrectAnswers = [
 ];
 
 test.describe('Academy critical path', () => {
-  test('onboarding exposes the three real entry points', async ({ page }) => {
+  test('onboarding exposes the four real entry points', async ({ page }) => {
     await page.goto('/start');
     await expect(page.getByRole('heading', { name: '¿Cómo quieres comenzar?' })).toBeVisible();
     await page.getByRole('link', { name: 'Comenzar en Junior' }).click();
     await expect(page).toHaveURL(/\/courses\/j1$/);
+    await page.goto('/start');
+    await page.getByRole('link', { name: 'Hacer diagnóstico' }).click();
+    await expect(page).toHaveURL(/\/diagnostic$/);
     await page.goto('/start');
     await page.getByRole('link', { name: 'Abrir Mi Ruta' }).click();
     await expect(page).toHaveURL(/\/path$/);

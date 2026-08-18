@@ -39,11 +39,8 @@ export function AppShell({ children }: PropsWithChildren) {
       <header className="site-header">
         <div className="container header-inner">
           <Link className="brand" to="/" aria-label="Transfer Pricing Insights Academy — Inicio" onClick={closeMobileNav}>
-            <AcademyLogo className="brand-logo" variant="isotype" alt="" />
-            <span className="brand-copy">
-              <strong>Transfer Pricing Insights</strong>
-              <span>Academy</span>
-            </span>
+            <AcademyLogo className="brand-logo brand-logo-principal" variant="principal" alt="Transfer Pricing Insights Academy" />
+            <AcademyLogo className="brand-logo brand-logo-isotype" variant="isotype" alt="" />
           </Link>
 
           <nav className="main-nav" aria-label="Navegación principal">

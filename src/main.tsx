@@ -8,7 +8,8 @@ import './styles/learning-experience.css';
 import './styles/junior-assessment.css';
 import './styles/polish-foundation.css';
 import './styles/p0b-home-shell.css';
-import './styles/path-journey.css';
+import './styles/p0c-my-path.css';
+import './styles/p0d-course-lesson.css';
 import './styles/accessibility.css';
 
 createRoot(document.getElementById('root')!).render(

@@ -10,6 +10,7 @@ const viewports = [
 
 const routes = [
   { name: 'home', path: '/' },
+  { name: 'path', path: '/path' },
   { name: 'start', path: '/start' },
   { name: 'resources', path: '/resources' },
   { name: 'course-c1', path: '/courses/c1' },
@@ -17,7 +18,7 @@ const routes = [
 
 for (const viewport of viewports) {
   for (const route of routes) {
-    test(`P0-A visual ${route.name} ${viewport.name}`, async ({ page }) => {
+    test(`Frontend polish visual ${route.name} ${viewport.name}`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto(route.path);
       await page.waitForLoadState('networkidle');

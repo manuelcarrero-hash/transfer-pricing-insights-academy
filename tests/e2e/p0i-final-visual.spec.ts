@@ -89,8 +89,9 @@ const routes: VisualRoute[] = [
     name: 'home', path: '/', verify: async (page) => {
       const support = page.locator('.footer-support-button');
       await expect(support).toHaveCount(3);
+      const stripeSupportUrl = /^https:\/\/(?:buy\.|checkout\.)?stripe\.com(?:\/|$)/;
       for (let index = 0; index < 3; index += 1) {
-        await expect(support.nth(index)).toHaveAttribute('href', /stripe\.com|buy\.stripe\.com|checkout\.stripe\.com/);
+        await expect(support.nth(index)).toHaveAttribute('href', stripeSupportUrl);
       }
     },
   },

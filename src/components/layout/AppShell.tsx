@@ -36,7 +36,7 @@ export function AppShell({ children }: PropsWithChildren) {
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main-content">Saltar al contenido principal</a>
-      <header className="site-header">
+      <header className="site-header polished-header">
         <div className="container header-inner">
           <Link className="brand" to="/" aria-label="Transfer Pricing Insights Academy — Inicio" onClick={closeMobileNav}>
             <AcademyLogo className="brand-logo" variant="isotype" alt="" />
@@ -58,33 +58,58 @@ export function AppShell({ children }: PropsWithChildren) {
           </details>
         </div>
       </header>
-      <aside aria-label="Aviso sobre el progreso" style={{ background: '#f7f1e6', borderBottom: '1px solid #dbc9a7' }}>
-        <div className="container" style={{ paddingBlock: '10px', color: '#26384d', fontSize: '.88rem', lineHeight: 1.45 }}>
-          <strong>Piloto RC1.</strong> Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo y evita borrar los datos del sitio durante la prueba.
+
+      <aside className="pilot-notice" aria-label="Aviso sobre el progreso">
+        <div className="container pilot-notice-inner">
+          <span className="pilot-badge">Piloto RC1</span>
+          <span>Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo durante la prueba.</span>
         </div>
       </aside>
+
       <main id="main-content" tabIndex={-1}>{children}</main>
-      <footer className="site-footer">
-        <div className="container footer-inner">
-          <div>
-            <strong>Transfer Pricing Insights Academy</strong>
-            <p>Conocimiento. Criterio. Impacto.</p>
-            <p><a href="/autor">Sobre el autor — Manuel Carrero Rojo</a></p>
-            <div className="footer-support">
-              <strong>Apoya voluntariamente la Academy</strong>
-              <div className="footer-support-options" aria-label="Opciones de apoyo voluntario">
-                {supportOptions.map(({ amount, url }) => (
-                  <a key={amount} className="footer-support-button" href={url} target="_blank" rel="noopener noreferrer">
-                    {amount}
-                  </a>
-                ))}
-              </div>
-              <p className="footer-support-note">
-                El apoyo es completamente voluntario. No constituye la compra de un producto o servicio, no otorga beneficios adicionales y no es una donación deducible para efectos fiscales.
-              </p>
+
+      <footer className="site-footer polished-footer">
+        <div className="container footer-grid">
+          <section className="footer-brand-block" aria-label="Transfer Pricing Insights Academy">
+            <div className="footer-brand-lockup">
+              <AcademyLogo className="footer-isotype" variant="isotype" alt="" />
+              <div><strong>Transfer Pricing Insights</strong><span>Academy</span></div>
             </div>
-          </div>
-          <p className="footer-credit">Creada por <a href="/autor">Manuel Carrero Rojo</a>.</p>
+            <p>Conocimiento. Criterio. Impacto.</p>
+            <p className="footer-muted">Formación abierta y estructurada en Precios de Transferencia.</p>
+          </section>
+
+          <nav className="footer-column" aria-label="Navegación del sitio">
+            <strong>Academy</strong>
+            <Link to="/">Inicio</Link>
+            <Link to="/path">Mi Ruta</Link>
+            <Link to="/start">Comenzar</Link>
+            <Link to="/resources">Recursos</Link>
+          </nav>
+
+          <section className="footer-column">
+            <strong>Proyecto</strong>
+            <a href="/autor">Sobre el autor</a>
+            <span className="footer-author">Manuel Carrero Rojo</span>
+            <span className="footer-muted">Transfer Pricing Insights</span>
+          </section>
+
+          <section className="footer-support footer-column">
+            <strong>Apoya la Academy</strong>
+            <p className="footer-muted">Si este proyecto te resulta útil, puedes apoyarlo voluntariamente.</p>
+            <div className="footer-support-options" aria-label="Opciones de apoyo voluntario">
+              {supportOptions.map(({ amount, url }) => (
+                <a key={amount} className="footer-support-button" href={url} target="_blank" rel="noopener noreferrer">
+                  {amount}
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="container footer-bottom">
+          <p>Transfer Pricing Insights Academy · Creada por <a href="/autor">Manuel Carrero Rojo</a>.</p>
+          <p>El apoyo voluntario no compra acceso, beneficios ni certificaciones.</p>
         </div>
       </footer>
     </div>

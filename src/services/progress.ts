@@ -39,15 +39,26 @@ function saveProgress(progress: AcademyProgress) {
   window.dispatchEvent(new CustomEvent(EVENT_NAME));
 }
 
+export function canAccessLesson(lessonNumber: number) {
+  if (lessonNumber <= 1) return true;
+  const current = getProgress();
+  return Array.from({ length: lessonNumber - 1 }, (_, index) => index + 1)
+    .every((requiredLesson) => current.completedLessons.includes(requiredLesson));
+}
+
 export function markLessonVisited(lessonNumber: number) {
+  if (!canAccessLesson(lessonNumber)) return false;
   const current = getProgress();
   saveProgress({ ...current, lastLesson: lessonNumber, updatedAt: new Date().toISOString() });
+  return true;
 }
 
 export function markLessonCompleted(lessonNumber: number) {
+  if (!canAccessLesson(lessonNumber)) return false;
   const current = getProgress();
   const completedLessons = [...new Set([...current.completedLessons, lessonNumber])].sort((a, b) => a - b);
   saveProgress({ ...current, lastLesson: lessonNumber, completedLessons, updatedAt: new Date().toISOString() });
+  return true;
 }
 
 export function clearProgress() {

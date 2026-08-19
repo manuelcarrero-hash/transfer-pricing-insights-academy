@@ -51,10 +51,19 @@ test.describe('Academy critical path', () => {
     await expect(page.getByRole('heading', { name: 'S7 — Professional Judgment' })).toHaveCount(0);
   });
 
-  test('deep lesson routes work and persist last visited lesson', async ({ page }) => {
+  test('deep lesson routes work and persist last visited lesson after prerequisites are complete', async ({ page }) => {
+    await seedStorage(page, {
+      'tpia-progress-v1': JSON.stringify({
+        curriculumVersion: 'v1',
+        lastLesson: 1,
+        completedLessons: [1],
+        updatedAt: '2026-08-19T12:00:00.000Z',
+      }),
+    });
     await page.goto('/courses/j1/lesson/2');
     await expect(page.locator('.lesson-topbar').getByText('Lección 2 de 8', { exact: true })).toBeVisible();
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('tpia-progress-v1') || '{}'));
+    expect(stored.completedLessons).toContain(1);
     expect(stored.lastLesson).toBe(2);
   });
 

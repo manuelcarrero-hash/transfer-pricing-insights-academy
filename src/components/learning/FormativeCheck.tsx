@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type FormativeOption = {
   id: string;
@@ -22,6 +22,12 @@ type Props = {
 export function FormativeCheck({ check, onCorrect }: Props) {
   const [selected, setSelected] = useState<string>('');
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setSelected('');
+    setChecked(false);
+  }, [check.id]);
+
   const correct = selected === check.correctOptionId;
   const selectedOption = check.options.find((option) => option.id === selected);
 

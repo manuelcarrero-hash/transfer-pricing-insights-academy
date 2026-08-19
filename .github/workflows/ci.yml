@@ -58,6 +58,9 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.0-noble
+      options: --ipc=host
 
     steps:
       - name: Checkout
@@ -72,8 +75,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Verify Playwright runtime
+        run: npx playwright --version
 
       - name: Run Academy critical-path E2E tests
         run: npm run e2e

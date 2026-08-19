@@ -10,10 +10,74 @@ const bookUrl = 'https://drive.google.com/file/d/1v1looWIL4AKXPPpExQOv5EOc1EOgxR
 
 export function J5CoursePage() {
   const [progress, setProgress] = useState(() => getCourseProgress('J5', j5Lessons.length));
-  useEffect(() => { const sync = () => setProgress(getCourseProgress('J5', j5Lessons.length)); window.addEventListener(courseProgressEventName, sync); window.addEventListener('storage', sync); return () => { window.removeEventListener(courseProgressEventName, sync); window.removeEventListener('storage', sync); }; }, []);
+  useEffect(() => {
+    const sync = () => setProgress(getCourseProgress('J5', j5Lessons.length));
+    window.addEventListener(courseProgressEventName, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(courseProgressEventName, sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
+
   const completed = progress.completedLessons.length;
   const percent = Math.round((completed / j5Lessons.length) * 100);
   const resumeLesson = progress.lastLesson ?? 1;
+  const courseComplete = completed === j5Lessons.length;
   const chapterVideo = videoCurriculum.find((video) => video.id === 'oecd-chapter-3');
-  return <section className="section course-page"><div className="container"><nav className="breadcrumb" aria-label="Breadcrumb"><Link to="/">Inicio</Link><span>/</span><span>Junior</span><span>/</span><span>J5</span></nav><div className="course-hero"><div><div className="eyebrow">{j5Course.level} · {j5Course.code}</div><h1>{j5Course.title}</h1><p className="lead small">{j5Course.description}</p><div className="course-meta"><span>{j5Course.lessonCount} lecciones</span><span>≈ {j5Course.estimatedMinutes} min</span><span>Prerrequisitos: J1–J4 recomendados</span></div><Link className="button primary" to={`/courses/j5/lesson/${resumeLesson}`}>{progress.lastLesson ? 'Continuar curso' : 'Comenzar curso'}</Link></div><aside className="outcome-card"><h2>Al terminar podrás</h2><ul>{j5Course.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul></aside></div><section className="course-progress-card" aria-label="Progreso de J5"><div><strong>Tu avance en J5</strong><span>{completed} de {j5Lessons.length} lecciones completadas</span></div><div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}><span style={{ width: `${percent}%` }} /></div></section><div className="study-materials"><div className="eyebrow">Material de estudio</div><h2>Comparar exige entender las diferencias.</h2><p className="materials-intro">J5 conecta FAR, contratos, mercado y características de la operación para decidir cuándo una referencia independiente puede ser confiable.</p><div className="materials-grid"><article className="material-card"><span className="material-type">Fuente primaria</span><h3>Directrices OCDE 2022 · Capítulo III</h3><p>Consulta el capítulo dedicado al análisis de comparabilidad y al proceso para identificar referencias independientes confiables.</p><a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a></article><article className="material-card"><span className="material-type">Lectura complementaria</span><h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3><p>Refuerza los factores de comparabilidad y su aplicación conceptual con explicaciones y ejemplos del libro de Manuel Carrero Rojo.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a></article></div>{chapterVideo?.href&&<ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive"/>}</div><div className="course-index"><h2>Contenido del curso</h2><ol>{j5Lessons.map((lesson) => { const done = progress.completedLessons.includes(lesson.sequence); return <li className="lesson-row active" key={lesson.id}><Link to={`/courses/j5/lesson/${lesson.sequence}`}><span>{done ? '✓' : lesson.sequence}</span><div><strong>{lesson.title}</strong><small>{done ? 'Completada' : `≈ ${lesson.estimatedMinutes} min · Incluye comprobación formativa`}</small></div></Link></li>; })}</ol></div></div></section>;
+
+  return (
+    <section className="section course-page">
+      <div className="container">
+        <nav className="breadcrumb" aria-label="Breadcrumb"><Link to="/">Inicio</Link><span>/</span><span>Junior</span><span>/</span><span>J5</span></nav>
+        <div className="course-hero">
+          <div>
+            <div className="eyebrow">{j5Course.level} · {j5Course.code}</div>
+            <h1>{j5Course.title}</h1>
+            <p className="lead small">{j5Course.description}</p>
+            <div className="course-meta"><span>{j5Course.lessonCount} lecciones</span><span>≈ {j5Course.estimatedMinutes} min</span><span>Prerrequisitos: J1–J4 recomendados</span></div>
+            {courseComplete ? (
+              <Link className="button primary" to="/junior-foundations/assessment">Presentar evaluación Junior</Link>
+            ) : (
+              <Link className="button primary" to={`/courses/j5/lesson/${resumeLesson}`}>{progress.lastLesson ? 'Continuar curso' : 'Comenzar curso'}</Link>
+            )}
+          </div>
+          <aside className="outcome-card"><h2>Al terminar podrás</h2><ul>{j5Course.learningOutcomes.map((item) => <li key={item}>{item}</li>)}</ul></aside>
+        </div>
+
+        <section className="course-progress-card" aria-label="Progreso de J5">
+          <div><strong>Tu avance en J5</strong><span>{completed} de {j5Lessons.length} lecciones completadas</span></div>
+          <div className="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}><span style={{ width: `${percent}%` }} /></div>
+        </section>
+
+        {courseComplete && (
+          <section className="remember-card" aria-label="Siguiente paso de Junior">
+            <div className="eyebrow">J1–J5 completados</div>
+            <h2>Tu siguiente paso es la evaluación acumulativa Junior.</h2>
+            <p>No necesitas buscarla en Mi Ruta: puedes continuar directamente desde aquí.</p>
+            <Link className="button primary" to="/junior-foundations/assessment">Presentar evaluación</Link>
+          </section>
+        )}
+
+        <div className="study-materials">
+          <div className="eyebrow">Material de estudio</div>
+          <h2>Comparar exige entender las diferencias.</h2>
+          <p className="materials-intro">J5 conecta FAR, contratos, mercado y características de la operación para decidir cuándo una referencia independiente puede ser confiable.</p>
+          <div className="materials-grid">
+            <article className="material-card"><span className="material-type">Fuente primaria</span><h3>Directrices OCDE 2022 · Capítulo III</h3><p>Consulta el capítulo dedicado al análisis de comparabilidad y al proceso para identificar referencias independientes confiables.</p><a className="button secondary" href={oecdUrl} target="_blank" rel="noreferrer">Abrir en OCDE</a></article>
+            <article className="material-card"><span className="material-type">Lectura complementaria</span><h3>Precios de Transferencia: Fundamentos Doctrinales y Aplicación Práctica</h3><p>Refuerza los factores de comparabilidad y su aplicación conceptual con explicaciones y ejemplos del libro de Manuel Carrero Rojo.</p><a className="button secondary" href={bookUrl} target="_blank" rel="noreferrer">Abrir libro</a></article>
+          </div>
+          {chapterVideo?.href && <ExternalVideoCard eyebrow="Video doctrinal recomendado" title={chapterVideo.title} description={chapterVideo.description} href={chapterVideo.href} sourceLabel="Google Drive" />}
+        </div>
+
+        <div className="course-index">
+          <h2>Contenido del curso</h2>
+          <ol>{j5Lessons.map((lesson) => {
+            const done = progress.completedLessons.includes(lesson.sequence);
+            return <li className="lesson-row active" key={lesson.id}><Link to={`/courses/j5/lesson/${lesson.sequence}`}><span>{done ? '✓' : lesson.sequence}</span><div><strong>{lesson.title}</strong><small>{done ? 'Completada' : `≈ ${lesson.estimatedMinutes} min · Incluye comprobación formativa`}</small></div></Link></li>;
+          })}</ol>
+        </div>
+      </div>
+    </section>
+  );
 }

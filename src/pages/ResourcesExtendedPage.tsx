@@ -13,6 +13,8 @@ type LibraryResource = {
   title: string;
   description: string;
   href: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
   featured?: boolean;
 };
 
@@ -31,9 +33,9 @@ const resources: LibraryResource[] = [
   { id:'c7', category:'Guías', level:'Consultant', type:'Guía de curso', title:'C7 — Guía de Documentación de Precios de Transferencia', description:'EPT, Local File, Master File, CbC Report, Fase 11 y respuestas razonadas.', href:'https://drive.google.com/file/d/1yyzN_emA2ebR5LMsnlcD4ARJgO02sekM/view' },
   { id:'c3-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C3 — Dataset TNMM / MTUO v1.0', description:'Datos de práctica para Operating Margin, Mark-up on Costs, Berry Ratio, ROA y segmentación.', href:'https://docs.google.com/spreadsheets/d/1_1KV_MMz3Ia-3E9KVM7gJS9KhaRod90pXsgjMceL_OY/export?format=xlsx' },
   { id:'c4-dataset', category:'Datasets', level:'Consultant', type:'Dataset didáctico', title:'C4 — Dataset Accept / Reject Comparables v1.0', description:'Comparables ficticios para practicar filtros, análisis funcional y decisiones Accept/Reject con documentación de motivos.', href:'https://docs.google.com/spreadsheets/d/1IKMvH2vzzhecVmnH3vmx3JndqEM_r3ZogomE8Iq9pAw/export?format=xlsx' },
-  { id:'transaction-labs', category:'Labs', level:'Todos', type:'Biblioteca práctica', title:'Transaction Labs Library v1.1', description:'Quince escenarios de operaciones controladas para practicar delimitación, FAR, selección de método y razonamiento antes de calcular.', href:'https://docs.google.com/document/d/1G7JHrbk88ZHc-5bM_gGJn2bIj6uMkC21SRrsJzXBZ6A/edit' },
-  { id:'client-toolkit', category:'Toolkits', level:'Todos', type:'Herramienta de trabajo', title:'Client Information Gathering & Interview Toolkit v1.0', description:'Guía transversal para solicitar información, entrevistar al cliente, documentar sustancia económica y reconciliar evidencia.', href:'https://docs.google.com/document/d/1d6VWPIL67U92uiLNnqqPxUVeA1HHTD3LcChla6u_Syc/edit', featured:true },
-  { id:'client-onboarding-lab', category:'Labs', level:'Todos', type:'Laboratorio interactivo', title:'Client Onboarding Case Lab v1.0', description:'Experiencia guiada para convertir solicitud, entrevista y evidencia en un expediente técnico con hechos, FAR, vacíos e inconsistencias.', href:'/labs/client-onboarding', featured:true },
+  { id:'transaction-labs', category:'Labs', level:'Todos', type:'Biblioteca práctica', title:'Transaction Labs Library v1.1', description:'Quince escenarios de operaciones controladas para practicar delimitación, FAR, selección de método y razonamiento antes de calcular.', href:'https://docs.google.com/document/d/1G7JHrbk88ZHc-5bM_gGJn2bIj6uMkC21SRrsJzXBZ6A/export?format=pdf' },
+  { id:'client-toolkit', category:'Toolkits', level:'Todos', type:'Herramienta de trabajo', title:'Client Information Gathering & Interview Toolkit v1.0', description:'Guía transversal para solicitar información, entrevistar al cliente, documentar sustancia económica y reconciliar evidencia.', href:'https://docs.google.com/document/d/1d6VWPIL67U92uiLNnqqPxUVeA1HHTD3LcChla6u_Syc/export?format=pdf', featured:true },
+  { id:'client-onboarding-lab', category:'Labs', level:'Todos', type:'Laboratorio interactivo', title:'Client Onboarding Case Lab v1.0', description:'Experiencia guiada para convertir solicitud, entrevista y evidencia en un expediente técnico con hechos, FAR, vacíos e inconsistencias. Incluye una versión PDF de distribución y conserva la experiencia interactiva dentro de la Academy.', href:'https://docs.google.com/document/d/1qEyC8XFGlwBZCy-k4M4Qye5oOiM3VMgp9r5DrSrlpVw/export?format=pdf', secondaryHref:'/labs/client-onboarding', secondaryLabel:'Abrir versión interactiva', featured:true },
   { id:'ss1', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS1 — Guía de Estudio Servicios Intragrupo', description:'Benefit test, shareholder activities, duplicidad, allocation keys, cost base, low-value services y respuestas razonadas.', href:'https://drive.google.com/file/d/1TZCCsv4Nt9haMgH-rvzu6w-s203DudI1/view' },
   { id:'ss2', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS2 — Guía de Estudio Activos Intangibles', description:'Propiedad legal vs. retornos, DEMPE conceptual, licencia/transferencia, métodos, HTVI, laboratorios y Fase 13.', href:'https://drive.google.com/file/d/1tqga90WpxOiFECau4AMGmww1Qb5PSPcc/view' },
   { id:'ss3', category:'Guías', level:'Semi Senior', type:'Guía de curso', title:'SS3 — Guía de Estudio DEMPE', description:'Development, Enhancement, Maintenance, Protection, Exploitation, control del riesgo, financiamiento, laboratorios y Fase 14.', href:'https://drive.google.com/file/d/1EejgsPK4CFUjmMFnPOQYkX6VhDWnkUiE/view' },
@@ -60,9 +62,16 @@ function resourceActionLabel(resource: LibraryResource) {
   if (resource.category === 'Guías') return 'Descargar guía';
   if (resource.category === 'Libro') return 'Abrir libro';
   if (resource.category === 'Datasets') return 'Descargar dataset';
-  if (resource.category === 'Labs') return 'Abrir laboratorio';
-  if (resource.category === 'Toolkits') return 'Abrir toolkit';
+  if (resource.category === 'Labs') return 'Descargar laboratorio';
+  if (resource.category === 'Toolkits') return 'Descargar toolkit';
   return 'Abrir recurso';
+}
+
+function ResourceActions({ resource }: { resource: LibraryResource }) {
+  return <div className="library-resource-actions">
+    <a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a>
+    {resource.secondaryHref && resource.secondaryLabel ? <a className="button secondary" href={resource.secondaryHref}>{resource.secondaryLabel}</a> : null}
+  </div>;
 }
 
 export function ResourcesExtendedPage(){
@@ -84,7 +93,7 @@ export function ResourcesExtendedPage(){
   return <section className="section resources-page library-page"><div className="container library-container">
     <header className="library-hero"><div className="eyebrow">Biblioteca</div><h1>Recursos para estudiar con criterio.</h1><p className="lead small">Fuentes primarias, guías de estudio, datasets, laboratorios, toolkits y videos doctrinales organizados para encontrar rápido lo que necesitas en cada etapa de la ruta.</p></header>
 
-    <section className="library-featured" aria-labelledby="featured-resources-title"><div className="library-section-heading"><div><span className="eyebrow">Selección esencial</span><h2 id="featured-resources-title">Empieza por aquí.</h2></div><p>Las referencias que acompañan toda la ruta académica.</p></div><div className="library-featured-grid">{featured.map(resource=><article className="library-featured-card" key={resource.id}><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a></article>)}</div></section>
+    <section className="library-featured" aria-labelledby="featured-resources-title"><div className="library-section-heading"><div><span className="eyebrow">Selección esencial</span><h2 id="featured-resources-title">Empieza por aquí.</h2></div><p>Las referencias que acompañan toda la ruta académica.</p></div><div className="library-featured-grid">{featured.map(resource=><article className="library-featured-card" key={resource.id}><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p><ResourceActions resource={resource} /></article>)}</div></section>
 
     <section className="library-browser" aria-labelledby="library-browser-title"><div className="library-section-heading"><div><span className="eyebrow">Explorar biblioteca</span><h2 id="library-browser-title">Encuentra un recurso.</h2></div><p><strong>{totalVisible}</strong> recursos visibles</p></div>
       <div className="library-controls">
@@ -94,7 +103,7 @@ export function ResourcesExtendedPage(){
       </div>
 
       {totalVisible===0?<div className="library-empty"><h3>No encontramos coincidencias.</h3><p>Prueba otro término o restablece los filtros.</p><button className="button secondary" type="button" onClick={()=>{setQuery('');setCategory('Todos');setLevel('Todos')}}>Ver todos los recursos</button></div>:<>
-        <div className="library-list">{visibleResources.map(resource=><article className="library-row" key={resource.id}><div className="library-row-meta"><span>{resource.category}</span><small>{resource.level}</small></div><div className="library-row-copy"><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p></div><a className="button secondary" href={resource.href} target="_blank" rel="noreferrer">{resourceActionLabel(resource)}</a></article>)}</div>
+        <div className="library-list">{visibleResources.map(resource=><article className="library-row" key={resource.id}><div className="library-row-meta"><span>{resource.category}</span><small>{resource.level}</small></div><div className="library-row-copy"><span className="material-type">{resource.type}</span><h3>{resource.title}</h3><p>{resource.description}</p></div><ResourceActions resource={resource} /></article>)}</div>
         {showVideos&&<section className="library-video-section"><div className="library-section-heading compact"><div><span className="eyebrow">Videoteca OCDE</span><h2>Los diez capítulos, disponibles en cualquier momento.</h2></div></div><div className="resource-video-grid">{videos.filter(video=>!normalized||`${video.title} ${video.description}`.toLocaleLowerCase('es').includes(normalized)).map(video=><ExternalVideoCard key={video.id} eyebrow="Video doctrinal" title={video.title} description={video.description} href={video.href!} sourceLabel="Google Drive"/>)}</div></section>}
       </>}
     </section>

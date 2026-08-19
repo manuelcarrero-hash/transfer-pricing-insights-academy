@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './app/App';
+import { JuniorPathGuard } from './components/learning/JuniorPathGuard';
 import './styles/tokens.css';
 import './styles/global.css';
 import './styles/learning-experience.css';
@@ -14,11 +15,14 @@ import './styles/p0e-resources.css';
 import './styles/p0f-assessment-certificate.css';
 import './styles/p0g-microinteractions-mobile.css';
 import './styles/accessibility.css';
+import './styles/rc1-qa.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <JuniorPathGuard>
+        <App />
+      </JuniorPathGuard>
     </BrowserRouter>
   </StrictMode>,
 );

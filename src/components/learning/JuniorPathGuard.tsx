@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { canAccessCourseLesson } from '../../services/courseProgress';
 import { getProgress } from '../../services/progress';
@@ -18,7 +18,7 @@ function canAccessJ1(lessonNumber: number) {
     .every((requiredLesson) => progress.completedLessons.includes(requiredLesson));
 }
 
-export function JuniorPathGuard({ children }: { children: React.ReactNode }) {
+export function JuniorPathGuard({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
 

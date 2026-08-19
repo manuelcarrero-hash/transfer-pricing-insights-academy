@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const courseKeys: Record<string, string> = {
   j1: 'tpia-progress-v1',
@@ -8,7 +8,7 @@ const courseKeys: Record<string, string> = {
   j5: 'tpia-course-progress-v1-j5',
 };
 
-async function clearProgress(page: Parameters<typeof test>[0] extends never ? never : any) {
+async function clearProgress(page: Page) {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
 }

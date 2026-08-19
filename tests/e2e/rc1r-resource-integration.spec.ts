@@ -1,15 +1,29 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('RC1-R resource integration', () => {
-  test('publishes transaction labs and client interview toolkit', async ({ page }) => {
+  test('publishes labs and toolkit as distribution downloads without exposing edit URLs', async ({ page }) => {
     await page.goto('/resources');
 
     await page.getByRole('button', { name: 'Labs', exact: true }).click();
-    await expect(page.getByText('Transaction Labs Library v1.1')).toBeVisible();
-    await expect(page.getByText('Client Onboarding Case Lab v1.0')).toBeVisible();
+
+    const transactionLabs = page.locator('article.library-row').filter({ hasText: 'Transaction Labs Library v1.1' });
+    await expect(transactionLabs).toBeVisible();
+    const transactionDownload = transactionLabs.getByRole('link', { name: 'Descargar laboratorio' });
+    await expect(transactionDownload).toHaveAttribute('href', /\/document\/d\/1G7JHrbk88ZHc-5bM_gGJn2bIj6uMkC21SRrsJzXBZ6A\/export\?format=pdf$/);
+    await expect(transactionDownload).not.toHaveAttribute('href', /\/edit/);
+
+    const onboardingLab = page.locator('article.library-row').filter({ hasText: 'Client Onboarding Case Lab v1.0' });
+    await expect(onboardingLab).toBeVisible();
+    const onboardingDownload = onboardingLab.getByRole('link', { name: 'Descargar laboratorio' });
+    await expect(onboardingDownload).toHaveAttribute('href', /\/document\/d\/1qEyC8XFGlwBZCy-k4M4Qye5oOiM3VMgp9r5DrSrlpVw\/export\?format=pdf$/);
+    await expect(onboardingLab.getByRole('link', { name: 'Abrir versión interactiva' })).toHaveAttribute('href', '/labs/client-onboarding');
 
     await page.getByRole('button', { name: 'Toolkits', exact: true }).click();
-    await expect(page.getByText('Client Information Gathering & Interview Toolkit v1.0')).toBeVisible();
+    const toolkit = page.locator('article.library-row').filter({ hasText: 'Client Information Gathering & Interview Toolkit v1.0' });
+    await expect(toolkit).toBeVisible();
+    const toolkitDownload = toolkit.getByRole('link', { name: 'Descargar toolkit' });
+    await expect(toolkitDownload).toHaveAttribute('href', /\/document\/d\/1d6VWPIL67U92uiLNnqqPxUVeA1HHTD3LcChla6u_Syc\/export\?format=pdf$/);
+    await expect(toolkitDownload).not.toHaveAttribute('href', /\/edit/);
   });
 
   test('client onboarding case lab preserves the eight-phase Nortek practice flow and local progress', async ({ page }) => {

@@ -1,10 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const courseKeys: Record<string, string> = {
-  j1: 'tpia-progress-v1',
+const courseKeys = {
   j2: 'tpia-course-progress-v1-j2',
-  j3: 'tpia-course-progress-v1-j3',
-  j4: 'tpia-course-progress-v1-j4',
   j5: 'tpia-course-progress-v1-j5',
 };
 

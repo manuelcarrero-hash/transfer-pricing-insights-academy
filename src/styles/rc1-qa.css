@@ -1,0 +1,8 @@
+.lesson-row strong,
+.lesson-row small {
+  display: block;
+}
+
+.lesson-row small {
+  margin-top: 0.2rem;
+}

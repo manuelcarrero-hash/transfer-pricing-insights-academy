@@ -1,0 +1,23 @@
+name: P1-B2 Production Eligibility Prep
+
+on:
+  push:
+    branches:
+      - qa/p1-b2-production-eligibility
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-atp-eligibility:
+    runs-on: ubuntu-24.04
+    env:
+      ADVANCED_PREVIEW_URL: https://transfer-pricing-insights-academy.pages.dev
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Create authoritative ATP eligibility in production
+        run: node scripts/smoke-advanced-practitioner-preview.mjs

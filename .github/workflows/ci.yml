@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -53,7 +53,7 @@ jobs:
       options: --ipc=host
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -97,7 +97,7 @@ jobs:
     env:
       PRACTITIONER_PREVIEW_URL: https://feat-p1-b1-practitioner-auth.transfer-pricing-insights-academy.pages.dev
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: 22
@@ -112,7 +112,7 @@ jobs:
     env:
       ADVANCED_PREVIEW_URL: https://feat-p1-b2-advanced-practiti.transfer-pricing-insights-academy.pages.dev
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: 22
@@ -128,7 +128,7 @@ jobs:
       SENIOR_PREVIEW_URL: https://feat-p1-b3-senior-knowledge.transfer-pricing-insights-academy.pages.dev
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node
         uses: actions/setup-node@v6
         with:

@@ -85,6 +85,34 @@ async function mockPractitionerApi(page: Page) {
   });
 }
 
+async function mockAdvancedPractitionerApi(page: Page) {
+  const eligibilityId='TPIA-ATP-A-E2E-AUTHORITATIVE';
+  const assessmentQuestions=semiSeniorBank.slice(0,24).map(({correctIndex:_correctIndex,feedback:_feedback,...question})=>question);
+  let assessmentGradeCalls=0;
+  let caseGradeCalls=0;
+  await page.route('**/api/advanced-practitioner/attempt',async route=>{
+    await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({attemptId:eligibilityId,expiresAt:'2099-01-01T00:00:00.000Z',questions:assessmentQuestions})});
+  });
+  await page.route('**/api/advanced-practitioner/grade',async route=>{
+    assessmentGradeCalls+=1;
+    const passed=assessmentGradeCalls>1;
+    const domainScore=passed?100:0;
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,attemptId:eligibilityId,score:domainScore,passed,passedGlobal:passed,passedDomains:passed,domains:{SERVICES:domainScore,DEMPE:domainScore,FINANCE:domainScore,RESTRUCTURING:domainScore,CCA:domainScore,CONTROVERSY:domainScore},correct:passed?24:0,total:24,gradedAt:'2026-08-20T12:10:00.000Z'})});
+  });
+  await page.route('**/api/advanced-practitioner/cases?*',async route=>{
+    const publicCase=(c:typeof caseA)=>({title:c.title,facts:c.facts,questions:c.questions.map(({id,domain,prompt,options,correct})=>({id,domain,prompt,options,multiple:correct.length>1}))});
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,passScore:80,caseA:publicCase(caseA),caseB:publicCase(caseB),alreadyPassed:false,priorResult:{a:null,b:null}})});
+  });
+  await page.route('**/api/advanced-practitioner/cases',async route=>{
+    if(route.request().method()!=='POST'){await route.fallback();return;}
+    caseGradeCalls+=1;
+    const passed=caseGradeCalls>1;
+    const score=passed?100:0;
+    const all=[...caseA.questions,...caseB.questions];
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,a:{score,passed},b:{score,passed},passed,credentialEligible:passed,gradedAt:'2026-08-20T12:15:00.000Z',feedback:all.map(q=>({id:q.id,domain:q.domain,correct:passed,explanation:q.explanation}))})});
+  });
+}
+
 test.describe('Level closures',()=>{
   test('Junior: fail, retry, pass and unlock Consultant',async({page})=>{
     test.setTimeout(90_000);
@@ -107,8 +135,8 @@ test.describe('Level closures',()=>{
   });
 
   test('Semi Senior: fail/retry cumulative, fail/retry cases and unlock Senior',async({page})=>{
-    test.setTimeout(150_000);await seed(page,{'tp-semi-senior-foundations-complete':'true'});await page.goto('/semi-senior/assessment');await singles(page,semiSeniorBank,false);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Hay dominios que necesitan refuerzo'})).toBeVisible();
-    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await singles(page,semiSeniorBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Componente acumulativo aprobado'})).toBeVisible();await page.getByRole('link',{name:'Resolver casos avanzados'}).click();
+    test.setTimeout(150_000);await mockAdvancedPractitionerApi(page);await seed(page,{'tp-semi-senior-foundations-complete':'true'});await page.goto('/semi-senior/assessment');await singles(page,semiSeniorBank,false);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Hay dominios que necesitan refuerzo'})).toBeVisible();
+    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await singles(page,semiSeniorBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();await expect(page.getByRole('heading',{name:'Componente acumulativo aprobado'})).toBeVisible();await storage(page,'tp-advanced-practitioner-eligibility-id','TPIA-ATP-A-E2E-AUTHORITATIVE');await page.getByRole('link',{name:'Resolver casos avanzados'}).click();
     const bank=[...caseA.questions,...caseB.questions];await failEveryQuestion(page);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Uno o más casos requieren refuerzo'})).toBeVisible();
     await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,bank);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Casos avanzados aprobados'})).toBeVisible();await storage(page,'tp-senior-track-unlocked');
   });

@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build && node scripts/generate-seo-static.mjs",
     "typecheck": "tsc -b --pretty false",
     "security:client": "node scripts/check-client-secrets.mjs",
+    "credentials:check": "node scripts/check-credential-infrastructure.mjs",
     "curriculum:check": "node scripts/check-curriculum-integrity.mjs",
     "path:check": "node scripts/check-learning-path-integrity.mjs",
     "polish:check": "node scripts/check-frontend-polish-integrity.mjs",

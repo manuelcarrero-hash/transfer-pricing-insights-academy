@@ -30,6 +30,9 @@ jobs:
       - name: Client secret exposure guard
         run: npm run security:client
 
+      - name: Credential infrastructure integrity
+        run: npm run credentials:check
+
       - name: Dependency audit
         run: npm audit --audit-level=high
 

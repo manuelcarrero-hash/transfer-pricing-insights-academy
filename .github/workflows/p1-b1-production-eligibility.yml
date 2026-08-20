@@ -1,0 +1,29 @@
+name: P1-B1 Production Eligibility
+
+on:
+  push:
+    branches:
+      - qa/p1-b1-production-eligibility
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-practitioner-production-eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRACTITIONER_PREVIEW_URL: https://transfer-pricing-insights-academy.pages.dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Prepare authoritative Practitioner eligibility in production
+        run: node scripts/smoke-practitioner-preview.mjs

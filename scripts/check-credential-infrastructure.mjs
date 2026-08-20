@@ -58,8 +58,9 @@ expect(practitionerStatus.includes('credential_evidence'), 'Practitioner status 
 
 expect(!consultantClientBank.includes('correctIndex'), 'Consultant answer key must not remain in the client bundle');
 expect(!consultantClientBank.includes('consultantBank'), 'Consultant master bank must not remain in the client bundle');
-expect(!consultantClientCase.includes('correct:'), 'Practitioner case solutions must not remain in the client bundle');
-expect(!consultantClientCase.includes('explanation:'), 'Practitioner case master explanations must not remain in the client bundle');
+expect(!consultantClientCase.includes('consultantCaseQuestions'), 'Practitioner case master question set must not remain in the client bundle');
+expect(!consultantClientCase.includes('correct:['), 'Practitioner case solution arrays must not remain in the client bundle');
+expect(!consultantClientCase.includes("id:'case-"), 'Practitioner case master records must not remain in the client bundle');
 expect(!consultantAssessmentPage.includes('Math.random('), 'Consultant assessment selection must not occur client-side');
 expect(consultantAssessmentPage.includes('/api/practitioner/attempt'), 'Consultant assessment UI must request a server attempt');
 expect(consultantAssessmentPage.includes('/api/practitioner/grade'), 'Consultant assessment UI must grade on the server');

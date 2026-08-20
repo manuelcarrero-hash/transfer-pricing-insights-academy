@@ -53,7 +53,8 @@ jobs:
             localStorage.setItem('tp-junior-foundations-result', JSON.stringify(result));
             localStorage.setItem('tp-consultant-level-unlocked', 'true');
           }, result);
-          await page.goto(base + '/junior-foundations/assessment', { waitUntil:'networkidle' });
+          await page.goto(base + '/junior-foundations/assessment', { waitUntil:'domcontentloaded' });
+          await page.getByLabel('Nombre que aparecerá en el certificado').waitFor({ state:'visible', timeout:15000 });
           await page.getByLabel('Nombre que aparecerá en el certificado').fill('P1-B0 Production Smoke');
           let turnstileReady = false;
           for (let i=0;i<20;i++) { if (!(await page.getByRole('button', { name:'Emitir certificado verificable' }).isDisabled())) { turnstileReady = true; break; } await page.waitForTimeout(750); }

@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - qa/p1-b2-production-eligibility
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read

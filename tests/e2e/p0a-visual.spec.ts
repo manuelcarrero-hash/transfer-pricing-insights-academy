@@ -14,6 +14,27 @@ type VisualRoute = {
   setup?: (page: Page) => Promise<void>;
 };
 
+async function seedAdvancedCertificate(page: Page) {
+  await page.route('**/api/certificates/*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        valid: true,
+        certificateId: 'TPIA-VISUAL-P0F',
+        credentialType: 'advanced-practitioner',
+        participantName: 'Persona de Prueba',
+        levelCode: 'ATP',
+        levelName: 'Advanced Transfer Pricing Practitioner',
+        issuedAt: '2026-08-18T12:00:00.000Z',
+        curriculumVersion: 'v1.0',
+        assessmentScore: 94,
+        status: 'valid',
+      }),
+    });
+  });
+}
+
 const routes: VisualRoute[] = [
   { name: 'home', path: '/' },
   { name: 'start', path: '/start' },
@@ -38,16 +59,8 @@ const routes: VisualRoute[] = [
   },
   {
     name: 'certificate-advanced',
-    path: '/advanced-practitioner/certificate',
-    setup: async (page) => {
-      await page.addInitScript(() => {
-        localStorage.setItem('tp-advanced-practitioner-certificate', JSON.stringify({
-          participantName: 'Persona de Prueba',
-          issuedAt: '2026-08-18T12:00:00.000Z',
-          certificateId: 'TPIA-VISUAL-P0F',
-        }));
-      });
-    },
+    path: '/advanced-practitioner/certificate?id=TPIA-VISUAL-P0F',
+    setup: seedAdvancedCertificate,
   },
 ];
 

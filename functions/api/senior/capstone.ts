@@ -1,5 +1,6 @@
 import { ensureSchema, getCredentialEligibility, json, prepareCredentialEligibilityUpsert, prepareCredentialEvidenceUpsert, type Env } from '../../_lib/certificates';
-import { seniorCapstoneDecisions, type SeniorDomain } from '../../../src/content/assessments/seniorFinal';
+import { seniorCapstoneDecisions } from '../../../src/content/assessments/seniorCapstone';
+import type { SeniorDomain } from '../../../src/content/assessments/seniorFinal';
 import { CAPSTONE_PASS_SCORE, SENIOR_DOMAIN_FLOOR, SENIOR_PASS_SCORE, publicCapstoneDecision, seniorCapstoneAnswers } from '../../_lib/seniorBank';
 
 const CREDENTIAL='senior-knowledge' as const;

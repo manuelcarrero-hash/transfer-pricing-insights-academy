@@ -159,10 +159,10 @@ jobs:
           node - <<'NODE'
           const base='https://transfer-pricing-insights-academy.pages.dev';
           const id='TPIA-JF-20260819-31A3F45BA8A2';
-          const r=await fetch(`${base}/api/credentials/${id}`);
-          if(!r.ok) throw new Error(`Junior credential lookup failed: ${r.status}`);
+          const r=await fetch(`${base}/api/certificates/${id}`);
+          if(!r.ok) throw new Error(`Junior certificate lookup failed: ${r.status}`);
           const j=await r.json();
-          if(j.credential?.id!==id && j.id!==id) throw new Error('Junior credential id mismatch');
+          if(j.certificateId!==id || j.valid!==true) throw new Error('Junior certificate registry mismatch');
           console.log(`Junior registry PASS ${id}`);
           NODE
       - name: Practitioner authoritative production regression
@@ -182,17 +182,18 @@ jobs:
             'TPIA-SK-20260820-387DAA36AAAC'
           ];
           for (const id of ids) {
-            const r=await fetch(`${base}/api/credentials/${id}`);
+            const r=await fetch(`${base}/api/certificates/${id}`);
             if(!r.ok) throw new Error(`${id} registry lookup failed: ${r.status}`);
             const j=await r.json();
-            const actual=j.credential?.id ?? j.id;
-            if(actual!==id) throw new Error(`${id} registry mismatch: ${actual}`);
+            if(j.certificateId!==id || j.valid!==true || j.status!=='valid') throw new Error(`${id} registry mismatch`);
             const page=await fetch(`${base}/verify/${id}`);
             if(!page.ok) throw new Error(`${id} public verify page failed: ${page.status}`);
             console.log(`Public credential PASS ${id}`);
           }
           const missing='TPIA-NOT-A-REAL-CREDENTIAL';
-          const missingResp=await fetch(`${base}/api/credentials/${missing}`);
-          if(missingResp.ok) throw new Error('Nonexistent credential unexpectedly resolved');
-          console.log(`Invalid credential rejection PASS status=${missingResp.status}`);
+          const missingResp=await fetch(`${base}/api/certificates/${missing}`);
+          if(missingResp.status!==404) throw new Error(`Nonexistent certificate expected 404, got ${missingResp.status}`);
+          const missingBody=await missingResp.json();
+          if(missingBody.valid!==false || missingBody.error!=='certificate_not_found') throw new Error('Invalid certificate rejection payload mismatch');
+          console.log('Invalid credential rejection PASS 404 certificate_not_found');
           NODE

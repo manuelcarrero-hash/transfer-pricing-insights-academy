@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      SENIOR_PREVIEW_URL: https://feat-p1-b3-senior-knowledge-a.transfer-pricing-insights-academy.pages.dev
+      SENIOR_PREVIEW_URL: https://feat-p1-b3-senior-knowledge.transfer-pricing-insights-academy.pages.dev
     steps:
       - name: Checkout
         uses: actions/checkout@v6

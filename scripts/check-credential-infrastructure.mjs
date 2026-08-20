@@ -30,6 +30,11 @@ expect(issue.includes('getCredentialDefinition'), 'Issuance must resolve a share
 expect(issue.includes('getCredentialEligibility'), 'Issuance must consume common authoritative eligibility');
 expect(issue.includes('prepareCredentialEligibilityIssued'), 'Issuance must mark common eligibility as issued');
 expect(issue.includes('JUNIOR_CREDENTIAL_TYPE'), 'Issuance must retain explicit Junior compatibility handling');
+expect(issue.includes('findExistingCertificate'), 'Issuance must recover an existing valid credential idempotently');
+expect(issue.includes("FROM certificates WHERE attempt_id = ? AND status = 'valid' LIMIT 1"), 'Issuance must look up an existing valid credential by authoritative eligibility');
+expect(issue.includes('if (existing) return existingCertificateResponse'), 'Issuance must return an existing valid credential before creating a duplicate');
+expect(issue.includes('if (racedExisting) return existingCertificateResponse'), 'Issuance must recover safely from concurrent duplicate issuance races');
+expect(issue.includes('validateTurnstile(context.env.TURNSTILE_SECRET_KEY'), 'Turnstile validation must remain mandatory');
 expect(!issue.includes("VALUES (?, ?, 'JF'"), 'Issuance must not hardcode Junior certificate metadata');
 expect(!issue.includes('Math.random('), 'Math.random() is forbidden in certificate issuance');
 

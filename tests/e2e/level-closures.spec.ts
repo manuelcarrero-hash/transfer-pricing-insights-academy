@@ -113,6 +113,42 @@ async function mockAdvancedPractitionerApi(page: Page) {
   });
 }
 
+async function mockSeniorApi(page: Page) {
+  let attemptCalls=0;
+  let capstoneGradeCalls=0;
+  const questions=seniorFinalBank.slice(0,20);
+  const cases=seniorMiniCases.slice(0,4);
+  const stats={far:{earned:10,possible:10},method:{earned:10,possible:10},comparability:{earned:10,possible:10},judgment:{earned:10,possible:10},other:{earned:0,possible:0}};
+  await page.addInitScript(()=>{
+    (window as unknown as {turnstile?:{render:(element:HTMLElement,options:{callback:(token:string)=>void})=>string;remove:()=>void}}).turnstile={render:(_element,options)=>{setTimeout(()=>options.callback('e2e-turnstile-token'),0);return'e2e-widget';},remove:()=>{}};
+    const script=document.createElement('script');script.dataset.tpiaTurnstile='true';document.head.appendChild(script);
+  });
+  await page.route('**/api/senior/attempt',async route=>{
+    attemptCalls+=1;const attemptId=`TPIA-SK-A-E2E-${attemptCalls}`;
+    await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({attemptId,expiresAt:'2099-01-01T00:00:00.000Z',questions,cases})});
+  });
+  await page.route('**/api/senior/grade',async route=>{
+    const body=await route.request().postDataJSON() as{attemptId:string};
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId:body.attemptId,aScore:100,bScore:100,points:50,abScore:100,stats,completed:true,gradedAt:'2026-08-20T12:20:00.000Z'})});
+  });
+  await page.route('**/api/senior/capstone?*',async route=>{
+    const eligibilityId=new URL(route.request().url()).searchParams.get('eligibilityId');
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,passScore:70,globalPassScore:80,domainFloor:60,decisions:seniorCapstoneDecisions,alreadyPassed:false,priorResult:null})});
+  });
+  await page.route('**/api/senior/capstone',async route=>{
+    if(route.request().method()!=='POST'){await route.fallback();return;}
+    capstoneGradeCalls+=1;const body=await route.request().postDataJSON() as{eligibilityId:string};const passed=capstoneGradeCalls>1;const score=passed?100:40;
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId:body.eligibilityId,capstone:score,global:passed?100:70,finalScore:passed?100:70,domainScores:{far:passed?100:50,method:passed?100:50,comparability:passed?100:50,judgment:passed?100:50},passed,credentialEligible:passed})});
+  });
+  await page.route('**/api/certificates/issue',async route=>{
+    const body=await route.request().postDataJSON() as{participantName:string};
+    await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({certificateId:'TPIA-SK-20260820-E2E00000001',credentialType:'senior-knowledge',participantName:body.participantName})});
+  });
+  await page.route('**/api/certificates/TPIA-SK-20260820-E2E00000001',async route=>{
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({valid:true,certificateId:'TPIA-SK-20260820-E2E00000001',credentialType:'senior-knowledge',participantName:'Persona Senior E2E',levelCode:'SK',levelName:'Senior-Level Transfer Pricing Knowledge',issuedAt:'2026-08-20T12:30:00.000Z',curriculumVersion:'v1.0',assessmentScore:100,status:'valid'})});
+  });
+}
+
 test.describe('Level closures',()=>{
   test('Junior: fail, retry, pass and unlock Consultant',async({page})=>{
     test.setTimeout(90_000);
@@ -141,10 +177,10 @@ test.describe('Level closures',()=>{
     await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,bank);await enabled(page,'Calificar casos avanzados');await page.getByRole('button',{name:'Calificar casos avanzados'}).click();await expect(page.getByRole('heading',{name:'Casos avanzados aprobados'})).toBeVisible();await storage(page,'tp-senior-track-unlocked');
   });
 
-  test('Senior: fail Capstone, restart all, pass and issue certificate',async({page})=>{
-    test.setTimeout(180_000);await seed(page,{'tp-senior-knowledge-courses-complete':'true'});await page.goto('/senior/assessment');await singles(page,[...seniorFinalBank,...seniorMiniCases],true);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();
-    await failEveryQuestion(page);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'El cierre Senior requiere refuerzo'})).toBeVisible();await page.getByRole('button',{name:'Nuevo intento completo'}).click();await storageNull(page,'tp-senior-final-ab-complete');
-    await singles(page,[...seniorFinalBank,...seniorMiniCases],true);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();await singles(page,seniorCapstoneDecisions,true);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'Senior-Level aprobado'})).toBeVisible();
-    await page.getByLabel('Nombre que aparecerá en el certificado').fill('Persona Senior E2E');await page.getByRole('button',{name:'Emitir mi certificado'}).click();await expect(page).toHaveURL(/\/senior\/certificate$/);await expect(page.getByText('Persona Senior E2E',{exact:true})).toBeVisible();
+  test('Senior: authoritative A+B, fail Capstone, restart all, pass and issue certificate',async({page})=>{
+    test.setTimeout(180_000);await mockSeniorApi(page);await seed(page,{'tp-senior-knowledge-courses-complete':'true'});await page.goto('/senior/assessment');await failEveryQuestion(page);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();
+    await failEveryQuestion(page);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'El cierre Senior requiere refuerzo'})).toBeVisible();await page.getByRole('link',{name:'Nuevo intento completo'}).click();
+    await expect(page).toHaveURL(/\/senior\/assessment$/);await failEveryQuestion(page);await enabled(page,'Cerrar Componentes A + B');await page.getByRole('button',{name:'Cerrar Componentes A + B'}).click();await page.getByRole('link',{name:'Continuar al Capstone'}).click();await failEveryQuestion(page);await enabled(page,'Calificar cierre Senior-Level');await page.getByRole('button',{name:'Calificar cierre Senior-Level'}).click();await expect(page.getByRole('heading',{name:'Senior-Level aprobado'})).toBeVisible();
+    await page.getByLabel('Nombre que aparecerá en el certificado').fill('Persona Senior E2E');await enabled(page,'Emitir certificado verificable');await page.getByRole('button',{name:'Emitir certificado verificable'}).click();await expect(page).toHaveURL(/\/senior\/certificate\?id=TPIA-SK-20260820-E2E00000001$/);await expect(page.getByText('Persona Senior E2E',{exact:true})).toBeVisible();
   });
 });

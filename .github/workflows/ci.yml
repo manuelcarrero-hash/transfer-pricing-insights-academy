@@ -109,3 +109,24 @@ jobs:
           path: test-results/p0i-final-visual/
           if-no-files-found: error
           retention-days: 14
+
+  practitioner-preview-smoke:
+    if: ${{ github.event_name == 'pull_request' && github.head_ref == 'feat/p1-b1-practitioner-authoritative' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PRACTITIONER_PREVIEW_URL: https://feat-p1-b1-practitioner-auth.transfer-pricing-insights-academy.pages.dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Run authoritative Practitioner smoke against Cloudflare Preview
+        run: node scripts/smoke-practitioner-preview.mjs

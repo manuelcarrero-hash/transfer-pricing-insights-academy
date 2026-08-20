@@ -18,7 +18,7 @@ const keys = [
   'tp-consultant-level-unlocked',
   ...Array.from({ length: 6 }, (_, i) => `tp-c${i + 2}-unlocked`),
   'tp-consultant-foundations-complete',
-  'tp-consultant-cumulative-objective-passed',
+  'tp-practitioner-eligibility-id',
   'tp-practitioner-unlocked',
   ...Array.from({ length: 7 }, (_, i) => `tp-ss${i + 2}-unlocked`),
   'tp-semi-senior-foundations-complete',
@@ -58,5 +58,16 @@ for (const [fileName, key] of routeGuards) {
   }
 }
 
+const consultantAssessment = contents.find(({ path }) => path.endsWith('ConsultantAssessmentPage.tsx'))?.content ?? '';
+const consultantCase = contents.find(({ path }) => path.endsWith('ConsultantCasePage.tsx'))?.content ?? '';
+if (consultantAssessment.includes('tp-consultant-cumulative-objective-passed') || consultantCase.includes('tp-consultant-cumulative-objective-passed')) {
+  console.error('Learning path integrity failed: Practitioner certification must not depend on the legacy client-side objective-pass flag.');
+  failed = true;
+}
+if (!consultantCase.includes('/api/practitioner/case')) {
+  console.error('Learning path integrity failed: Practitioner case access must validate server-side assessment evidence.');
+  failed = true;
+}
+
 if (failed) process.exit(1);
-console.log(`Learning path integrity check passed across ${keys.length} progression keys.`);
+console.log(`Learning path integrity check passed across ${keys.length} progression/continuity keys.`);

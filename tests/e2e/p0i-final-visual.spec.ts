@@ -25,7 +25,6 @@ const courseCodes = [
 const unlockFlags = [
   'tp-consultant-level-unlocked',
   'tp-consultant-foundations-complete',
-  'tp-consultant-cumulative-objective-passed',
   'tp-practitioner-unlocked',
   'tp-ss2-unlocked','tp-ss3-unlocked','tp-ss4-unlocked','tp-ss5-unlocked','tp-ss6-unlocked','tp-ss7-unlocked','tp-ss8-unlocked',
   'tp-semi-senior-foundations-complete','tp-semi-senior-cumulative-passed','tp-senior-track-unlocked',
@@ -53,7 +52,6 @@ function seedCourseProgress(page: Page, mode: 'partial' | 'complete') {
     }
     for (const flag of flags) localStorage.setItem(flag, 'true');
     localStorage.setItem('tp-junior-foundations-certificate', 'issued');
-    localStorage.setItem('tp-practitioner-certificate', JSON.stringify({ participantName:'Persona de Prueba', issuedAt:now, certificateId:'TPIA-P0I-TP' }));
     localStorage.setItem('tp-advanced-practitioner-certificate', JSON.stringify({ participantName:'Persona de Prueba', issuedAt:now, certificateId:'TPIA-P0I-ADV' }));
     localStorage.setItem('tp-senior-knowledge-certificate', JSON.stringify({ participantName:'Persona de Prueba', issuedAt:now, certificateId:'TPIA-P0I-SENIOR', score:94, capstoneScore:92 }));
   }, { codes: courseCodes, flags: unlockFlags, state: mode });
@@ -67,10 +65,32 @@ async function seedJuniorCertificate(page: Page) {
       body: JSON.stringify({
         valid: true,
         certificateId: 'TPIA-P0I-JUNIOR',
+        credentialType: 'junior-foundations',
         participantName: 'Persona de Prueba',
         levelName: 'Transfer Pricing Junior Foundations',
         issuedAt: '2026-08-18T12:00:00.000Z',
         curriculumVersion: 'v1',
+        assessmentScore: 94,
+        status: 'valid',
+      }),
+    });
+  });
+}
+
+async function seedPractitionerCertificate(page: Page) {
+  await page.route('**/api/certificates/*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        valid: true,
+        certificateId: 'TPIA-P0I-TP',
+        credentialType: 'practitioner',
+        participantName: 'Persona de Prueba',
+        levelCode: 'TP',
+        levelName: 'Transfer Pricing Practitioner',
+        issuedAt: '2026-08-18T12:00:00.000Z',
+        curriculumVersion: 'v1.0',
         assessmentScore: 94,
         status: 'valid',
       }),
@@ -119,9 +139,8 @@ const routes: VisualRoute[] = [
     verify: async (page) => { await expect(page.locator('.academic-certificate')).toBeVisible(); },
   },
   {
-    name: 'certificate-practitioner', path: '/practitioner/certificate', setup: (page) => seedLocalCertificate(page, 'tp-practitioner-certificate', {
-      participantName:'Persona de Prueba', issuedAt:'2026-08-18T12:00:00.000Z', certificateId:'TPIA-P0I-TP',
-    }),
+    name: 'certificate-practitioner', path: '/practitioner/certificate?id=TPIA-P0I-TP',
+    setup: seedPractitionerCertificate,
     verify: async (page) => { await expect(page.locator('.academic-certificate')).toBeVisible(); },
   },
   {

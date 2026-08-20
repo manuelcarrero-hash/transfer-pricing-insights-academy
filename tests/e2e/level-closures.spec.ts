@@ -1,7 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { bank as juniorFoundationsBank } from '../../functions/_lib/juniorBank';
-import { consultantBank } from '../../src/content/assessments/consultantCumulative';
-import { consultantCaseQuestions } from '../../src/content/assessments/consultantCase';
+import { consultantBank, practitionerCaseFacts, practitionerCaseQuestions } from '../../functions/_lib/practitionerBank';
 import { semiSeniorBank } from '../../src/content/assessments/semiSeniorCumulative';
 import { caseA, caseB } from '../../src/content/assessments/semiSeniorCases';
 import { seniorFinalBank, seniorMiniCases } from '../../src/content/assessments/seniorFinal';
@@ -65,6 +64,27 @@ async function mockJuniorApi(page: Page) {
   });
 }
 
+async function mockPractitionerApi(page: Page) {
+  const eligibilityId='TPIA-PA-E2E-AUTHORITATIVE';
+  const assessmentQuestions=consultantBank.slice(0,24).map(({correctIndex:_correctIndex,feedback:_feedback,...question})=>question);
+  let caseGradeCalls=0;
+  await page.route('**/api/practitioner/attempt',async route=>{
+    await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({attemptId:eligibilityId,expiresAt:'2099-01-01T00:00:00.000Z',questions:assessmentQuestions})});
+  });
+  await page.route('**/api/practitioner/grade',async route=>{
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,attemptId:eligibilityId,score:100,passed:true,passedGlobal:true,passedDomains:true,domains:{C1:100,C2:100,C3:100,C4:100,C5:100,C6:100,C7:100},correct:24,total:24,gradedAt:'2026-08-20T12:00:00.000Z'})});
+  });
+  await page.route('**/api/practitioner/case?*',async route=>{
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,facts:practitionerCaseFacts,passScore:80,alreadyPassed:false,priorResult:null,questions:practitionerCaseQuestions.map(({id,domain,prompt,options,correct})=>({id,domain,prompt,options,multiple:correct.length>1}))})});
+  });
+  await page.route('**/api/practitioner/case',async route=>{
+    if(route.request().method()!=='POST'){await route.fallback();return;}
+    caseGradeCalls+=1;
+    const passed=caseGradeCalls>1;
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({eligibilityId,score:passed?100:0,correct:passed?12:0,total:12,passed,gradedAt:'2026-08-20T12:05:00.000Z',credentialEligible:passed,feedback:practitionerCaseQuestions.map(q=>({id:q.id,domain:q.domain,correct:passed,explanation:q.explanation}))})});
+  });
+}
+
 test.describe('Level closures',()=>{
   test('Junior: fail, retry, pass and unlock Consultant',async({page})=>{
     test.setTimeout(90_000);
@@ -79,11 +99,11 @@ test.describe('Level closures',()=>{
     await expect(page.getByRole('heading',{name:'Nivel Junior aprobado'})).toBeVisible();await storage(page,'tp-consultant-level-unlocked');
   });
 
-  test('Consultant: pass objective, fail/retry case and unlock Practitioner',async({page})=>{
-    test.setTimeout(120_000);await seed(page,{'tp-consultant-foundations-complete':'true'});await page.goto('/consultant/assessment');await singles(page,consultantBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();
-    await expect(page.getByRole('heading',{name:'Componente objetivo aprobado'})).toBeVisible();await page.getByRole('link',{name:'Resolver caso integrador'}).click();
+  test('Consultant: authoritative objective, fail/retry case and unlock Practitioner',async({page})=>{
+    test.setTimeout(120_000);await mockPractitionerApi(page);await seed(page,{'tp-consultant-foundations-complete':'true'});await page.goto('/consultant/assessment');await singles(page,consultantBank,true);await enabled(page,'Calificar evaluación');await page.getByRole('button',{name:'Calificar evaluación'}).click();
+    await expect(page.getByRole('heading',{name:'Componente objetivo aprobado'})).toBeVisible();await storage(page,'tp-practitioner-eligibility-id','TPIA-PA-E2E-AUTHORITATIVE');await page.getByRole('link',{name:'Resolver caso integrador'}).click();
     await failEveryQuestion(page);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador por reforzar'})).toBeVisible();
-    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,consultantCaseQuestions);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador aprobado'})).toBeVisible();await storage(page,'tp-practitioner-unlocked');
+    await page.getByRole('button',{name:'Intentar de nuevo'}).click();await multis(page,practitionerCaseQuestions);await enabled(page,'Calificar caso integrador');await page.getByRole('button',{name:'Calificar caso integrador'}).click();await expect(page.getByRole('heading',{name:'Caso integrador aprobado'})).toBeVisible();await storage(page,'tp-practitioner-unlocked');
   });
 
   test('Semi Senior: fail/retry cumulative, fail/retry cases and unlock Senior',async({page})=>{

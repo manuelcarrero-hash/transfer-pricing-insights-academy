@@ -1,1 +1,82 @@
-placeholder
+name: P1-B0 Production Smoke
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm install
+      - name: Run production Junior credential smoke
+        env:
+          BASE_URL: https://transfer-pricing-insights-academy.pages.dev
+        run: |
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          const answerKey = new Map([[1,1],[2,1],[3,1],[4,0],[5,2],[6,1],[7,0],[8,1],[9,0],[10,0],[11,0],[12,0],[13,0],[14,1],[15,0],[16,1],[17,1],[18,0],[19,1],[20,3],[21,0],[22,1],[23,1],[24,1],[25,0],[26,1],[27,1],[28,0],[29,1],[30,0],[31,0],[32,1],[33,1],[34,1],[35,3],[36,0],[37,0],[38,1],[39,1],[40,0]]);
+          const base = process.env.BASE_URL;
+          const browser = await chromium.launch({ headless: true });
+          const context = await browser.newContext();
+          const page = await context.newPage();
+          const home = await page.request.get(base + '/');
+          if (!home.ok()) throw new Error(`home_http_${home.status()}`);
+          const attemptResp = await page.request.post(base + '/api/junior/attempt', { headers: { accept:'application/json' } });
+          if (!attemptResp.ok()) throw new Error(`attempt_http_${attemptResp.status()}_${await attemptResp.text()}`);
+          const attempt = await attemptResp.json();
+          if (!attempt.attemptId || !Array.isArray(attempt.questions) || attempt.questions.length !== 20) throw new Error('invalid_attempt_payload');
+          const answers = Object.fromEntries(attempt.questions.map(q => [String(q.id), answerKey.get(q.id)]));
+          const gradeResp = await page.request.post(base + '/api/junior/grade', { headers: { 'content-type':'application/json', accept:'application/json' }, data: { attemptId: attempt.attemptId, answers } });
+          if (!gradeResp.ok()) throw new Error(`grade_http_${gradeResp.status()}_${await gradeResp.text()}`);
+          const result = await gradeResp.json();
+          if (!result.passed || result.score !== 100) throw new Error(`grade_not_passed_${JSON.stringify(result)}`);
+          await page.goto(base + '/', { waitUntil:'domcontentloaded' });
+          await page.evaluate((result) => {
+            const now = new Date().toISOString();
+            localStorage.setItem('tpia-progress-v1', JSON.stringify({ curriculumVersion:'v1', lastLesson:8, completedLessons:[1,2,3,4,5,6,7,8], updatedAt:now }));
+            for (const code of ['j2','j3','j4','j5']) localStorage.setItem(`tpia-course-progress-v1-${code}`, JSON.stringify({ curriculumVersion:'v1', courseCode:code.toUpperCase(), lastLesson:100, completedLessons:Array.from({length:100},(_,i)=>i+1), updatedAt:now }));
+            localStorage.setItem('tp-junior-foundations-result', JSON.stringify(result));
+            localStorage.setItem('tp-consultant-level-unlocked', 'true');
+          }, result);
+          await page.goto(base + '/junior-foundations/assessment', { waitUntil:'networkidle' });
+          await page.getByLabel('Nombre que aparecerá en el certificado').fill('P1-B0 Production Smoke');
+          let turnstileReady = false;
+          for (let i=0;i<20;i++) { if (!(await page.getByRole('button', { name:'Emitir certificado verificable' }).isDisabled())) { turnstileReady = true; break; } await page.waitForTimeout(750); }
+          if (!turnstileReady) {
+            const badIssue = await page.request.post(base + '/api/certificates/issue', { headers:{'content-type':'application/json',accept:'application/json'}, data:{attemptId:result.attemptId,participantName:'P1-B0 Production Smoke',turnstileToken:'invalid-smoke-token'} });
+            const badBody = await badIssue.json().catch(()=>({}));
+            if (badIssue.status() !== 403 || badBody.error !== 'turnstile_failed') throw new Error(`turnstile_boundary_unexpected_${badIssue.status()}_${JSON.stringify(badBody)}`);
+            console.log(JSON.stringify({home:true,attemptId:result.attemptId,grade:{score:result.score,passed:result.passed},turnstile:'challenge-required',issuance:'not-automatable-without-valid-challenge'}));
+            await browser.close();
+            process.exit(0);
+          }
+          await page.getByRole('button', { name:'Emitir certificado verificable' }).click();
+          await page.waitForURL(/\/junior-foundations\/certificate\?id=/, { timeout:30000 });
+          const url = new URL(page.url());
+          const certificateId = url.searchParams.get('id');
+          if (!certificateId) throw new Error('missing_certificate_id');
+          const api = await page.request.get(base + '/api/certificates/' + encodeURIComponent(certificateId));
+          if (!api.ok()) throw new Error(`certificate_api_${api.status()}_${await api.text()}`);
+          const cert = await api.json();
+          if (!cert.valid || cert.credentialType !== 'junior-foundations') throw new Error(`certificate_invalid_${JSON.stringify(cert)}`);
+          const verify = await page.request.get(base + '/verify/' + encodeURIComponent(certificateId));
+          if (!verify.ok()) throw new Error(`verify_http_${verify.status()}`);
+          const verifyHtml = await verify.text();
+          if (!verifyHtml.includes('Credencial válida') || !verifyHtml.includes(certificateId)) throw new Error('verify_content_invalid');
+          console.log(JSON.stringify({home:true,attemptId:result.attemptId,grade:{score:result.score,passed:result.passed},turnstile:'passed',certificateId,certificateApi:true,verify:true}));
+          await browser.close();
+          NODE

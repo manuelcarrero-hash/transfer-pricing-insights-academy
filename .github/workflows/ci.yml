@@ -136,3 +136,21 @@ jobs:
           package-manager-cache: false
       - name: Run authoritative Senior smoke against Cloudflare Preview
         run: node scripts/smoke-senior-preview.mjs
+
+  senior-production-eligibility:
+    if: ${{ github.event_name == 'pull_request' && github.head_ref == 'qa/p1-b3-production-eligibility' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SENIOR_PREVIEW_URL: https://transfer-pricing-insights-academy.pages.dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - name: Prepare authoritative Senior eligibility in Production
+        run: node scripts/smoke-senior-preview.mjs

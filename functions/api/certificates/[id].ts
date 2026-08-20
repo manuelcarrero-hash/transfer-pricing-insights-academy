@@ -1,4 +1,10 @@
-import { ensureSchema, json, type CertificateRecord, type Env } from '../../_lib/certificates';
+import {
+  credentialTypeFromLevelCode,
+  ensureSchema,
+  json,
+  type CertificateRecord,
+  type Env,
+} from '../../_lib/certificates';
 
 export async function onRequestGet(context: { env: Env; params: { id?: string } }) {
   const db = context.env.CERTIFICATES_DB;
@@ -15,6 +21,7 @@ export async function onRequestGet(context: { env: Env; params: { id?: string } 
   return json({
     valid: record.status === 'valid',
     certificateId: record.certificate_id,
+    credentialType: credentialTypeFromLevelCode(record.level_code),
     participantName: record.participant_name,
     levelCode: record.level_code,
     levelName: record.level_name,

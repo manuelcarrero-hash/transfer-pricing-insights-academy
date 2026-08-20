@@ -1,4 +1,11 @@
-import { ensureSchema, json, type Env } from '../../_lib/certificates';
+import {
+  ensureSchema,
+  json,
+  prepareCredentialEligibilityUpsert,
+  prepareCredentialEvidenceUpsert,
+  JUNIOR_CREDENTIAL_TYPE,
+  type Env,
+} from '../../_lib/certificates';
 import { bank, JUNIOR_DOMAIN_FLOOR, JUNIOR_PASS_SCORE, juniorDomains, type JuniorDomain } from '../../_lib/juniorBank';
 
 type AttemptRow = {
@@ -38,11 +45,31 @@ export async function onRequestPost(context: { env: Env; request: Request }) {
   })) as Record<JuniorDomain, number>;
   const passed = score >= JUNIOR_PASS_SCORE && juniorDomains.every((domain) => domainScores[domain] >= JUNIOR_DOMAIN_FLOOR);
   const gradedAt = new Date().toISOString();
+  const resultData = { domainScores, correct, total: questions.length, gradedAt };
 
-  await db.prepare(`UPDATE junior_assessment_attempts
-    SET graded_at = ?, score = ?, passed = ?, domain_scores = ?
-    WHERE attempt_id = ?`)
-    .bind(gradedAt, score, passed ? 1 : 0, JSON.stringify(domainScores), attemptId).run();
+  await db.batch([
+    db.prepare(`UPDATE junior_assessment_attempts
+      SET graded_at = ?, score = ?, passed = ?, domain_scores = ?
+      WHERE attempt_id = ?`)
+      .bind(gradedAt, score, passed ? 1 : 0, JSON.stringify(domainScores), attemptId),
+    prepareCredentialEvidenceUpsert(db, {
+      eligibilityId: attemptId,
+      credentialType: JUNIOR_CREDENTIAL_TYPE,
+      componentKey: 'junior-assessment',
+      score,
+      passed,
+      resultData,
+      recordedAt: gradedAt,
+    }),
+    prepareCredentialEligibilityUpsert(db, {
+      eligibilityId: attemptId,
+      credentialType: JUNIOR_CREDENTIAL_TYPE,
+      score,
+      eligible: passed,
+      resultData,
+      updatedAt: gradedAt,
+    }),
+  ]);
 
   return json({ attemptId, score, passed, domainScores, correct, total: questions.length, gradedAt });
 }

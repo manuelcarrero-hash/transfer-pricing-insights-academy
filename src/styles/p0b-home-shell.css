@@ -172,6 +172,8 @@
 }
 
 .authority-item strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
   color: var(--color-brand-navy);
   font-family: var(--font-editorial);
   font-size: 1.7rem;
@@ -179,6 +181,7 @@
 }
 
 .authority-item span {
+  min-width: 0;
   color: var(--color-text-muted);
   font-size: .88rem;
   line-height: 1.35;

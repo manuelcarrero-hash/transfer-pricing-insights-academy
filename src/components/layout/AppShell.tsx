@@ -44,10 +44,6 @@ export function AppShell({ children }: PropsWithChildren) {
         </div>
       </header>
 
-      <aside className="pilot-notice" aria-label="Aviso sobre el progreso">
-        <div className="container pilot-notice-inner"><span className="pilot-badge">Piloto RC1</span><span>Tu progreso se guarda únicamente en este navegador. Usa preferentemente el mismo dispositivo durante la prueba.</span></div>
-      </aside>
-
       <main id="main-content" tabIndex={-1}>{children}</main>
 
       <footer className="site-footer polished-footer">

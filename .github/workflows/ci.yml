@@ -67,14 +67,14 @@ jobs:
         run: npm run e2e
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
       - name: Upload P0-A visual review screenshots
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: p0a-visual-review
           path: test-results/p0a-visual/
@@ -82,7 +82,7 @@ jobs:
           retention-days: 14
       - name: Upload P0-I final visual audit screenshots
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: p0i-final-visual-audit
           path: test-results/p0i-final-visual/
